@@ -28,4 +28,12 @@ public class QuyenBUS {
         }
         return null;
     }
+    public QuyenDTO getQuyenfromTen(String maQ){
+        for(QuyenDTO q : list){
+            if(q.getTenQuyen().equals(maQ)){
+                return q;
+            }
+        }
+        return null;
+    }
 }

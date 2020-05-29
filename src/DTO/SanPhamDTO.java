@@ -1,8 +1,9 @@
 package DTO;
 
+import BUS.LoaiSPBUS;
 import java.sql.Date;
 
-public class sanPhamDTO {
+public class SanPhamDTO {
     private String maSanPham;
     private String tenSanPham;
     private double dongia;
@@ -20,7 +21,7 @@ public class sanPhamDTO {
         this.image = image;
     }
 
-    public sanPhamDTO(String maSanPham, String tenSanPham, double dongia, int soLuong, Date namSx, String maNCC, String maLoaiSP, String maThuongHieu, String image) {
+    public SanPhamDTO(String maSanPham, String tenSanPham, double dongia, int soLuong, Date namSx, String maNCC, String maLoaiSP, String maThuongHieu, String image) {
         this.maSanPham = maSanPham;
         this.tenSanPham = tenSanPham;
         this.dongia = dongia;
@@ -31,7 +32,7 @@ public class sanPhamDTO {
         this.maThuongHieu = maThuongHieu;
         this.image = image;
     }
-    public sanPhamDTO() {
+    public SanPhamDTO() {
     }
     public String getMaSanPham() {
         return maSanPham;
@@ -95,5 +96,8 @@ public class sanPhamDTO {
 
     public void setMaThuongHieu(String maThuongHieu) {
         this.maThuongHieu = maThuongHieu;
+    }
+    public String getTenLoaiSP(){
+        return new LoaiSPBUS().getLoaiSPDTO(this.getMaLoaiSP()).getTenLoaiSP();
     }
 }

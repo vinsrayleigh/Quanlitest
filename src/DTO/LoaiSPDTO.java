@@ -9,14 +9,14 @@ package DTO;
  *
  * @author phuon
  */
-public class MaSPDTO {
+public class LoaiSPDTO {
     private String maLoaiSP;
     private String tenLoaiSP;
 
-    public MaSPDTO() {
+    public LoaiSPDTO() {
     }
 
-    public MaSPDTO(String maLoaiSP, String tenLoaiSP) {
+    public LoaiSPDTO(String maLoaiSP, String tenLoaiSP) {
         this.maLoaiSP = maLoaiSP;
         this.tenLoaiSP = tenLoaiSP;
     }

@@ -22,6 +22,8 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.sql.Date;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import javafx.util.converter.LocalDateStringConverter;
 import javax.swing.*;
 
@@ -31,7 +33,7 @@ import javax.swing.*;
  */
 public class ThemSuaNhanVien extends JFrame {
 //
-
+    ArrayList<QuyenDTO> listQ;
     String type;
     NhanVienBUS qlNhanVien = new NhanVienBUS();
     NhanVienDTO nvsua;
@@ -42,7 +44,7 @@ public class ThemSuaNhanVien extends JFrame {
     JTextField txSDT = new JTextField(15);
     JComboBox<String> cbChonTrangThai = new JComboBox<>(new String[]{"Ẩn", "Hiện"});
     JComboBox<String> cbChonGT = new JComboBox<>(new String[]{"Nam", "Nữ", "Khác"});
-
+    JComboBox<String> cbChonQuyen = new JComboBox<>();
     JButton btnThem = new JButton("Thêm");
     JButton btnSua = new JButton("Sửa");
     JButton btnHuy = new JButton("Hủy");
@@ -52,12 +54,12 @@ public class ThemSuaNhanVien extends JFrame {
     public ThemSuaNhanVien(String type, String manv) {
         setUndecorated(true);
         this.setLayout(null);
-        this.setSize(400, 420);
+        this.setSize(400, 450);
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         this.type = type;
         NavBarSeperator s = new NavBarSeperator(new Rectangle(0, 0, 0, 2));
-        s.setBounds(0, 350, 400, 2);
+        s.setBounds(0, 380, 400, 2);
         s.setBackground(Color.DARK_GRAY);
         add(s);
         JLabel Title = new JLabel(type + " Nhân Viên", (int) CENTER_ALIGNMENT);
@@ -72,9 +74,13 @@ public class ThemSuaNhanVien extends JFrame {
         dPickerNgaySinh = new DatePicker(pickerSettings);
         dPickerNgaySinh.setDateToToday();
         DateButton db = new DateButton(dPickerNgaySinh);
-        String[] lbName = new String[]{"Mã nhân viên", "Họ nhân viên", "Tên nhân viên", "Ngày sinh", "Số điện thoại", "Giới tính", "Trạng thái"};
-        JComponent[] com = new JComponent[]{txManv, txHonv, txTennv, txNgaysinh, txSDT, cbChonGT, cbChonTrangThai};
-        for (int i = 0; i <= 6; i++) {
+        String[] lbName = new String[]{"Mã nhân viên", "Họ nhân viên", "Tên nhân viên", "Ngày sinh", "Số điện thoại","Quyền", "Giới tính", "Trạng thái"};
+        listQ = QuyenDAO.getQuyen();
+        for(QuyenDTO q: listQ){
+            cbChonQuyen.addItem(q.getTenQuyen());
+        }
+        JComponent[] com = new JComponent[]{txManv, txHonv, txTennv, txNgaysinh, txSDT,cbChonQuyen, cbChonGT, cbChonTrangThai};
+        for (int i = 0; i <= 7; i++) {
             JLabel lb = new JLabel(lbName[i]);
             lb.setBounds(50, 40 * i + 50, 150, 30);
             add(lb);
@@ -88,15 +94,19 @@ public class ThemSuaNhanVien extends JFrame {
             add(com[i]);
         }
         if (type.equals("Thêm")) {
-            btnThem.setBounds(50, 370, 100, 30);
+            btnThem.setBounds(50, 400, 100, 30);
             add(btnThem);
             txManv.setText(qlNhanVien.getNextID());
+            txNgaysinh.setText(dPickerNgaySinh.getDateStringOrEmptyString());
             txManv.setEditable(false);
         }
         if (type.equals("Sửa")) {
-            btnSua.setBounds(50, 370, 100, 30);
+            btnSua.setBounds(50, 400, 100, 30);
             add(btnSua);
             nvsua = qlNhanVien.getNV(manv);
+            if(nvsua==null){
+                System.out.println("SAI CMNR");
+            }else{
 //            String[] lbName = new String[]{"Mã nhân viên", "Họ nhân viên", "Tên nhân viên", "Ngày sinh", "Số điện thoại", "Giới tính", "Trạng thái"};
             txManv.setText(nvsua.getMaNhanVien());
             txManv.setEditable(false);
@@ -114,6 +124,9 @@ public class ThemSuaNhanVien extends JFrame {
                 cbChonGT.setSelectedItem("Khác");
             }
             cbChonTrangThai.setSelectedIndex(nvsua.getTrangThai());
+            
+            cbChonQuyen.setSelectedItem(new QuyenBUS().getQuyen(nvsua.getMaQuyen()).getTenQuyen());
+            }
         }
         btnThem.addActionListener(e -> {
             themNV();
@@ -125,7 +138,7 @@ public class ThemSuaNhanVien extends JFrame {
             this.dispose();
             
         });
-        btnHuy.setBounds(250, 370, 100, 30);
+        btnHuy.setBounds(250, 400, 100, 30);
         add(btnHuy);
         btnHuy.addActionListener((e) -> {
             this.dispose();
@@ -307,28 +320,42 @@ public class ThemSuaNhanVien extends JFrame {
     }
 
     private void themNV() {
-        NhanVienDTO nv = new NhanVienDTO(txManv.getText(), txHonv.getText(), txTennv.getText(), new Date(2000, 04, 29), txSDT.getText(), cbChonGT.getSelectedItem().toString(), "zero", 0, 1);
+        NhanVienDTO nv = new NhanVienDTO(txManv.getText(), txHonv.getText(), txTennv.getText(), new Date(0), txSDT.getText(), cbChonGT.getSelectedItem().toString(), "zero", 0, 1);
         nv.setMaNhanVien(txManv.getText());
         nv.setHoNhanVien(txHonv.getText());
         nv.setTenNhanVien(txTennv.getText());
-        nv.setNgaySinh(new Date(0));
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+  //convert String to LocalDate
+        LocalDate localDate = LocalDate.parse(txNgaysinh.getText(), formatter);
+        nv.setNgaySinh(java.sql.Date.valueOf(localDate));
         nv.setSdt(txSDT.getText());
         nv.setGioiTinh(cbChonGT.getSelectedItem().toString());
         nv.setTrangThai(cbChonTrangThai.getSelectedIndex());
         new NhanVienDAO().insertNhanVien(nv);
         new TaiKhoanDAO().insertTaiKhoan(new TaiKhoanDTO(nv.getMaNhanVien(), "123456"));
-        this.dispose();
+        //this.dispose();
     }
 
     private void suaNV() {
        // NhanVienDTO nv  = qlNhanVien.getNV()
-       nvsua.setMaNhanVien(txManv.getText());
+        nvsua.setMaNhanVien(txManv.getText());
         nvsua.setHoNhanVien(txHonv.getText());
         nvsua.setTenNhanVien(txTennv.getText());
-        nvsua.setNgaySinh(new Date(0));
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+  //convert String to LocalDate
+        nvsua.setMaQuyen(listQ.get(cbChonQuyen.getSelectedIndex()).getMaQuyen());
+        System.out.println(nvsua.getMaQuyen()+"   "+nvsua.getQuyen());
+        LocalDate localDate = LocalDate.parse(txNgaysinh.getText(), formatter);
+        nvsua.setNgaySinh(java.sql.Date.valueOf(localDate));
         nvsua.setSdt(txSDT.getText());
         nvsua.setGioiTinh(cbChonGT.getSelectedItem().toString());
         nvsua.setTrangThai(cbChonTrangThai.getSelectedIndex());
-       new NhanVienDAO().updateNhanVien(nvsua);
+        int reply = JOptionPane.showConfirmDialog(rootPane,"Bạn có chắc muốn sửa nhân viên");
+        if(reply==JOptionPane.YES_OPTION){
+            new NhanVienDAO().updateNhanVien(nvsua);
+            JOptionPane.showMessageDialog(rootPane, "Sửa thành công");
+        }else{
+            JOptionPane.showMessageDialog(rootPane, "Sửa không thành công");
+        }
     }
 }

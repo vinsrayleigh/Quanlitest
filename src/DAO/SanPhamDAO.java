@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 public class SanPhamDAO {
     
-    public static boolean insertSanPham(sanPhamDTO sp){
+    public static boolean insertSanPham(SanPhamDTO sp){
         boolean result = false;
         try{
             Connection conn = MySQLConnUtils.getMySQLConnection();
@@ -32,15 +32,15 @@ public class SanPhamDAO {
         }
         return result;
     }
-    public static ArrayList<sanPhamDTO> getSanPham(){
-        ArrayList<sanPhamDTO> list = new ArrayList<>();
+    public static ArrayList<SanPhamDTO> getSanPham(){
+        ArrayList<SanPhamDTO> list = new ArrayList<>();
         try{
             Connection conn = MySQLConnUtils.getMySQLConnection();
             Statement st = conn.createStatement();
             String Sql ="SELECT * FROM tblsanpham";
             ResultSet rs = st.executeQuery(Sql);
             while(rs.next()){
-                sanPhamDTO sp = new sanPhamDTO(rs.getString(1), rs.getString(2), rs.getDouble(3), rs.getInt(4), rs.getDate(5), rs.getString(6), rs.getString(7), rs.getString(8),rs.getString(9));
+                SanPhamDTO sp = new SanPhamDTO(rs.getString(1), rs.getString(2), rs.getDouble(3), rs.getInt(4), rs.getDate(5), rs.getString(6), rs.getString(7), rs.getString(8),rs.getString(9));
                 list.add(sp);
             }
             conn.close();
@@ -49,7 +49,7 @@ public class SanPhamDAO {
         }
         return list;
     }
-    public static boolean updateSanPham(sanPhamDTO sp){
+    public static boolean updateSanPham(SanPhamDTO sp){
         boolean result= false;
         try {
             Connection conn = MySQLConnUtils.getMySQLConnection();
@@ -74,7 +74,7 @@ public class SanPhamDAO {
         
     }
     
-    public static boolean DeleteSanPham(sanPhamDTO sp){
+    public static boolean DeleteSanPham(SanPhamDTO sp){
         boolean result= false;
         try {
             Connection conn = MySQLConnUtils.getMySQLConnection();

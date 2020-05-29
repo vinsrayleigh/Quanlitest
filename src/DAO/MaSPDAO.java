@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 public class MaSPDAO {
     
-    public static boolean insertMaSP(MaSPDTO sp){
+    public static boolean insertMaSP(LoaiSPDTO sp){
         boolean result = false;
         try{
             Connection conn = MySQLConnUtils.getMySQLConnection();
@@ -25,15 +25,15 @@ public class MaSPDAO {
         }
         return result;
     }
-    public static ArrayList<MaSPDTO> getMaSP(){
-        ArrayList<MaSPDTO> list = new ArrayList<>();
+    public static ArrayList<LoaiSPDTO> getMaSP(){
+        ArrayList<LoaiSPDTO> list = new ArrayList<>();
         try{
             Connection conn = MySQLConnUtils.getMySQLConnection();
             Statement st = conn.createStatement();
             String Sql ="SELECT * FROM tblloaisanpham";
             ResultSet rs = st.executeQuery(Sql);
             while(rs.next()){
-                MaSPDTO sp = new MaSPDTO(rs.getString(1), rs.getString(2));
+                LoaiSPDTO sp = new LoaiSPDTO(rs.getString(1), rs.getString(2));
                 list.add(sp);
             }
             conn.close();
@@ -42,7 +42,7 @@ public class MaSPDAO {
         }
         return list;
     }
-    public static boolean updateMaSP(MaSPDTO sp){
+    public static boolean updateMaSP(LoaiSPDTO sp){
         boolean result= false;
         try {
             Connection conn = MySQLConnUtils.getMySQLConnection();
@@ -60,7 +60,7 @@ public class MaSPDAO {
         
     }
     
-    public static boolean DeleteMaSP(MaSPDTO sp){
+    public static boolean DeleteMaSP(LoaiSPDTO sp){
         boolean result= false;
         try {
             Connection conn = MySQLConnUtils.getMySQLConnection();

@@ -22,7 +22,7 @@ public class NhanVienDAO {
                     +"'"+sp.getNgaySinh()+"', "
                     +"'"+sp.getGioiTinh()+"', "
                     +"'"+sp.getSdt()+"',"
-                    +"'"+sp.getQuyen()+"', "
+                    +"'"+sp.getMaQuyen()+"', "
                     +"'"+sp.getLuong()+"', "
                     +"'"+sp.getTrangThai()+"')";
             int row = st.executeUpdate(Sql);
@@ -62,7 +62,7 @@ public class NhanVienDAO {
                     +" ngaysinh = '"+sp.getNgaySinh()+"',"
                     +" gioitinh = '"+sp.getGioiTinh()+"',"
                     +" sdt = '"+sp.getSdt()+"',"
-                    +" maquyen = '"+sp.getQuyen()+"',"
+                    +" maquyen = '"+sp.getMaQuyen()+"',"
                     +" luong = '"+sp.getLuong()+"',"
                     +" trangthai = '"+sp.getTrangThai()+"'"
                     +"WHERE manhanvien = '"+sp.getMaNhanVien()+"' ;";

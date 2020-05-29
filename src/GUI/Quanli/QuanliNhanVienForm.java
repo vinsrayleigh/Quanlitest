@@ -5,10 +5,13 @@
  */
 package GUI.Quanli;
 
+import GUI.HienThi.HienThiNhanVien;
 import BUS.NhanVienBUS;
+import DAO.NhanVienDAO;
 import DTO.NhanVienDTO;
 import GUI.Button.*;
 import GUI.*;
+import GUI.Excel.XuatExcel;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -31,7 +34,7 @@ public class QuanliNhanVienForm extends JPanel {
     ThemButton btnThem = new ThemButton();
     SuaButton btnSua = new SuaButton();
     XoaButton btnXoa = new XoaButton();
-    NhanVienDTO nvSua = new NhanVienDTO();
+    //NhanVienDTO nvSua = new NhanVienDTO();
     ExportExcelButton btnXuatExcel = new ExportExcelButton();
     ImportExcelButton btnNhapExcel = new ImportExcelButton();
 
@@ -39,11 +42,13 @@ public class QuanliNhanVienForm extends JPanel {
      setLayout(new BorderLayout());
 
         // buttons
-        if (false) {
+        if (!DangNhap.quyenLogin.getChitiet().contains("qlNhanVien")) {
             btnThem.setEnabled(false);
             btnXoa.setEnabled(false);
             btnSua.setEnabled(false);
             btnNhapExcel.setEnabled(false);
+            btnXuatExcel.setEnabled(false);
+            formHienThi.getTable().getTable().setEnabled(false);
         }
 
         JPanel plBtn = new JPanel();
@@ -60,13 +65,13 @@ public class QuanliNhanVienForm extends JPanel {
             btnThemMouseClicked();
         });
         btnXoa.addActionListener((ActionEvent ae) -> {
-           // btnXoaMouseClicked();
+            btnXoaMouseClicked();
         });
         btnSua.addActionListener((ActionEvent ae) -> {
             btnSuaMouseClicked();
         });
         btnXuatExcel.addActionListener((ActionEvent ae) -> {
-            //new XuatExcel().xuatFileExcelNhanVien();
+            new XuatExcel().xuatFileExcelNhanVien();
         });
         btnNhapExcel.addActionListener((ActionEvent ae) -> {
             //new DocExcel().docFileExcelNhanVien();
@@ -85,7 +90,28 @@ public class QuanliNhanVienForm extends JPanel {
     }
 
     private void btnXoaMouseClicked() {
-       
+      
+        NhanVienDTO nv = new NhanVienBUS().getNV(formHienThi.getSelectedRow(1));
+        if(nv.getTrangThai()==1){
+            int reply = JOptionPane.showConfirmDialog(formHienThi, "Bạn có muốn ẩn nhân viên?????????");
+            if(reply==JOptionPane.YES_OPTION){
+                nv.setTrangThai(0);
+                NhanVienDAO.updateNhanVien(nv);
+                JOptionPane.showMessageDialog(formHienThi, "Ẩn nhân viên thành công");
+                formHienThi.refresh();
+            }else{
+                JOptionPane.showMessageDialog(formHienThi, "Ẩn nhân viên không thành công");
+            }
+        }else{
+            int reply = JOptionPane.showConfirmDialog(formHienThi, "Bạn có muốn xóa nhân viên?????????");
+            if(reply==JOptionPane.YES_OPTION){
+                NhanVienDAO.DeleteNhanVien(nv);
+                JOptionPane.showMessageDialog(formHienThi, "xóa nhân viên thành công");
+                formHienThi.refresh();
+            }else{
+                JOptionPane.showMessageDialog(formHienThi, "xóa nhân viên không thành công");
+            }
+        }
     }
 
     private void btnSuaMouseClicked() {

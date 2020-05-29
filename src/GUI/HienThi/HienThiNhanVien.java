@@ -3,9 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package GUI.Quanli;
+package GUI.HienThi;
 
 import BUS.NhanVienBUS;
+import BUS.QuyenBUS;
+import BUS.Tool;
+import DAO.NhanVienDAO;
 import DTO.NhanVienDTO;
 import GUI.Button.DateButton;
 import GUI.MyTable;
@@ -23,6 +26,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
@@ -37,7 +41,7 @@ public class HienThiNhanVien extends FormHienThi{
     JTextField txTim = new JTextField(15);
     JComboBox<String> cbTypeSearch;
     JButton btnRefresh = new JButton("Làm mới");
-
+    NhanVienDTO nvSua = new NhanVienDTO();
     JTextField txKhoangNgay1 = new JTextField(8);
     JTextField txKhoangNgay2 = new JTextField(8);
     DatePicker dPicker1;
@@ -59,12 +63,12 @@ public class HienThiNhanVien extends FormHienThi{
 
         mtb = new MyTable();
         mtb.setPreferredSize(new Dimension(1200 - 250, 600));
-        mtb.setHeaders(new String[]{"STT", "Mã nhân viên","Họ nhân viên", "Tên nhân viên", "Ngày sinh", "Giới tính", "Số điện thoại", "Lương","Trạng thái"});
-        mtb.setColumnsWidth(new double[]{.5, 1.5, 2.5, 1.3, 3, 1.5, 1,1,1});
+        mtb.setHeaders(new String[]{"STT", "Mã nhân viên","Họ nhân viên", "Tên nhân viên", "Ngày sinh", "Giới tính", "Số điện thoại","Quyền", "Lương","Trạng thái"});
+        mtb.setColumnsWidth(new double[]{.5, 1.5, 2.5, 1.3, 3, 1.5, 1,1,1,1});
         mtb.setAlignment(0, JLabel.CENTER);
         mtb.setupSort();
         setDataToTable(qlNhanVien.getDsnv(), mtb);
-        cbTypeSearch = new JComboBox<>(new String[]{"Tất cả", "Mã nhân viên","Họ nhân viên", "Tên nhân viên", "Ngày sinh", "Giới tính", "Số điện thoại","Lương", "Trạng thái"});
+        cbTypeSearch = new JComboBox<>(new String[]{"Tất cả", "Mã nhân viên","Họ nhân viên", "Tên nhân viên", "Ngày sinh", "Giới tính", "Số điện thoại","Quyền","Lương", "Trạng thái"});
 
         JPanel plHeader = new JPanel();
         JPanel plTim = new JPanel();
@@ -113,6 +117,39 @@ public class HienThiNhanVien extends FormHienThi{
         //=========== add all to this jpanel ===========
         this.add(plHeader, BorderLayout.NORTH);
         this.add(mtb, BorderLayout.CENTER);
+        //lay nv khi select;
+        mtb.getTable().getSelectionModel().addListSelectionListener((e) -> {
+            String manv = this.getSelectedRow(1);
+            nvSua = qlNhanVien.getNV(manv);
+        });
+        //thay đổi cell's data;
+        mtb.getModel().addTableModelListener((e) -> {
+            //System.out.println(this.getSelectedRow(1));
+            try {
+                Tool.getDate(this.getSelectedRow(4));
+            } catch (Exception ex) {
+                try {
+                    this.getTable().getTable().getModel().setValueAt(nvSua.getNgaySinh().toString(), Integer.valueOf(this.getSelectedRow(0))-1, 4);
+                } catch (Exception ex1) {
+                }
+                return;
+            }
+            try{
+            NhanVienDTO nv = new NhanVienDTO(this.getSelectedRow(1), this.getSelectedRow(3), this.getSelectedRow(2), Tool.getDate(this.getSelectedRow(4)), this.getSelectedRow(5), this.getSelectedRow(6), new QuyenBUS().getQuyenfromTen(this.getSelectedRow(7)).getMaQuyen(),Tool.getDouble(this.getSelectedRow(8)),this.getSelectedRow(9).equals("Hiện")?1:0);
+            System.out.println("nv1:"  +nvSua.getMaQuyen()+","+nv.getMaQuyen());
+            if(!NhanVienBUS.equals(nvSua, nv)){
+                int reply = JOptionPane.showConfirmDialog(this, "Bạn có muốn sửa nhân viên");
+                if(reply==JOptionPane.YES_OPTION){
+                    JOptionPane.showMessageDialog(this,"Sửa thành công");
+                    NhanVienDAO.updateNhanVien(nv);
+                    this.refresh();
+                }else{
+                    JOptionPane.showMessageDialog(this,"Sửa không thành công");
+                }     
+            }}catch(Exception ex){
+                ex.printStackTrace();
+            }
+        });
         
     }
     private void setDataToTable(ArrayList<NhanVienDTO> data, MyTable table) {
@@ -129,7 +166,9 @@ public class HienThiNhanVien extends FormHienThi{
                     nv.getNgaySinh().toString(),
                     nv.getGioiTinh(),
                     nv.getSdt(),
+                    nv.getQuyen(),
                     nv.getLuong()+"",
+                    nv.getTrangThai()==0?"Ẩn":"Hiện",
                 });
                 stt++;
             }
