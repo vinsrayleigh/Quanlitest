@@ -5,6 +5,7 @@
  */
 package GUI.Quanli;
 
+import java.awt.BorderLayout;
 import javax.swing.*;
 
 /**
@@ -12,5 +13,10 @@ import javax.swing.*;
  * @author phuon
  */
 public class BanHangForm extends JPanel{
+    ChonSanPham chonsp = new ChonSanPham();
+    public BanHangForm(){
+        setLayout(new BorderLayout());
+        add(chonsp,BorderLayout.WEST);
+    }
     
 }

@@ -1,18 +1,29 @@
 package DTO;
 
 import BUS.LoaiSPBUS;
+import BUS.NhaCungCapBUS;
+import BUS.ThuongHieuBUS;
 import java.sql.Date;
 
 public class SanPhamDTO {
-    private String maSanPham;
-    private String tenSanPham;
-    private double dongia;
+    private String maSanPham="";
+    private String tenSanPham="";
+    private int dongia;
     private int soLuong;
     private Date namSx;
-    private String maNCC;
-    private String maLoaiSP;
-    private String maThuongHieu;
-    private String image;
+    private String maNCC="";
+    private String maLoaiSP="";
+    private String maThuongHieu="";
+    private String image="";
+    private String mota="";
+
+    public String getMota() {
+        return mota;
+    }
+
+    public void setMota(String mota) {
+        this.mota = mota;
+    }
     public String getImage() {
         return image;
     }
@@ -21,7 +32,7 @@ public class SanPhamDTO {
         this.image = image;
     }
 
-    public SanPhamDTO(String maSanPham, String tenSanPham, double dongia, int soLuong, Date namSx, String maNCC, String maLoaiSP, String maThuongHieu, String image) {
+    public SanPhamDTO(String maSanPham, String tenSanPham, int dongia, int soLuong, Date namSx, String maNCC, String maLoaiSP, String maThuongHieu, String image) {
         this.maSanPham = maSanPham;
         this.tenSanPham = tenSanPham;
         this.dongia = dongia;
@@ -50,11 +61,11 @@ public class SanPhamDTO {
         this.tenSanPham = tenSanPham;
     }
 
-    public double getDongia() {
+    public int getDongia() {
         return dongia;
     }
 
-    public void setDongia(double dongia) {
+    public void setDongia(int dongia) {
         this.dongia = dongia;
     }
 
@@ -99,5 +110,11 @@ public class SanPhamDTO {
     }
     public String getTenLoaiSP(){
         return new LoaiSPBUS().getLoaiSPDTO(this.getMaLoaiSP()).getTenLoaiSP();
+    }
+    public String getTenNCC(){
+        return new NhaCungCapBUS().getNCC(maNCC).getTenNCC();
+    }
+    public String getTenThuongHieu(){
+        return new ThuongHieuBUS().getTH(maThuongHieu).getTenThuongHieu();
     }
 }

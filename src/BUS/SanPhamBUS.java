@@ -21,6 +21,7 @@ public class SanPhamBUS {
     public SanPhamDTO getSanPham(String masp){
         for(SanPhamDTO sp: list){
             if(sp.getMaSanPham().equals(masp)){
+                System.out.println("found");
                 return sp;
             }
         }

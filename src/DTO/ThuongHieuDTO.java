@@ -9,18 +9,18 @@ package DTO;
  *
  * @author phuon
  */
-public class thuongHieuDTO {
+public class ThuongHieuDTO {
     private String maThuongHieu;
     private String tenThuongHieu;
     private String moTa;
 
-    public thuongHieuDTO(String maThuongHieu, String tenThuongHieu, String moTa) {
+    public ThuongHieuDTO(String maThuongHieu, String tenThuongHieu, String moTa) {
         this.maThuongHieu = maThuongHieu;
         this.tenThuongHieu = tenThuongHieu;
         this.moTa = moTa;
     }
 
-    public thuongHieuDTO() {
+    public ThuongHieuDTO() {
     }
 
     public String getMaThuongHieu() {

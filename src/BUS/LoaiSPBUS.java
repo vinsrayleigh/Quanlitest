@@ -25,6 +25,7 @@ public class LoaiSPBUS {
         return new LoaiSPBUS().getLoaiSPDTO(masp);
     }
     public LoaiSPDTO getLoaiSPDTO(String malsp){
+        System.out.println(malsp);
         for(LoaiSPDTO lsp:list){
             if(lsp.getMaLoaiSP().equals(malsp)){
                 return lsp;

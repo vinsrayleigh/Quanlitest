@@ -5,10 +5,16 @@
  */
 package BUS;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 
 /**
  *
@@ -54,6 +60,28 @@ public class Tool {
         String ngay ="2000/04/23";
     //    System.out.println(Tool.getDate(ngay).toLocalDate().toString());
         
+    }
+    public static void setPicture(JLabel label, String filename) {
+        try {
+            BufferedImage image = ImageIO.read(new File("src/Image/"+filename));
+            int x = label.getSize().width;
+            int y = label.getSize().height;
+            int ix = image.getWidth();
+            int iy = image.getHeight();
+            int dx = 0;
+            int dy = 0; 
+            if (x / y > ix / iy) {
+                dy = y;
+                dx = dy * ix / iy;
+            } else {
+                dx = x;
+                dy = dx * iy / ix;
+            }
+            ImageIcon icon = new ImageIcon(image.getScaledInstance(dx, dy, BufferedImage.SCALE_SMOOTH));
+            label.setIcon(icon);
+        } catch (IOException ex) {
+        }
+
     }
 }
 

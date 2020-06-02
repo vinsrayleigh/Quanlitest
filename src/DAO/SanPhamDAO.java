@@ -14,12 +14,13 @@ public class SanPhamDAO {
         try{
             Connection conn = MySQLConnUtils.getMySQLConnection();
             Statement st = conn.createStatement();
-            String Sql = "INSERT into tblsanpham (masanpham,tennsanpham,dongia,soluong,namsx,mancc,maloaisp,mathuonghieu,image)"
+            String Sql = "INSERT into tblsanpham (masanpham,tennsanpham,dongia,soluong,namsx,mota,mancc,maloaisp,mathuonghieu,image)"
                     +"VALUES ('"+sp.getMaSanPham()+"',"
                     +"'"+sp.getTenSanPham()+"',"
                     +"'"+sp.getDongia()+"',"
                     +"'"+sp.getSoLuong()+"',"
                     +"'"+sp.getNamSx()+"',"
+                    +"'"+sp.getMota()+"',"
                     +"'"+sp.getMaNCC()+"',"
                     +"'"+sp.getMaLoaiSP()+"',"
                     +"'"+sp.getMaThuongHieu()+"',"
@@ -40,12 +41,14 @@ public class SanPhamDAO {
             String Sql ="SELECT * FROM tblsanpham";
             ResultSet rs = st.executeQuery(Sql);
             while(rs.next()){
-                SanPhamDTO sp = new SanPhamDTO(rs.getString(1), rs.getString(2), rs.getDouble(3), rs.getInt(4), rs.getDate(5), rs.getString(6), rs.getString(7), rs.getString(8),rs.getString(9));
+                //System.out.println(rs.getString(8));
+                SanPhamDTO sp = new SanPhamDTO(rs.getString(1), rs.getString(2), rs.getInt(3), rs.getInt(4), rs.getDate(5), rs.getString(7), rs.getString(8), rs.getString(9),rs.getString(10));
+                sp.setMota(rs.getString(6));
                 list.add(sp);
             }
             conn.close();
         }catch(Exception e){
-            
+            e.printStackTrace();
         }
         return list;
     }
@@ -59,6 +62,7 @@ public class SanPhamDAO {
                     +" dongia = '"+sp.getDongia()+"',"
                     +" soluong = '"+sp.getSoLuong()+"',"
                     +" namsx = '"+sp.getNamSx()+"',"
+                    +" mota = '"+sp.getMota()+"',"
                     +" mancc = '"+sp.getMaNCC()+"',"
                     +" maloaisp = '"+sp.getMaLoaiSP()+"',"
                     +" mathuonghieu = '"+sp.getMaThuongHieu()+"',"

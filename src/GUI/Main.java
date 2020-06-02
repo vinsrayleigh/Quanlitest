@@ -35,6 +35,7 @@ public class Main extends JFrame implements MouseListener{
     NavBarTitle headerTitle;
     EmptyPage emptypage = new EmptyPage();
     QuanliNhanVienForm nhanvien;
+    BanHangForm banhang;
     //test
     String quyen="qlBanHangqlNhapHangqlNCCqlQuyenqlKhachHangqlSanPhamqlLoaiSanPhamqlHoaDonqlPhieuNhapqlKhuyenMai";
     public Main(){
@@ -43,6 +44,7 @@ public class Main extends JFrame implements MouseListener{
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setUndecorated(true);
         //setResizable(false);
+        //setResizable(true);
         setLocationRelativeTo(null);
         String[] navItemInfo = {
             "seperate", "2", "", "",
@@ -193,12 +195,13 @@ public class Main extends JFrame implements MouseListener{
                 setLocation(getLocation().x + me.getX() - px, getLocation().y + me.getY() - py);
             }
         });
-
+        
         plContent.setLayout(new BorderLayout());
+        JScrollPane workSpace = new JScrollPane(plContent);
         plContent.add(new BeginForm("Chào "), BorderLayout.CENTER);
         add(header,BorderLayout.NORTH);
         add(scrollMenu,BorderLayout.WEST);
-        add(plContent,BorderLayout.CENTER);
+        add(workSpace,BorderLayout.CENTER);
     }
     public static void main(String[] args) {
         new Main().setVisible(true);
@@ -213,6 +216,13 @@ public class Main extends JFrame implements MouseListener{
                 }
                 plContent.setBackground(Color.DARK_GRAY);
                 plContent.add(nhanvien,BorderLayout.CENTER);
+                break;
+             case "Bán hàng":
+                if(banhang==null){
+                    banhang = new BanHangForm();
+                }
+                plContent.setBackground(Color.DARK_GRAY);
+                plContent.add(banhang,BorderLayout.CENTER);
                 break;
             case "Công cụ":
                 emptypage.setLabelText("Công cụ đang bảo trì");

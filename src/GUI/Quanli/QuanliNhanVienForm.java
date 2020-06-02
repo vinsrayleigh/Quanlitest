@@ -30,6 +30,7 @@ import javax.swing.event.TableModelListener;
  * @author phuon
  */
 public class QuanliNhanVienForm extends JPanel {
+
     HienThiNhanVien formHienThi = new HienThiNhanVien();
     ThemButton btnThem = new ThemButton();
     SuaButton btnSua = new SuaButton();
@@ -39,7 +40,7 @@ public class QuanliNhanVienForm extends JPanel {
     ImportExcelButton btnNhapExcel = new ImportExcelButton();
 
     public QuanliNhanVienForm() {
-     setLayout(new BorderLayout());
+        setLayout(new BorderLayout());
 
         // buttons
         if (!DangNhap.quyenLogin.getChitiet().contains("qlNhanVien")) {
@@ -79,8 +80,8 @@ public class QuanliNhanVienForm extends JPanel {
     }
 
     private void btnThemMouseClicked() {
-       ThemSuaNhanVien themnv = new ThemSuaNhanVien("Thêm", "");
-       themnv.setVisible(true);
+        ThemSuaNhanVien themnv = new ThemSuaNhanVien("Thêm", "");
+        themnv.setVisible(true);
         themnv.addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
             public void windowClosed(java.awt.event.WindowEvent windowEvent) {
@@ -90,34 +91,37 @@ public class QuanliNhanVienForm extends JPanel {
     }
 
     private void btnXoaMouseClicked() {
-      
-        NhanVienDTO nv = new NhanVienBUS().getNV(formHienThi.getSelectedRow(1));
-        if(nv.getTrangThai()==1){
-            int reply = JOptionPane.showConfirmDialog(formHienThi, "Bạn có muốn ẩn nhân viên?????????");
-            if(reply==JOptionPane.YES_OPTION){
-                nv.setTrangThai(0);
-                NhanVienDAO.updateNhanVien(nv);
-                JOptionPane.showMessageDialog(formHienThi, "Ẩn nhân viên thành công");
-                formHienThi.refresh();
-            }else{
-                JOptionPane.showMessageDialog(formHienThi, "Ẩn nhân viên không thành công");
+        if (formHienThi.getTable().getTable().getSelectedRow()>=0) {
+            NhanVienDTO nv = new NhanVienBUS().getNV(formHienThi.getSelectedRow(1));
+            if (nv.getTrangThai() == 1) {
+                int reply = JOptionPane.showConfirmDialog(formHienThi, "Bạn có muốn ẩn nhân viên?????????");
+                if (reply == JOptionPane.YES_OPTION) {
+                    nv.setTrangThai(0);
+                    NhanVienDAO.updateNhanVien(nv);
+                    JOptionPane.showMessageDialog(formHienThi, "Ẩn nhân viên thành công");
+                    formHienThi.refresh();
+                } else {
+                    JOptionPane.showMessageDialog(formHienThi, "Ẩn nhân viên không thành công");
+                }
+            } else {
+                int reply = JOptionPane.showConfirmDialog(formHienThi, "Bạn có muốn xóa nhân viên?????????");
+                if (reply == JOptionPane.YES_OPTION) {
+                    NhanVienDAO.DeleteNhanVien(nv);
+                    JOptionPane.showMessageDialog(formHienThi, "xóa nhân viên thành công");
+                    formHienThi.refresh();
+                } else {
+                    JOptionPane.showMessageDialog(formHienThi, "xóa nhân viên không thành công");
+                }
             }
         }else{
-            int reply = JOptionPane.showConfirmDialog(formHienThi, "Bạn có muốn xóa nhân viên?????????");
-            if(reply==JOptionPane.YES_OPTION){
-                NhanVienDAO.DeleteNhanVien(nv);
-                JOptionPane.showMessageDialog(formHienThi, "xóa nhân viên thành công");
-                formHienThi.refresh();
-            }else{
-                JOptionPane.showMessageDialog(formHienThi, "xóa nhân viên không thành công");
-            }
+            JOptionPane.showMessageDialog(formHienThi,"Bạn phải chọn 1 nhân viên để có thể xóa");
         }
     }
 
     private void btnSuaMouseClicked() {
-        ThemSuaNhanVien themnv = new ThemSuaNhanVien("Sửa",formHienThi.getSelectedRow(1));
+        ThemSuaNhanVien themnv = new ThemSuaNhanVien("Sửa", formHienThi.getSelectedRow(1));
         System.out.println(formHienThi.getSelectedRow(1));
-       themnv.setVisible(true);
+        themnv.setVisible(true);
         themnv.addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
             public void windowClosed(java.awt.event.WindowEvent windowEvent) {

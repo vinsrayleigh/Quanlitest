@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 public class ThuongHieuDAO {
     
-    public static boolean insertThuongHieu(thuongHieuDTO sp){
+    public static boolean insertThuongHieu(ThuongHieuDTO sp){
         boolean result = false;
         try{
             Connection conn = MySQLConnUtils.getMySQLConnection();
@@ -26,15 +26,15 @@ public class ThuongHieuDAO {
         }
         return result;
     }
-    public static ArrayList<thuongHieuDTO> getThuongHieu(){
-        ArrayList<thuongHieuDTO> list = new ArrayList<>();
+    public static ArrayList<ThuongHieuDTO> getThuongHieu(){
+        ArrayList<ThuongHieuDTO> list = new ArrayList<>();
         try{
             Connection conn = MySQLConnUtils.getMySQLConnection();
             Statement st = conn.createStatement();
             String Sql ="SELECT * FROM tblthuonghieu";
             ResultSet rs = st.executeQuery(Sql);
             while(rs.next()){
-                thuongHieuDTO sp = new thuongHieuDTO(rs.getString(1), rs.getString(2), rs.getString(3));
+                ThuongHieuDTO sp = new ThuongHieuDTO(rs.getString(1), rs.getString(2), rs.getString(3));
                 list.add(sp);
             }
             conn.close();
@@ -43,7 +43,7 @@ public class ThuongHieuDAO {
         }
         return list;
     }
-    public static boolean updateThuongHieu(thuongHieuDTO sp){
+    public static boolean updateThuongHieu(ThuongHieuDTO sp){
         boolean result= false;
         try {
             Connection conn = MySQLConnUtils.getMySQLConnection();
@@ -62,7 +62,7 @@ public class ThuongHieuDAO {
         
     }
     
-    public static boolean DeleteThuongHieu(thuongHieuDTO sp){
+    public static boolean DeleteThuongHieu(ThuongHieuDTO sp){
         boolean result= false;
         try {
             Connection conn = MySQLConnUtils.getMySQLConnection();
