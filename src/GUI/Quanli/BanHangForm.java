@@ -14,9 +14,12 @@ import javax.swing.*;
  */
 public class BanHangForm extends JPanel{
     ChonSanPham chonsp = new ChonSanPham();
+    HoaDon hoadon  = new HoaDon();
     public BanHangForm(){
         setLayout(new BorderLayout());
+        chonsp.setTaget(hoadon);
         add(chonsp,BorderLayout.WEST);
+        add(hoadon,BorderLayout.EAST);
     }
     
 }

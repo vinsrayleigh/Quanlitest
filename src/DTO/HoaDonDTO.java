@@ -15,7 +15,7 @@ public class HoaDonDTO {
     private String maHoaDon;
     private String maNhanVien;
     private String maKhachHang;
-    private double tongTien;
+    private int tongTien;
     private Date ngayLap;
     private String maKM;
     private double giamGia;
@@ -23,7 +23,7 @@ public class HoaDonDTO {
     public HoaDonDTO() {
     }
 
-    public HoaDonDTO(String maHoaDon, String maNhanVien, String maKhachHang, double tongTien, Date ngayLap, String maKM, double giamGia) {
+    public HoaDonDTO(String maHoaDon, String maNhanVien, String maKhachHang, int tongTien, Date ngayLap, String maKM, double giamGia) {
         this.maHoaDon = maHoaDon;
         this.maNhanVien = maNhanVien;
         this.maKhachHang = maKhachHang;
@@ -57,11 +57,11 @@ public class HoaDonDTO {
         this.maKhachHang = maKhachHang;
     }
 
-    public double getTongTien() {
+    public int getTongTien() {
         return tongTien;
     }
 
-    public void setTongTien(double tongTien) {
+    public void setTongTien(int tongTien) {
         this.tongTien = tongTien;
     }
 

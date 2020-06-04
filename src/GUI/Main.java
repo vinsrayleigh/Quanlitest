@@ -27,7 +27,7 @@ import javax.swing.border.Border;
  * @author phuon
  */
 public class Main extends JFrame implements MouseListener{
-    final int WIDTH=1920,HEIGHT=1080;
+    final int WIDTH=1920,HEIGHT=1000;
     int px, py;
     NavBarContainer menu, header;
     NavBarButton currentTab;

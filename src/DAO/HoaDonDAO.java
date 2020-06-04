@@ -37,7 +37,7 @@ public class HoaDonDAO {
             String Sql ="SELECT * FROM tblhoadon";
             ResultSet rs = st.executeQuery(Sql);
             while(rs.next()){
-                HoaDonDTO sp = new HoaDonDTO(rs.getString(1), rs.getString(2), rs.getString(3), rs.getDouble(4), rs.getDate(5), rs.getString(6), rs.getDouble(7));
+                HoaDonDTO sp = new HoaDonDTO(rs.getString(1), rs.getString(2), rs.getString(3), rs.getInt(4), rs.getDate(5), rs.getString(6), rs.getDouble(7));
                 list.add(sp);
             }
             conn.close();
