@@ -6,17 +6,24 @@
 package GUI.Quanli;
 
 import BUS.HoaDonBUS;
+import BUS.KhuyenMaiBUS;
 import BUS.SanPhamBUS;
+import BUS.Tool;
+import DAO.CTHoaDonDAO;
+import DAO.HoaDonDAO;
+import DAO.SanPhamDAO;
 import DTO.*;
 import GUI.Button.*;
 import GUI.DangNhap;
 import GUI.HienThi.ChonKhachHangForm;
+import GUI.HienThi.ChonKhuyenMai;
 import GUI.MyTable;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.event.WindowAdapter;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -41,6 +48,7 @@ public class HoaDon extends JPanel {
     public static KhachHangDTO kh;
     public static NhanVienDTO nv;
     public static int TongTien;
+    public static int Giamgia;
     ArrayList<SanPhamDTO> listSP = new ArrayList<>();
     JTextField txmaHD;
     JTextField txTongTien;
@@ -57,7 +65,9 @@ public class HoaDon extends JPanel {
     JButton ThanhToan = new JButton("Thanh toán");
     JButton btnTimKhach = new JButton("...");
     JButton btnKhuyenMai = new JButton("...");
+
     public HoaDon() {
+        Giamgia = 0;
         tbctHD.setHeaders(new String[]{"STT", "Mã", "Tên", "Số Lượng", "Đơn giá", "Thành Tiền"});
         setBorder(new EtchedBorder(3));
         setPreferredSize(new Dimension(950, 0));
@@ -78,10 +88,52 @@ public class HoaDon extends JPanel {
         btnTimKhach.addActionListener((e) -> {
             timKhach();
         });
+        btnKhuyenMai.addActionListener((e) -> {
+            timKhuyenMai();
+        });
+        ThanhToan.addActionListener((e) -> {
+            int reply = JOptionPane.showConfirmDialog(this, "Xác nhận thanh toán");
+            if (reply == JOptionPane.YES_OPTION) {
+                DoThanhToan();
+                JOptionPane.showMessageDialog(this, "Thanh toán thành công\n Tổng thanh toán là: "+txTongTien.getText()+"đ");
+                txTongTien.setText("0");
+            } else {
+                JOptionPane.showMessageDialog(this, "Hủy thanh toán");
+            }
+        });
     }
-    public void timKhach(){
+
+    public void timKhuyenMai() {
+        ChonKhuyenMai chonkm = new ChonKhuyenMai(txKm);
+        chonkm.setVisible(true);
+        chonkm.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosed(java.awt.event.WindowEvent windowEvent) {
+                String maKM = txKm.getText();
+                KhuyenMaiDTO km = new KhuyenMaiBUS().getKM(maKM);
+                boolean check = false;
+                for (SanPhamDTO sp : listSP) {
+                    if (sp.getMaSanPham().equals(km.getMaSanPham())) {
+                        check = true;
+                    }
+                }
+                if (check) {
+                    Giamgia = km.getGiamgia();
+                    txTongTien.setText((TongTien - Giamgia) + "000");
+                } else {
+                    JOptionPane.showMessageDialog(null, "Khuyến mại không phù hợp");
+                    txKm.setText("");
+                }
+            }
+
+        });
+
+    }
+
+    public void timKhach() {
         new ChonKhachHangForm(txKh).setVisible(true);
     }
+
     public void Sua() {
         int row = tbctHD.getTable().getSelectedRow();
         if (row > -1) {
@@ -228,6 +280,7 @@ public class HoaDon extends JPanel {
         } else {
             txTongTien.setText("0");
         }
+        TongTien = Tong;
     }
 
     public JPanel thanhToan() {
@@ -246,5 +299,28 @@ public class HoaDon extends JPanel {
             listSP.remove(row);
             setDatatoTable(listSP);
         }
+    }
+
+    private void DoThanhToan() {
+        SanPhamBUS qlsp = new SanPhamBUS();
+        HoaDonDTO hoadon = new HoaDonDTO(txmaHD.getText(), DangNhap.nhanVienLogin.getMaNhanVien(), txKh.getText(), TongTien, Tool.getDate(txDate.getText()), txKm.getText(), Giamgia);
+        HoaDonDAO.insertHoaDon(hoadon);
+        listSP.forEach((sp) -> {
+            CTHoaDonDTO cthd = new CTHoaDonDTO(txmaHD.getText(), sp.getMaSanPham(), sp.getSoLuong(), sp.getDongia() * sp.getSoLuong(), sp.getDongia());
+            CTHoaDonDAO.insertCTHD(cthd);
+            SanPhamDTO spkho = qlsp.getSanPham(cthd.getMaSanPham());
+            spkho.setSoLuong(spkho.getSoLuong()-sp.getSoLuong());
+            SanPhamDAO.updateSanPham(spkho);
+        });
+        clear();
+    }
+    private void clear(){
+        qlHD.getData();
+        txmaHD.setText(qlHD.getNextMaHD());
+        txKh.setText("");
+        txNv.setText(DangNhap.getTenNV());
+        txKm.setText("");
+        list.clear();
+        listSP.clear();
     }
 }

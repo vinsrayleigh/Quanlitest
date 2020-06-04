@@ -237,7 +237,7 @@ public class ChonSanPham extends JPanel {
     }
 
     private void txSearchOnChange() {
-        setDatatoTable(qlsp.search(txTimKiem.getText().toLowerCase(), "Tất cả", -1, -1, -1, -1, 0));
+        setDatatoTable(qlsp.search(txTimKiem.getText().toLowerCase(), "Tất cả", -1, -1, -1, -1));
     }
 
     public JPanel doHienthiThongtinSanPham() {

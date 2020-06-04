@@ -13,10 +13,10 @@ public class CTHoaDonDTO {
     private String maHoaDon;
     private String maSanPham;
     private int soLuong;
-    private double thanhTien;
-    private double donGia;
+    private int thanhTien;
+    private int donGia;
 
-    public CTHoaDonDTO(String maHoaDon, String maSanPham, int soLuong, double thanhTien, double donGia) {
+    public CTHoaDonDTO(String maHoaDon, String maSanPham, int soLuong, int thanhTien, int donGia) {
         this.maHoaDon = maHoaDon;
         this.maSanPham = maSanPham;
         this.soLuong = soLuong;
@@ -51,19 +51,19 @@ public class CTHoaDonDTO {
         this.soLuong = soLuong;
     }
 
-    public double getThanhTien() {
+    public int getThanhTien() {
         return thanhTien;
     }
 
-    public void setThanhTien(double thanhTien) {
+    public void setThanhTien(int thanhTien) {
         this.thanhTien = thanhTien;
     }
 
-    public double getDonGia() {
+    public int getDonGia() {
         return donGia;
     }
 
-    public void setDonGia(double donGia) {
+    public void setDonGia(int donGia) {
         this.donGia = donGia;
     }
     

@@ -13,7 +13,7 @@ public class HoaDonDAO {
         try{
             Connection conn = MySQLConnUtils.getMySQLConnection();
             Statement st = conn.createStatement();
-            String Sql = "INSERT into tblhoadon (mahoadon,manhanvien,makhachang,tongtien,ngaylap,maKM,giamgia)"
+            String Sql = "INSERT into tblhoadon (mahoadon,manhanvien,makhachhang,tongtien,ngaylap,maKM,giamgia)"
                     +"VALUES ('"+sp.getMaHoaDon()+"',"
                     +"'"+sp.getMaNhanVien()+"',"
                     +"'"+sp.getMaKhachHang()+"',"

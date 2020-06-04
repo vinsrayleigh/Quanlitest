@@ -204,7 +204,7 @@ public class Main extends JFrame implements MouseListener {
 
         plContent.setLayout(new BorderLayout());
         JScrollPane workSpace = new JScrollPane(plContent);
-        plContent.add(new BeginForm("Chào "), BorderLayout.CENTER);
+        plContent.add(new BeginForm("Chào "+DangNhap.getTenNV()), BorderLayout.CENTER);
         add(header, BorderLayout.NORTH);
         add(scrollMenu, BorderLayout.WEST);
         add(workSpace, BorderLayout.CENTER);

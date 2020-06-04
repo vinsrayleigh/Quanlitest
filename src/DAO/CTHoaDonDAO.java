@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 public class CTHoaDonDAO {
     
-    public static boolean insertSanPham(CTHoaDonDTO sp){
+    public static boolean insertCTHD(CTHoaDonDTO sp){
         boolean result = false;
         try{
             Connection conn = MySQLConnUtils.getMySQLConnection();
@@ -36,7 +36,7 @@ public class CTHoaDonDAO {
             String Sql ="SELECT * FROM tblcthoadon";
             ResultSet rs = st.executeQuery(Sql);
             while(rs.next()){
-                CTHoaDonDTO sp = new CTHoaDonDTO(rs.getString(1), rs.getString(2), rs.getInt(3), rs.getDouble(4), rs.getDouble(5));
+                CTHoaDonDTO sp = new CTHoaDonDTO(rs.getString(1), rs.getString(2), rs.getInt(3), rs.getInt(4), rs.getInt(5));
                 list.add(sp);
             }
             conn.close();

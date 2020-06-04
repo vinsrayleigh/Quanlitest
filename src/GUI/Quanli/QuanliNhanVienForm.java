@@ -120,7 +120,6 @@ public class QuanliNhanVienForm extends JPanel {
 
     private void btnSuaMouseClicked() {
         ThemSuaNhanVien themnv = new ThemSuaNhanVien("Sửa", formHienThi.getSelectedRow(1));
-        System.out.println(formHienThi.getSelectedRow(1));
         themnv.setVisible(true);
         themnv.addWindowListener(new java.awt.event.WindowAdapter() {
             @Override

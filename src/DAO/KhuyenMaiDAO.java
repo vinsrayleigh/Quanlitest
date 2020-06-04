@@ -14,9 +14,11 @@ public class KhuyenMaiDAO {
         try{
             Connection conn = MySQLConnUtils.getMySQLConnection();
             Statement st = conn.createStatement();
-            String Sql = "INSERT into tblkhuyenmai (makhuyenmai,tenkhuyenmai,thoigianbatdau,thoigianketthuc,chitiet)"
+            String Sql = "INSERT into tblkhuyenmai (makhuyenmai,tenkhuyenmai,masanpham,giamgia,thoigianbatdau,thoigianketthuc,chitiet)"
                     +"VALUES ('"+sp.getMakhuyenmai()+"',"
                     +"'"+sp.getTenkhuyenmai()+"',"
+                    +"'"+sp.getMaSanPham()+"',"
+                    +"'"+sp.getGiamgia()+"',"
                     +"'"+sp.getNgaybatdau()+"',"
                     +"'"+sp.getNgayketthuc()+"',"
                     +"'"+sp.getChitiet()+"')";
@@ -36,7 +38,7 @@ public class KhuyenMaiDAO {
             String Sql ="SELECT * FROM tblkhuyenmai";
             ResultSet rs = st.executeQuery(Sql);
             while(rs.next()){
-                KhuyenMaiDTO sp = new KhuyenMaiDTO(rs.getString(1), rs.getString(2), rs.getDate(3), rs.getDate(4), rs.getString(5));
+                KhuyenMaiDTO sp = new KhuyenMaiDTO(rs.getString(1), rs.getString(2), rs.getString(3), rs.getInt(4), rs.getDate(5), rs.getDate(6), rs.getString(7));
                 list.add(sp);
             }
             conn.close();
