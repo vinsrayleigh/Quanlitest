@@ -14,7 +14,7 @@ public class KhachHangDAO {
         try{
             Connection conn = MySQLConnUtils.getMySQLConnection();
             Statement st = conn.createStatement();
-            String Sql = "INSERT into tblkhachhang (makhachhang, hokhachhang, tenkhachang, ngaysinh, sodienthoai, loaikhachhang, tichluy)"
+            String Sql = "INSERT into tblkhachhang (makhachhang, hokhachhang, tenkhachhang, ngaysinh, sodienthoai, loaikhachhang, tichluy)"
                     +"VALUES ('"+sp.getMaKhachHang()+"',"
                     +"'"+sp.getHoKhachHang()+"',"
                     +"'"+sp.getTenKhachHang()+"',"

@@ -1,15 +1,11 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package GUI.HienThi;
 
-import BUS.NhanVienBUS;
+import BUS.KhachHangBUS;
 import BUS.QuyenBUS;
 import BUS.Tool;
-import DAO.NhanVienDAO;
-import DTO.NhanVienDTO;
+import DAO.KhachHangDAO;
+import DTO.KhachHangDTO;
 import GUI.Button.DateButton;
 import GUI.MyTable;
 import com.github.lgooddatepicker.components.DatePicker;
@@ -32,21 +28,17 @@ import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-/**
- *
- * @author phuon
- */
-public class HienThiNhanVien extends FormHienThi{
-    NhanVienBUS qlNhanVien = new NhanVienBUS();
+public class HienThiKhachHang extends FormHienThi{
+    KhachHangBUS qlkhachhang = new KhachHangBUS();
     JTextField txTim = new JTextField(15);
     JComboBox<String> cbTypeSearch;
     JButton btnRefresh = new JButton("Làm mới");
-    NhanVienDTO nvSua = new NhanVienDTO();
+    KhachHangDTO nvSua = new KhachHangDTO();
     JTextField txKhoangNgay1 = new JTextField(8);
     JTextField txKhoangNgay2 = new JTextField(8);
     DatePicker dPicker1;
     DatePicker dPicker2;
-    public HienThiNhanVien(){
+    public HienThiKhachHang(){
         setLayout(new BorderLayout());
         //khoang ngay
         DatePickerSettings pickerSettings = new DatePickerSettings();
@@ -60,16 +52,16 @@ public class HienThiNhanVien extends FormHienThi{
         DateButton db2 = new DateButton(dPicker2);
         txKhoangNgay1.setBorder(BorderFactory.createTitledBorder("Từ:"));
         txKhoangNgay2.setBorder(BorderFactory.createTitledBorder("Đến:"));
-        btnRefresh.setIcon(new ImageIcon("src/Image/sync_50px.png"));
+
         mtb = new MyTable();
         mtb.setPreferredSize(new Dimension(1200 - 250, 600));
-        mtb.setHeaders(new String[]{"STT", "Mã nhân viên","Họ nhân viên", "Tên nhân viên", "Ngày sinh", "Giới tính", "Số điện thoại","Quyền", "Lương","Trạng thái"});
-        mtb.setColumnsWidth(new double[]{.5, 1.5, 2.5, 1.3, 3, 1.5, 1,1,1,1});
+        mtb.setHeaders(new String[]{"STT", "Mã Khách Hàng", "Họ Khách Hàng", "Tên Khách Hàng", "Ngày Sinh", "SĐT", "Loại Khách Hàng", "Tích Lũy"});
+        mtb.setColumnsWidth(new double[]{.5, 1.5, 2.5, 1.5, 3, 2.5, 1.5, 1});
         mtb.setAlignment(0, JLabel.CENTER);
         mtb.setupSort();
-        setDataToTable(qlNhanVien.getDsnv(), mtb);
-        cbTypeSearch = new JComboBox<>(new String[]{"Tất cả", "Mã nhân viên","Họ nhân viên", "Tên nhân viên", "Ngày sinh", "Giới tính", "Số điện thoại","Quyền","Lương", "Trạng thái"});
-
+        setDataToTable(qlkhachhang.getDsKH(), mtb);
+        cbTypeSearch = new JComboBox<>(new String[]{"Tất cả", "Mã Khách Hàng", "Họ Khách Hàng", "Tên Khách Hàng", "Ngày Sinh", "SĐT", "Loại Khách Hàng", "Tích Lũy"});
+       
         JPanel plHeader = new JPanel();
         JPanel plTim = new JPanel();
         plTim.setBorder(BorderFactory.createTitledBorder("Tìm kiếm"));
@@ -120,7 +112,7 @@ public class HienThiNhanVien extends FormHienThi{
         //lay nv khi select;
         mtb.getTable().getSelectionModel().addListSelectionListener((e) -> {
             String manv = this.getSelectedRow(1);
-            nvSua = qlNhanVien.getNV(manv);
+            nvSua = qlkhachhang.getKH(manv);
         });
         //thay đổi cell's data;
         mtb.getModel().addTableModelListener((e) -> {
@@ -135,13 +127,13 @@ public class HienThiNhanVien extends FormHienThi{
                 return;
             }
             try{
-            NhanVienDTO nv = new NhanVienDTO(this.getSelectedRow(1), this.getSelectedRow(3), this.getSelectedRow(2), Tool.getDate(this.getSelectedRow(4)), this.getSelectedRow(5), this.getSelectedRow(6), new QuyenBUS().getQuyenfromTen(this.getSelectedRow(7)).getMaQuyen(),Tool.getDouble(this.getSelectedRow(8)),this.getSelectedRow(9).equals("Hiện")?1:0);
-            System.out.println("nv1:"  +nvSua.getMaQuyen()+","+nv.getMaQuyen());
-            if(!NhanVienBUS.equals(nvSua, nv)){
+            KhachHangDTO nv = new KhachHangDTO(this.getSelectedRow(1), this.getSelectedRow(3), this.getSelectedRow(2), Tool.getDate(this.getSelectedRow(4)), this.getSelectedRow(5), this.getSelectedRow(6), Double.parseDouble(this.getSelectedRow(7)));
+            //System.out.println("nv1:"  +nvSua.getMaQuyen()+","+nv.getMaQuyen());
+            if(!KhachHangBUS.equals(nvSua, nv)){
                 int reply = JOptionPane.showConfirmDialog(this, "Bạn có muốn sửa nhân viên");
                 if(reply==JOptionPane.YES_OPTION){
                     JOptionPane.showMessageDialog(this,"Sửa thành công");
-                    NhanVienDAO.updateNhanVien(nv);
+                    KhachHangDAO.updateKhachHang(nv);
                     this.refresh();
                 }else{
                     JOptionPane.showMessageDialog(this,"Sửa không thành công");
@@ -149,31 +141,32 @@ public class HienThiNhanVien extends FormHienThi{
             }}catch(Exception ex){
                 ex.printStackTrace();
             }
+            
         });
         
     }
-    private void setDataToTable(ArrayList<NhanVienDTO> data, MyTable table) {
+    private void setDataToTable(ArrayList<KhachHangDTO> data, MyTable table) {
         table.clear();
         int stt = 1; // lưu số thứ tự dòng hiện tại
-        Boolean hienNhanVienAn = true;
-        for (NhanVienDTO nv : data) {
-            if (hienNhanVienAn || nv.getTrangThai() == 0) {
+        //Boolean hienKhachHangAn = true;
+        Boolean hienKhachHangAn = true;
+        for (KhachHangDTO nv : data) {
+            if (hienKhachHangAn ) {
                 table.addRow(new String[]{
                     String.valueOf(stt),
-                    nv.getMaNhanVien(),
-                    nv.getHoNhanVien(),
-                    nv.getTenNhanVien(),
+                    nv.getMaKhachHang(),
+                    nv.getHoKhachHang(),
+                    nv.getTenKhachHang(),
                     nv.getNgaySinh().toString(),
-                    nv.getGioiTinh(),
                     nv.getSdt(),
-                    nv.getQuyen(),
-                    nv.getLuong()+"",
-                    nv.getTrangThai()==0?"Ẩn":"Hiện",
+                    nv.getLoaiKhachHang(),
+                    String.valueOf(nv.getTichLuy()),
                 });
                 stt++;
             }
 
         }
+        
     }
     private void txSearchOnChange(){
         LocalDate ngay1 = null, ngay2 = null;
@@ -189,11 +182,11 @@ public class HienThiNhanVien extends FormHienThi{
         } catch (DateTimeParseException e) {
             txKhoangNgay2.setForeground(Color.red);
         }
-        setDataToTable(qlNhanVien.search(txTim.getText(), cbTypeSearch.getSelectedItem().toString(), ngay1, ngay2), mtb);
+        setDataToTable(qlkhachhang.search(txTim.getText(), cbTypeSearch.getSelectedItem().toString(), ngay1, ngay2), mtb);
     }
     public void refresh() {
-        qlNhanVien.getData();
-        setDataToTable(qlNhanVien.getDsnv(), mtb);
+        qlkhachhang.getData();
+        setDataToTable(qlkhachhang.getDsKH(), mtb);
         txTim.setText("");
         txKhoangNgay1.setText("");
         txKhoangNgay2.setText("");
@@ -216,4 +209,4 @@ public class HienThiNhanVien extends FormHienThi{
             }
         });
     }
-}
+}   

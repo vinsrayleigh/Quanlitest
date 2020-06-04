@@ -4,6 +4,8 @@
  * and open the template in the editor.
  */
 package GUI;
+
+import GUI.HienThi.QuanLiKhachHangForm;
 import GUI.NavBar.*;
 import GUI.Quanli.*;
 import java.awt.BorderLayout;
@@ -26,8 +28,9 @@ import javax.swing.border.Border;
  *
  * @author phuon
  */
-public class Main extends JFrame implements MouseListener{
-    final int WIDTH=1920,HEIGHT=1000;
+public class Main extends JFrame implements MouseListener {
+
+    final int WIDTH = 1920, HEIGHT = 1000;
     int px, py;
     NavBarContainer menu, header;
     NavBarButton currentTab;
@@ -36,9 +39,12 @@ public class Main extends JFrame implements MouseListener{
     EmptyPage emptypage = new EmptyPage();
     QuanliNhanVienForm nhanvien;
     BanHangForm banhang;
+    QuanLiKhachHangForm khachhang;
+    QuanLiSanPhamForm sanpham;
     //test
-    String quyen="qlBanHangqlNhapHangqlNCCqlQuyenqlKhachHangqlSanPhamqlLoaiSanPhamqlHoaDonqlPhieuNhapqlKhuyenMai";
-    public Main(){
+    String quyen = "qlBanHangqlNhapHangqlNCCqlQuyenqlKhachHangqlSanPhamqlLoaiSanPhamqlHoaDonqlPhieuNhapqlKhuyenMai";
+
+    public Main() {
         setLayout(new BorderLayout());
         setSize(WIDTH, HEIGHT);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -195,34 +201,50 @@ public class Main extends JFrame implements MouseListener{
                 setLocation(getLocation().x + me.getX() - px, getLocation().y + me.getY() - py);
             }
         });
-        
+
         plContent.setLayout(new BorderLayout());
         JScrollPane workSpace = new JScrollPane(plContent);
         plContent.add(new BeginForm("Chào "), BorderLayout.CENTER);
-        add(header,BorderLayout.NORTH);
-        add(scrollMenu,BorderLayout.WEST);
-        add(workSpace,BorderLayout.CENTER);
+        add(header, BorderLayout.NORTH);
+        add(scrollMenu, BorderLayout.WEST);
+        add(workSpace, BorderLayout.CENTER);
     }
+
     public static void main(String[] args) {
         new Main().setVisible(true);
     }
 
-        public void doAction(String nameAction) {
+    public void doAction(String nameAction) {
         plContent.removeAll();
         switch (nameAction) {
             case "Nhân viên":
-                if(nhanvien==null){
+                if (nhanvien == null) {
                     nhanvien = new QuanliNhanVienForm();
                 }
                 plContent.setBackground(Color.DARK_GRAY);
-                plContent.add(nhanvien,BorderLayout.CENTER);
+                plContent.add(nhanvien, BorderLayout.CENTER);
                 break;
-             case "Bán hàng":
-                if(banhang==null){
+            case "Khách hàng":
+                if (khachhang == null) {
+                    khachhang = new QuanLiKhachHangForm();
+                }
+                plContent.setBackground(Color.DARK_GRAY);
+                plContent.add(khachhang, BorderLayout.CENTER);
+                break;
+                case "Sản phẩm":
+                if (sanpham == null) {
+                    sanpham = new  QuanLiSanPhamForm();
+                            
+                }
+                plContent.setBackground(Color.DARK_GRAY);
+                plContent.add(sanpham, BorderLayout.CENTER);
+                break;
+            case "Bán hàng":
+                if (banhang == null) {
                     banhang = new BanHangForm();
                 }
                 plContent.setBackground(Color.DARK_GRAY);
-                plContent.add(banhang,BorderLayout.CENTER);
+                plContent.add(banhang, BorderLayout.CENTER);
                 break;
             case "Công cụ":
                 emptypage.setLabelText("Công cụ đang bảo trì");
@@ -239,6 +261,7 @@ public class Main extends JFrame implements MouseListener{
         revalidate();//refresh ui and layout
         repaint();
     }
+
     @Override
     public void mouseClicked(MouseEvent e) {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -272,8 +295,9 @@ public class Main extends JFrame implements MouseListener{
 
     @Override
     public void mouseExited(MouseEvent e) {
-       // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
     private void logout() {
         int reply = JOptionPane.showConfirmDialog(getRootPane(),
                 "Bạn có chắc muốn đăng xuất khỏi " + DangNhap.getTenNV() + "?", "Chú ý",

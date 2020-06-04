@@ -121,7 +121,8 @@ public class ChonSanPham extends JPanel {
     }
 
     public void Them() {
-
+        int row = tbSanPham.getTable().getSelectedRow();
+        if(row>-1)
         try {
             int sl = 0;
             sl = Integer.parseInt(txSoLuong.getText());
@@ -131,6 +132,9 @@ public class ChonSanPham extends JPanel {
             taget.addCTHD(SanPhamBUS.getClone(sp, sl));
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Số lượng phải là số nguyên dương và nhỏ hơn số lượng của sp");
+        }
+        else{
+            
         }
 
         //HoaDon.list.add();

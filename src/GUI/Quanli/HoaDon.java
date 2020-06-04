@@ -10,6 +10,7 @@ import BUS.SanPhamBUS;
 import DTO.*;
 import GUI.Button.*;
 import GUI.DangNhap;
+import GUI.HienThi.ChonKhachHangForm;
 import GUI.MyTable;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -75,10 +76,12 @@ public class HoaDon extends JPanel {
             Sua();
         });
         btnTimKhach.addActionListener((e) -> {
-            
+            timKhach();
         });
     }
-
+    public void timKhach(){
+        new ChonKhachHangForm(txKh).setVisible(true);
+    }
     public void Sua() {
         int row = tbctHD.getTable().getSelectedRow();
         if (row > -1) {

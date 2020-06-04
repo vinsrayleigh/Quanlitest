@@ -56,7 +56,7 @@ public class SanPhamBUS {
         list = SanPhamDAO.getSanPham();
     };
     //String maSanPham, String tenSanPham, int dongia, int soLuong, Date namSx, String maNCC, String maLoaiSP, String maThuongHieu, String image
-    public ArrayList<SanPhamDTO> search(String value, String type, int soluong1, int soluong2, float gia1, float gia2, int trangthai) {
+    public ArrayList<SanPhamDTO> search(String value, String type, int soluong1, int soluong2, float gia1, float gia2) {
         
         ArrayList<SanPhamDTO> result = new ArrayList<>();
         list.forEach((sp) -> {
