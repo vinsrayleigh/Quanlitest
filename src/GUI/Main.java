@@ -41,8 +41,9 @@ public class Main extends JFrame implements MouseListener {
     BanHangForm banhang;
     QuanLiKhachHangForm khachhang;
     QuanLiSanPhamForm sanpham;
+    ThongKe thongke;
     //test
-    String quyen = "qlBanHangqlNhapHangqlNCCqlQuyenqlKhachHangqlSanPhamqlLoaiSanPhamqlHoaDonqlPhieuNhapqlKhuyenMai";
+    //String quyen = "qlBanHangqlNhapHangqlNCCqlQuyenqlKhachHangqlSanPhamqlLoaiSanPhamqlHoaDonqlPhieuNhapqlKhuyenMai";
 
     public Main() {
         setLayout(new BorderLayout());
@@ -245,6 +246,13 @@ public class Main extends JFrame implements MouseListener {
                 }
                 plContent.setBackground(Color.DARK_GRAY);
                 plContent.add(banhang, BorderLayout.CENTER);
+                break;
+                case "Thống kê":
+                if (thongke == null) {
+                    thongke = new ThongKe();
+                }
+                plContent.setBackground(Color.DARK_GRAY);
+                plContent.add(thongke, BorderLayout.CENTER);
                 break;
             case "Công cụ":
                 emptypage.setLabelText("Công cụ đang bảo trì");

@@ -14,7 +14,7 @@ import java.util.ArrayList;
  * @author phuon
  */
 public class NhaCungCapBUS {
-    ArrayList<NhaCungCapDTO> list;
+    public ArrayList<NhaCungCapDTO> list;
     public NhaCungCapBUS(){
         getData();
     }

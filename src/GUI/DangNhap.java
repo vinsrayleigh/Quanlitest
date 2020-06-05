@@ -94,7 +94,7 @@ public class DangNhap extends JFrame {
         };
         txTaiKhoan.addKeyListener(ka);
         txMatKhau.addKeyListener(ka);
-        //add
+        //addÂDMI
         add(btnDangNhap);
         add(nhoMK);
         add(txTaiKhoan);
