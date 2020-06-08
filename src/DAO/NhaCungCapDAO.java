@@ -35,7 +35,6 @@ public class NhaCungCapDAO {
             while(rs.next()){
                 NhaCungCapDTO ncc = new NhaCungCapDTO(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4));
                 list.add(ncc);
-                ncc.test();
             }
             conn.close();
         }catch(Exception e){

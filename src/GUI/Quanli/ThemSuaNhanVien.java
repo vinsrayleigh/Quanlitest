@@ -105,7 +105,6 @@ public class ThemSuaNhanVien extends JFrame {
             add(btnSua);
             nvsua = qlNhanVien.getNV(manv);
             if(nvsua==null){
-                System.out.println("SAI CMNR");
             }else{
 //            String[] lbName = new String[]{"Mã nhân viên", "Họ nhân viên", "Tên nhân viên", "Ngày sinh", "Số điện thoại", "Giới tính", "Trạng thái"};
             txManv.setText(nvsua.getMaNhanVien());
@@ -146,6 +145,8 @@ public class ThemSuaNhanVien extends JFrame {
         dPickerNgaySinh.addDateChangeListener((dce) -> {
             txNgaysinh.setText(dPickerNgaySinh.getDateStringOrEmptyString());
         });
+        Tool.AddDocumentListener("Tên", txTennv);
+        Tool.AddDocumentListener("Date", txNgaysinh);
 
 //
 //        // inputs

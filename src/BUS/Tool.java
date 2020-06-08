@@ -5,6 +5,7 @@
  */
 package BUS;
 
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -12,9 +13,13 @@ import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.JTextField;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 /**
  *
@@ -56,11 +61,6 @@ public class Tool {
         LocalDate localDate = LocalDate.parse(date, formatter);
         return Date.valueOf(localDate);
     }
-    public static void main(String[] args) {
-        String ngay ="2000/04/23";
-    //    System.out.println(Tool.getDate(ngay).toLocalDate().toString());
-        
-    }
     public static void setPicture(JLabel label, String filename) {
         try {
             BufferedImage image = ImageIO.read(new File("src/Image/"+filename));
@@ -83,5 +83,70 @@ public class Tool {
         }
 
     }
+    private static boolean checkInput(String type,String input){
+        if(type.equals("Num")){
+            try{
+                Integer.parseInt(input);
+                return true;
+            }catch(NumberFormatException e){
+                return false;
+            }
+        }
+        if(type.equals("email")){
+            String regex = "/^([a-zA-Z0-9_\\.\\-])+\\@(([a-zA-Z0-9\\-])+\\.)+([a-zA-Z0-9]{2,4})+$/";
+            return input.matches(regex);
+        }
+        if(type.equals("Date")){
+            try {
+                Tool.getDate(input);
+                return true;
+            } catch (DateTimeParseException e) {
+                return false;
+            }
+        }
+        if(type.equals("Tên")){
+            if(input.contains(" ")){
+                return false;
+            }else{
+                return true;
+            }
+        }
+        
+        return false;
+    }
+    public static void AddDocumentListener(String type,JTextField tx){
+        tx.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                if(checkInput(type, tx.getText())){
+                    tx.setForeground(Color.BLACK);
+                }else{
+                    tx.setForeground(Color.red);
+                }
+//throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                if(checkInput(type, tx.getText())){
+                    tx.setForeground(Color.BLACK);
+                }else{
+                    tx.setForeground(Color.red);
+                }
+                //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                if(checkInput(type, tx.getText())){
+                    tx.setForeground(Color.BLACK);
+                }else{
+                    tx.setForeground(Color.red);
+                }
+                //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+        });
+    }
+    
 }
 

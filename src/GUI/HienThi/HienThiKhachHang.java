@@ -115,34 +115,6 @@ public class HienThiKhachHang extends FormHienThi{
             nvSua = qlkhachhang.getKH(manv);
         });
         //thay đổi cell's data;
-        mtb.getModel().addTableModelListener((e) -> {
-            //System.out.println(this.getSelectedRow(1));
-            try {
-                Tool.getDate(this.getSelectedRow(4));
-            } catch (Exception ex) {
-                try {
-                    this.getTable().getTable().getModel().setValueAt(nvSua.getNgaySinh().toString(), Integer.valueOf(this.getSelectedRow(0))-1, 4);
-                } catch (Exception ex1) {
-                }
-                return;
-            }
-            try{
-            KhachHangDTO nv = new KhachHangDTO(this.getSelectedRow(1), this.getSelectedRow(3), this.getSelectedRow(2), Tool.getDate(this.getSelectedRow(4)), this.getSelectedRow(5), this.getSelectedRow(6), Double.parseDouble(this.getSelectedRow(7)));
-            //System.out.println("nv1:"  +nvSua.getMaQuyen()+","+nv.getMaQuyen());
-            if(!KhachHangBUS.equals(nvSua, nv)){
-                int reply = JOptionPane.showConfirmDialog(this, "Bạn có muốn sửa nhân viên");
-                if(reply==JOptionPane.YES_OPTION){
-                    JOptionPane.showMessageDialog(this,"Sửa thành công");
-                    KhachHangDAO.updateKhachHang(nv);
-                    this.refresh();
-                }else{
-                    JOptionPane.showMessageDialog(this,"Sửa không thành công");
-                }     
-            }}catch(Exception ex){
-                ex.printStackTrace();
-            }
-            
-        });
         
     }
     private void setDataToTable(ArrayList<KhachHangDTO> data, MyTable table) {

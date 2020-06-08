@@ -123,33 +123,6 @@ public class HienThiNhanVien extends FormHienThi{
             nvSua = qlNhanVien.getNV(manv);
         });
         //thay đổi cell's data;
-        mtb.getModel().addTableModelListener((e) -> {
-            //System.out.println(this.getSelectedRow(1));
-            try {
-                Tool.getDate(this.getSelectedRow(4));
-            } catch (Exception ex) {
-                try {
-                    this.getTable().getTable().getModel().setValueAt(nvSua.getNgaySinh().toString(), Integer.valueOf(this.getSelectedRow(0))-1, 4);
-                } catch (Exception ex1) {
-                }
-                return;
-            }
-            try{
-            NhanVienDTO nv = new NhanVienDTO(this.getSelectedRow(1), this.getSelectedRow(3), this.getSelectedRow(2), Tool.getDate(this.getSelectedRow(4)), this.getSelectedRow(5), this.getSelectedRow(6), new QuyenBUS().getQuyenfromTen(this.getSelectedRow(7)).getMaQuyen(),Tool.getDouble(this.getSelectedRow(8)),this.getSelectedRow(9).equals("Hiện")?1:0);
-            System.out.println("nv1:"  +nvSua.getMaQuyen()+","+nv.getMaQuyen());
-            if(!NhanVienBUS.equals(nvSua, nv)){
-                int reply = JOptionPane.showConfirmDialog(this, "Bạn có muốn sửa nhân viên");
-                if(reply==JOptionPane.YES_OPTION){
-                    JOptionPane.showMessageDialog(this,"Sửa thành công");
-                    NhanVienDAO.updateNhanVien(nv);
-                    this.refresh();
-                }else{
-                    JOptionPane.showMessageDialog(this,"Sửa không thành công");
-                }     
-            }}catch(Exception ex){
-                ex.printStackTrace();
-            }
-        });
         
     }
     private void setDataToTable(ArrayList<NhanVienDTO> data, MyTable table) {

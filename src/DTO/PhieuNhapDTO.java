@@ -11,13 +11,13 @@ public class PhieuNhapDTO {
     private String maPhieuNhap;
     private String maNhanVien;
     private String maNCC;
-    private double tongTien;
+    private int tongTien;
     private Date ngayLap;
 
     public PhieuNhapDTO() {
     }
 
-    public PhieuNhapDTO(String maPhieuNhap, String maNhanVien, String maNCC, double tongTien, Date ngayLap) {
+    public PhieuNhapDTO(String maPhieuNhap, String maNhanVien, String maNCC, int tongTien, Date ngayLap) {
         this.maPhieuNhap = maPhieuNhap;
         this.maNhanVien = maNhanVien;
         this.maNCC = maNCC;
@@ -49,11 +49,11 @@ public class PhieuNhapDTO {
         this.maNCC = maNCC;
     }
 
-    public double getTongTien() {
+    public int getTongTien() {
         return tongTien;
     }
 
-    public void setTongTien(double tongTien) {
+    public void setTongTien(int tongTien) {
         this.tongTien = tongTien;
     }
 

@@ -5,6 +5,7 @@
  */
 package GUI;
 
+import GUI.HienThi.ChonNhaCungCap;
 import GUI.HienThi.QuanLiKhachHangForm;
 import GUI.NavBar.*;
 import GUI.Quanli.*;
@@ -20,6 +21,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
@@ -39,12 +42,15 @@ public class Main extends JFrame implements MouseListener {
     EmptyPage emptypage = new EmptyPage();
     QuanliNhanVienForm nhanvien;
     BanHangForm banhang;
+    NhapHangForm nhaphang;
     QuanLiKhachHangForm khachhang;
     QuanLiSanPhamForm sanpham;
     ThongKe thongke;
+    QuanLiNhaCungCap nhacungcap;
+    public static JFrame All = new JFrame();
+
     //test
     //String quyen = "qlBanHangqlNhapHangqlNCCqlQuyenqlKhachHangqlSanPhamqlLoaiSanPhamqlHoaDonqlPhieuNhapqlKhuyenMai";
-
     public Main() {
         setLayout(new BorderLayout());
         setSize(WIDTH, HEIGHT);
@@ -89,7 +95,6 @@ public class Main extends JFrame implements MouseListener {
 
                 String chitietquyen = DangNhap.quyenLogin.getChitiet();
                 if (chitietquyen.contains(navItemInfo[i + 2]) || chitietquyen.contains(navItemInfo[i + 3])) {
-                    System.out.println(i);
                     NavBarButton nb = new NavBarButton(new Rectangle(0, 0, 0, 60), navItemInfo[i], navItemInfo[i + 1]);
                     nb.addMouseListener(this);
                     menu.addItem(nb);
@@ -205,16 +210,26 @@ public class Main extends JFrame implements MouseListener {
 
         plContent.setLayout(new BorderLayout());
         JScrollPane workSpace = new JScrollPane(plContent);
-        plContent.add(new BeginForm("Chào "+DangNhap.getTenNV()), BorderLayout.CENTER);
+        plContent.add(new BeginForm("Chào " + DangNhap.getTenNV()), BorderLayout.CENTER);
         add(header, BorderLayout.NORTH);
         add(scrollMenu, BorderLayout.WEST);
         add(workSpace, BorderLayout.CENTER);
+        All.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosed(java.awt.event.WindowEvent windowevent) {
+                plContent.removeAll();
+                plContent.add(new BeginForm("Chào " + DangNhap.getTenNV()), BorderLayout.CENTER);
+                currentTab.setActive(false);
+                revalidate();//refresh ui and layout
+                repaint();
+            }
+        });
     }
 
-    public static void main(String[] args) {
-        new Main().setVisible(true);
+    public static void BacktoMain() {
+        All.setVisible(true);
+        All.dispose();
     }
-
     public void doAction(String nameAction) {
         plContent.removeAll();
         switch (nameAction) {
@@ -232,10 +247,10 @@ public class Main extends JFrame implements MouseListener {
                 plContent.setBackground(Color.DARK_GRAY);
                 plContent.add(khachhang, BorderLayout.CENTER);
                 break;
-                case "Sản phẩm":
+            case "Sản phẩm":
                 if (sanpham == null) {
-                    sanpham = new  QuanLiSanPhamForm();
-                            
+                    sanpham = new QuanLiSanPhamForm();
+
                 }
                 plContent.setBackground(Color.DARK_GRAY);
                 plContent.add(sanpham, BorderLayout.CENTER);
@@ -247,7 +262,35 @@ public class Main extends JFrame implements MouseListener {
                 plContent.setBackground(Color.DARK_GRAY);
                 plContent.add(banhang, BorderLayout.CENTER);
                 break;
-                case "Thống kê":
+            case "Nhập hàng":
+                ChonNhaCungCap.value = "";
+                ChonNhaCungCap cNCC = new ChonNhaCungCap(null);
+                cNCC.setVisible(true);
+                cNCC.addWindowListener(new java.awt.event.WindowAdapter() {
+                    @Override
+                    public void windowClosed(java.awt.event.WindowEvent windowevent) {
+                        nhaphang = new NhapHangForm();
+                        //plContent.setBackground(Color.DARK_GRAY);
+                        if (ChonNhaCungCap.value.equals("")) {
+                            BacktoMain();
+                        } else {
+                            nhaphang.phieunhap.txNCC.setText(ChonNhaCungCap.value);
+                            plContent.add(nhaphang, BorderLayout.CENTER);
+                        }
+                        revalidate();//refresh ui and layout
+                        repaint();
+                    }
+                });
+
+                break;
+            case "Nhà cung cấp":{
+                if(nhacungcap==null){
+                    nhacungcap = new QuanLiNhaCungCap();
+                }
+                plContent.add(nhacungcap,BorderLayout.CENTER);
+                break;
+            }
+            case "Thống kê":
                 if (thongke == null) {
                     thongke = new ThongKe();
                 }
@@ -288,7 +331,7 @@ public class Main extends JFrame implements MouseListener {
             if (currentTab != null) {
                 currentTab.setActive(false);
             }
-
+            
             btn.setActive(true);
             currentTab = btn;
             doAction(btn.text);

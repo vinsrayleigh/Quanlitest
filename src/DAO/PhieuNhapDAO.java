@@ -36,7 +36,7 @@ public class PhieuNhapDAO {
             String Sql ="SELECT * FROM tblphieunhap";
             ResultSet rs = st.executeQuery(Sql);
             while(rs.next()){
-                PhieuNhapDTO sp = new PhieuNhapDTO(rs.getString(1), rs.getString(2), rs.getString(3), rs.getDouble(4), rs.getDate(5));
+                PhieuNhapDTO sp = new PhieuNhapDTO(rs.getString(1), rs.getString(2), rs.getString(3), rs.getInt(4), rs.getDate(5));
                 list.add(sp);
             }
             conn.close();

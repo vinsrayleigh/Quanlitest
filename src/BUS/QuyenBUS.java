@@ -7,6 +7,7 @@ package BUS;
 import DTO.*;
 import DAO.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 /**
  *
  * @author phuon
@@ -35,5 +36,26 @@ public class QuyenBUS {
             }
         }
         return null;
+    }
+    public String bigNum(){
+        int[] a = new int[list.size()];
+        for(int i=0 ;i<list.size();i++){
+            String temp = list.get(i).getMaQuyen().replaceAll("Q","");
+            try {
+                a[i]=Integer.parseInt(temp);
+            } catch (Exception e) {
+                a[i] = 0;
+            }
+            
+        }
+        Arrays.sort(a);
+        return String.valueOf(a[a.length-1]+1);
+    }
+    public String getNextID() {
+        try {
+            return "Q" + bigNum();
+        } catch (Exception e) {
+            return "Q1";
+        }
     }
 }

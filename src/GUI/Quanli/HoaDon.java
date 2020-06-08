@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package GUI.Quanli;
 
 import BUS.HoaDonBUS;
@@ -17,6 +12,7 @@ import GUI.Button.*;
 import GUI.DangNhap;
 import GUI.HienThi.ChonKhachHangForm;
 import GUI.HienThi.ChonKhuyenMai;
+import GUI.Main;
 import GUI.MyTable;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -44,11 +40,11 @@ import javax.swing.border.EtchedBorder;
  */
 public class HoaDon extends JPanel {
 
-    public static ArrayList<CTHoaDonDTO> list = new ArrayList<>();
-    public static KhachHangDTO kh;
-    public static NhanVienDTO nv;
-    public static int TongTien;
-    public static int Giamgia;
+    //public static ArrayList<CTHoaDonDTO> list = new ArrayList<>();
+    public KhachHangDTO kh;
+    public NhanVienDTO nv;
+    public int TongTien;
+    public int Giamgia;
     ArrayList<SanPhamDTO> listSP = new ArrayList<>();
     JTextField txmaHD;
     JTextField txTongTien;
@@ -94,9 +90,11 @@ public class HoaDon extends JPanel {
         ThanhToan.addActionListener((e) -> {
             int reply = JOptionPane.showConfirmDialog(this, "Xác nhận thanh toán");
             if (reply == JOptionPane.YES_OPTION) {
+                int money = (TongTien-Giamgia);
                 DoThanhToan();
-                JOptionPane.showMessageDialog(this, "Thanh toán thành công\n Tổng thanh toán là: "+txTongTien.getText()+"đ");
+                JOptionPane.showMessageDialog(this, "Thanh toán thành công\n Tổng thanh toán là: " + money+ "000đ");
                 txTongTien.setText("0");
+                Main.BacktoMain();
             } else {
                 JOptionPane.showMessageDialog(this, "Hủy thanh toán");
             }
@@ -155,7 +153,7 @@ public class HoaDon extends JPanel {
     public void refreshTable() {
         tbctHD.clear();
         listSP.clear();
-        list.clear();
+        //list.clear();
         txTongTien.setText("0");
     }
 
@@ -177,6 +175,7 @@ public class HoaDon extends JPanel {
                 }
             });
         }
+        updateThanhTien();
         setDatatoTable(listSP);
     }
 
@@ -259,7 +258,6 @@ public class HoaDon extends JPanel {
                 //txGioLap.setText(LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss")));
                 if (txNv.getText().equals("")
                         || txKh.getText().equals("")
-                        || txKm.getText().equals("")
                         || listSP.isEmpty()) {
                     ThanhToan.setEnabled(false);
                 } else {
@@ -309,18 +307,20 @@ public class HoaDon extends JPanel {
             CTHoaDonDTO cthd = new CTHoaDonDTO(txmaHD.getText(), sp.getMaSanPham(), sp.getSoLuong(), sp.getDongia() * sp.getSoLuong(), sp.getDongia());
             CTHoaDonDAO.insertCTHD(cthd);
             SanPhamDTO spkho = qlsp.getSanPham(cthd.getMaSanPham());
-            spkho.setSoLuong(spkho.getSoLuong()-sp.getSoLuong());
+            spkho.setSoLuong(spkho.getSoLuong() - sp.getSoLuong());
             SanPhamDAO.updateSanPham(spkho);
         });
         clear();
     }
-    private void clear(){
+
+    private void clear() {
         qlHD.getData();
         txmaHD.setText(qlHD.getNextMaHD());
         txKh.setText("");
         txNv.setText(DangNhap.getTenNV());
         txKm.setText("");
-        list.clear();
+        //list.clear();
         listSP.clear();
+        tbctHD.clear();
     }
 }

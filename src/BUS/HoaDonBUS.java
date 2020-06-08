@@ -5,9 +5,11 @@
  */
 package BUS;
 
+import static BUS.PhieuNhapBUS.list;
 import DAO.HoaDonDAO;
 import DTO.HoaDonDTO;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  *
@@ -20,15 +22,28 @@ public class HoaDonBUS {
     public HoaDonBUS() {
         getData();
     }
-
+    public String bigNum(){
+        int[] a = new int[list.size()];
+        for(int i=0 ;i<list.size();i++){
+            String temp = list.get(i).getMaHoaDon().replaceAll("HD","");
+            try {
+                a[i]=Integer.parseInt(temp);
+            } catch (Exception e) {
+                a[i] = 0;
+            }
+            
+        }
+        Arrays.sort(a);
+        return String.valueOf(a[a.length-1]+1);
+    }
     public String getNextMaHD() {
         try {
-            String temp = list.get(list.size() - 1).getMaHoaDon().replaceAll("HD", "");
-            return "HD" + String.valueOf(Integer.parseInt(temp));
+            return "HD" + bigNum();
         } catch (Exception e) {
-            return "HD0001";
+            return "HD1";
         }
     }
+
 
     public void getData() {
         list = HoaDonDAO.getHoaDon();

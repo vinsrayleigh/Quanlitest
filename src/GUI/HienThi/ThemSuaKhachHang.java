@@ -98,7 +98,6 @@ import java.text.SimpleDateFormat;
             add(btnSua);
             khsua = qlKhachHang.getKH(makh);
             if(khsua==null){
-                System.out.println("SAI CMNR");
             }else{
 //            String[] lbName = new String[]{"Mã nhân viên", "Họ nhân viên", "Tên nhân viên", "Ngày sinh", "Số điện thoại", "Giới tính", "Trạng thái"};
             txMakh.setText(khsua.getMaKhachHang());

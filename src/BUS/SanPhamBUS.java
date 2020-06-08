@@ -22,7 +22,6 @@ public class SanPhamBUS {
     public SanPhamDTO getSanPham(String masp){
         for(SanPhamDTO sp: list){
             if(sp.getMaSanPham().equals(masp)){
-                System.out.println("found");
                 return sp;
             }
         }
@@ -53,6 +52,7 @@ public class SanPhamBUS {
         return clone;
     }
     public void getData(){
+        System.out.println("Đọc Sản Phẩm");
         list = SanPhamDAO.getSanPham();
     };
     //String maSanPham, String tenSanPham, int dongia, int soLuong, Date namSx, String maNCC, String maLoaiSP, String maThuongHieu, String image
@@ -73,6 +73,12 @@ public class SanPhamBUS {
                             sp.getMaNCC().toLowerCase().contains(value)||
                             sp.getTenNCC().toLowerCase().contains(value))
                         result.add(sp);
+                    break;
+                }
+                case "Nhà cung cấp":{
+                    if(sp.getMaNCC().toLowerCase().contains(value.toLowerCase())){
+                        result.add(sp);
+                    }
                     break;
                 }
             }

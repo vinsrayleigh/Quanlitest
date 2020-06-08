@@ -58,8 +58,9 @@ public class ChonSanPham extends JPanel {
     JLabel imageSP = new JLabel();
     JPanel thongtinSanPham = new JPanel();
     JPanel info = new JPanel(new GridLayout(4, 2));
-    HoaDon taget;
-
+    HoaDon tagetHD;
+    PhieuNhap tagetPN;
+    String type;
     public ChonSanPham() {
         setLayout(new BorderLayout());
         setPreferredSize(new Dimension(700, 0));
@@ -84,7 +85,6 @@ public class ChonSanPham extends JPanel {
             public void mouseClicked(MouseEvent e) {
                 int row = tbSanPham.getTable().getSelectedRow();
                 if (row > -1) {
-                    System.out.println(tbSanPham.getModel().getValueAt(row, 0).toString());
                     sp = qlsp.getSanPham(tbSanPham.getModel().getValueAt(row, 0).toString());
                     if (sp != null) {
                         hienthi(sp);
@@ -118,6 +118,12 @@ public class ChonSanPham extends JPanel {
         thembtn.addActionListener((e) -> {
             Them();
         });
+        type="";
+        if(type.equals("PN")){
+//            public ArrayList<SanPhamDTO> search(String value, String type, int soluong1, int soluong2, float gia1, float gia2) {
+            setDatatoTable(qlsp.search(tagetPN.txNCC.getText(),"Nhà cung cấp" , -1, -1, -1, -1));
+        }
+        
     }
 
     public void Them() {
@@ -126,10 +132,10 @@ public class ChonSanPham extends JPanel {
         try {
             int sl = 0;
             sl = Integer.parseInt(txSoLuong.getText());
-            if(sl>sp.getSoLuong()){
-                JOptionPane.showMessageDialog(this, "Số lượng phải nhỏ hơn số lượng của sản phẩm trong kho");
-            }else
-            taget.addCTHD(SanPhamBUS.getClone(sp, sl));
+            if(type.equals("HD"))
+            tagetHD.addCTHD(SanPhamBUS.getClone(sp, sl));
+            else
+                tagetPN.addCTPN(SanPhamBUS.getClone(sp, sl));
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Số lượng phải là số nguyên dương và nhỏ hơn số lượng của sp");
         }
@@ -140,10 +146,38 @@ public class ChonSanPham extends JPanel {
         //HoaDon.list.add();
     }
 
-    public void setTaget(HoaDon taget) {
-        this.taget = taget;
+    public void setTaget(HoaDon taget,String type) {
+        this.tagetHD = taget;
+        this.type =  type;
     }
+    public void setTaget(PhieuNhap taget,String type){
+        this.tagetPN = taget;
+        this.type =  type;
+        tagetPN.txNCC.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                setDatatoTable(qlsp.search(tagetPN.txNCC.getText(),"Nhà cung cấp" , -1, -1, -1, -1));
+                //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
 
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                setDatatoTable(qlsp.search(tagetPN.txNCC.getText(),"Nhà cung cấp" , -1, -1, -1, -1));
+               // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                setDatatoTable(qlsp.search(tagetPN.txNCC.getText(),"Nhà cung cấp" , -1, -1, -1, -1));
+                //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+        });
+        tagetPN.ThanhToan.addActionListener((e) -> {
+            //qlsp.getData();
+            System.out.println("ê");
+            this.refreshTable();
+        });
+    }
     public void hienthi(SanPhamDTO sp1) {
         txma.setText(sp1.getMaSanPham());
         txLoai.setText(sp1.getTenLoaiSP());
@@ -309,5 +343,7 @@ public class ChonSanPham extends JPanel {
     private void refreshTable() {
         qlsp.getData();
         setDatatoTable(qlsp.list);
+        revalidate();
+        repaint();
     }
 }

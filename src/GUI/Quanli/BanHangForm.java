@@ -5,6 +5,7 @@
  */
 package GUI.Quanli;
 
+import GUI.HienThi.ChonNhaCungCap;
 import java.awt.BorderLayout;
 import javax.swing.*;
 
@@ -17,7 +18,7 @@ public class BanHangForm extends JPanel{
     HoaDon hoadon  = new HoaDon();
     public BanHangForm(){
         setLayout(new BorderLayout());
-        chonsp.setTaget(hoadon);
+        chonsp.setTaget(hoadon,"HD");
         add(chonsp,BorderLayout.WEST);
         add(hoadon,BorderLayout.EAST);
     }

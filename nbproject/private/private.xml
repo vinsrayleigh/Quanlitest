@@ -3,13 +3,22 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/C:/Users/phuon/Documents/NetBeansProjects/Quanli/src/GUI/Quanli/ChonSanPham.java</file>
+            <file>file:/C:/Users/phuon/Documents/NetBeansProjects/Quanli/src/GUI/Quanli/PhieuNhap.java</file>
+            <file>file:/C:/Users/phuon/Documents/NetBeansProjects/Quanli/src/GUI/Quanli/NhapHangForm.java</file>
             <file>file:/C:/Users/phuon/Documents/NetBeansProjects/Quanli/src/BUS/Tool.java</file>
             <file>file:/C:/Users/phuon/Documents/NetBeansProjects/Quanli/src/GUI/DangNhap.java</file>
-            <file>file:/C:/Users/phuon/Documents/NetBeansProjects/Quanli/src/GUI/Quanli/ThongKe.java</file>
-            <file>file:/C:/Users/phuon/Documents/NetBeansProjects/Quanli/src/BUS/NhaCungCapBUS.java</file>
-            <file>file:/C:/Users/phuon/Documents/NetBeansProjects/Quanli/src/GUI/Quanli/QuanliNhanVienForm.java</file>
+            <file>file:/C:/Users/phuon/Documents/NetBeansProjects/Quanli/src/GUI/NavBar/NavBarItem.java</file>
             <file>file:/C:/Users/phuon/Documents/NetBeansProjects/Quanli/src/GUI/Main.java</file>
-            <file>file:/C:/Users/phuon/Documents/NetBeansProjects/Quanli/src/GUI/HienThi/HienThiNhanVien.java</file>
+            <file>file:/C:/Users/phuon/Documents/NetBeansProjects/Quanli/src/GUI/Quanli/ThemSuaNhanVien.java</file>
+            <file>file:/C:/Users/phuon/Documents/NetBeansProjects/Quanli/src/GUI/HienThi/HienThiNhaCungCap.java</file>
+            <file>file:/C:/Users/phuon/Documents/NetBeansProjects/Quanli/src/GUI/NavBar/NavBarButton.java</file>
+            <file>file:/C:/Users/phuon/Documents/NetBeansProjects/Quanli/src/DAO/PhieuNhapDAO.java</file>
+            <file>file:/C:/Users/phuon/Documents/NetBeansProjects/Quanli/src/GUI/Quanli/HoaDon.java</file>
+            <file>file:/C:/Users/phuon/Documents/NetBeansProjects/Quanli/src/BUS/SanPhamBUS.java</file>
+            <file>file:/C:/Users/phuon/Documents/NetBeansProjects/Quanli/src/GUI/HienThi/ChonKhachHangForm.java</file>
+            <file>file:/C:/Users/phuon/Documents/NetBeansProjects/Quanli/src/GUI/Quanli/BanHangForm.java</file>
+            <file>file:/C:/Users/phuon/Documents/NetBeansProjects/Quanli/src/DAO/CTHoaDonDAO.java</file>
         </group>
     </open-files>
 </project-private>

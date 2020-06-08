@@ -46,10 +46,4 @@ public class NhaCungCapDTO {
     public void setEmail(String Email) {
         this.Email = Email;
     }
-    public void test(){
-        if(maNCC!=null)
-        System.out.println("YESSS");
-        else
-            System.out.println("NOOOOOOO");
-    }
 }

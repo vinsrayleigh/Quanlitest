@@ -1,4 +1,3 @@
-
 package GUI.HienThi;
 
 import BUS.KhachHangBUS;
@@ -17,21 +16,21 @@ import java.awt.event.ActionEvent;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-public class QuanLiKhachHangForm extends JPanel{
+public class QuanLiKhachHangForm extends JPanel {
+
     HienThiKhachHang formhienthi = new HienThiKhachHang();
     ThemButton btnthem = new ThemButton();
     SuaButton btnsua = new SuaButton();
     XoaButton btnxoa = new XoaButton();
-    
+
     ExportExcelButton btnxuatexcel = new ExportExcelButton();
     ImportExcelButton btnnhapexcel = new ImportExcelButton();
-    
-    public QuanLiKhachHangForm(){
+
+    public QuanLiKhachHangForm() {
         setLayout(new BorderLayout());
-        
+
         //button
-        
-        if(!DangNhap.quyenLogin.getChitiet().contains("qlKhachHang")){
+        if (!DangNhap.quyenLogin.getChitiet().contains("qlKhachHang")) {
             btnthem.setEnabled(false);
             btnxoa.setEnabled(false);
             btnsua.setEnabled(false);
@@ -39,14 +38,14 @@ public class QuanLiKhachHangForm extends JPanel{
             btnxuatexcel.setEnabled(false);
             formhienthi.getTable().getTable().setEnabled(false);
         }
-        
+
         JPanel plBtn = new JPanel();
         plBtn.add(btnthem);
         plBtn.add(btnxoa);
         plBtn.add(btnsua);
         plBtn.add(btnnhapexcel);
         plBtn.add(btnxuatexcel);
-        
+
         this.add(plBtn, BorderLayout.NORTH);
         this.add(formhienthi, BorderLayout.CENTER);
         //action Listener
@@ -65,16 +64,16 @@ public class QuanLiKhachHangForm extends JPanel{
         btnxuatexcel.addActionListener((ActionEvent ae) -> {
             new XuatExcel().xuatFileExcelNhanVien();
         });
-        
+
     }
 
     private void btnThemMouseClicked() {
         ThemSuaKhachHang themKh = new ThemSuaKhachHang("Thêm", "");
         themKh.setVisible(true);
-        themKh.addWindowListener(new java.awt.event.WindowAdapter(){
-            
+        themKh.addWindowListener(new java.awt.event.WindowAdapter() {
+
             @Override
-            public void windowClosed(java.awt.event.WindowEvent windowevent){
+            public void windowClosed(java.awt.event.WindowEvent windowevent) {
                 formhienthi.refresh();
             }
         });
@@ -82,26 +81,25 @@ public class QuanLiKhachHangForm extends JPanel{
 
     private void btnXoaMouseClicked() {
         KhachHangDTO kh = new KhachHangBUS().getKH(formhienthi.getSelectedRow(1));
-        
+
         int reply = JOptionPane.showConfirmDialog(formhienthi, "Bạn có muốn xóa nhân viên?????????");
-            if(kh!=null) {
-                if(reply==JOptionPane.YES_OPTION){
+        if (kh != null) {
+            if (reply == JOptionPane.YES_OPTION) {
                 KhachHangDAO.DeleteKhachHang(kh);
                 JOptionPane.showMessageDialog(formhienthi, "xóa khách hàng thành công");
                 formhienthi.refresh();
-            } else{
+            } else {
                 JOptionPane.showMessageDialog(formhienthi, "xóa khách hàng không thành công");
             }
-        } else
-        {
-            System.out.println("sai rồi!!!");
+        } else {
+            JOptionPane.showMessageDialog(this, "Chọn khách hàng để xóa");
         }
+
     }
 
     private void btnSuaMouseClicked() {
-        ThemSuaKhachHang themnv = new ThemSuaKhachHang("Sửa",formhienthi.getSelectedRow(1));
-        System.out.println(formhienthi.getSelectedRow(1));
-       themnv.setVisible(true);
+        ThemSuaKhachHang themnv = new ThemSuaKhachHang("Sửa", formhienthi.getSelectedRow(1));
+        themnv.setVisible(true);
         themnv.addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
             public void windowClosed(java.awt.event.WindowEvent windowEvent) {
@@ -109,5 +107,5 @@ public class QuanLiKhachHangForm extends JPanel{
             }
         });
     }
-            
+
 }

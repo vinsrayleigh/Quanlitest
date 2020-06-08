@@ -4,6 +4,7 @@ import DTO.*;
 import DAO.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class NhanVienBUS {
 
@@ -15,39 +16,30 @@ public class NhanVienBUS {
     //"STT", "Mã nhân viên","Họ nhân viên", "Tên nhân viên", "Ngày sinh", "Giới tính", "Số điện thoại","Quyền", "Lương","Trạng thái"});
     public static boolean equals(NhanVienDTO nv1,NhanVienDTO nv2){
         if(!nv1.getMaNhanVien().equals(nv2.getMaNhanVien())){ 
-            System.out.println("1");
             return false;
         }
         if(!nv1.getHoNhanVien().equalsIgnoreCase(nv2.getHoNhanVien())){ 
-            System.out.println("2");
             return false;
         }
         if(!nv1.getTenNhanVien().equals(nv2.getTenNhanVien())){ 
-            System.out.println("3");
             return false;
         }
         if(!nv1.getNgaySinh().equals(nv2.getNgaySinh())){ 
-            System.out.println("4");
             return false;
         }
         if(!nv1.getSdt().equals(nv2.getSdt())){ 
-            System.out.println("5");
             return false;
         }
         if(!nv1.getMaQuyen().equals(nv2.getMaQuyen())){ 
-            System.out.println("6");
             return false;
         }
         if(nv1.getLuong() != nv2.getLuong()) { 
-            System.out.println("7");
             return false;
         }
         if(!nv1.getGioiTinh().equals(nv2.getGioiTinh())) { 
-            System.out.println("8");
             return false;
         }
         if(nv1.getTrangThai()!=nv2.getTrangThai()) { 
-            System.out.println("9");
             return false;
         }
         return true;
@@ -70,16 +62,26 @@ public class NhanVienBUS {
         return null;
     }
 
-    public String getNextID() {
-        long ma;
-        try {
-            ma = Integer.parseInt(list.get(list.size() - 2).getMaNhanVien());
-            System.out.println(ma);
-            ma++;
-        } catch (Exception e) {
-            ma = 2000;
+    public String bigNum(){
+        int[] a = new int[list.size()];
+        for(int i=0 ;i<list.size();i++){
+            String temp = list.get(i).getMaNhanVien().replaceAll("NV","");
+            try {
+                a[i]=Integer.parseInt(temp);
+            } catch (Exception e) {
+                a[i] = 0;
+            }
+            
         }
-        return "" + ma;
+        Arrays.sort(a);
+        return String.valueOf(a[a.length-1]+1);
+    }
+    public String getNextID() {
+        try {
+            return "NV" + bigNum();
+        } catch (Exception e) {
+            return "NV1";
+        }
     }
 
     public void xoa(String maString) {

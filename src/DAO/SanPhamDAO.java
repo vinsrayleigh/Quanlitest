@@ -41,7 +41,6 @@ public class SanPhamDAO {
             String Sql ="SELECT * FROM tblsanpham";
             ResultSet rs = st.executeQuery(Sql);
             while(rs.next()){
-                //System.out.println(rs.getString(8));
                 SanPhamDTO sp = new SanPhamDTO(rs.getString(1), rs.getString(2), rs.getInt(3), rs.getInt(4), rs.getDate(5), rs.getString(7), rs.getString(8), rs.getString(9),rs.getString(10));
                 sp.setMota(rs.getString(6));
                 list.add(sp);

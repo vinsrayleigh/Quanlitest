@@ -8,6 +8,7 @@ package BUS;
 import DAO.ThuongHieuDAO;
 import java.util.ArrayList;
 import DTO.*;
+import java.util.Arrays;
 /**
  *
  * @author phuon
@@ -26,5 +27,27 @@ public class ThuongHieuBUS {
                 return th;
         }
         return null;
+    }
+    public String bigNum(){
+        int[] a = new int[list.size()];
+        for(int i=0 ;i<list.size();i++){
+            String temp = list.get(i).getMaThuongHieu().replaceAll("TH","");
+            try {
+                a[i]=Integer.parseInt(temp);
+            } catch (Exception e) {
+                a[i] = 0;
+            }
+            
+        }
+        Arrays.sort(a);
+        System.out.println(a[a.length-1]);
+        return String.valueOf(a[a.length-1]);
+    }
+    public String getNextID() {
+        try {
+            return "Q" + bigNum()+1;
+        } catch (Exception e) {
+            return "Q1";
+        }
     }
 }

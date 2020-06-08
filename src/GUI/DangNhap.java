@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package GUI;
 
 import DTO.*;
@@ -19,10 +14,6 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
-/**
- *
- * @author phuon
- */
 public class DangNhap extends JFrame {
 
     public static String saveFileName = "temp";
@@ -32,7 +23,7 @@ public class DangNhap extends JFrame {
     JTextField txTaiKhoan;
     JPasswordField txMatKhau;
     JCheckBox nhoMK = new JCheckBox("Giữ đăng nhập");
-
+    
     public DangNhap() {
         setUndecorated(true);
         setSize(350, 400);
@@ -112,8 +103,6 @@ public class DangNhap extends JFrame {
         TaiKhoanDTO tk = ql.getTK(tentk);
         if (tk != null) {
             NhanVienDTO nv = new NhanVienBUS().getNV(tentk);
-            System.out.println(tentk);
-            System.out.println(nv.getTrangThai());
             if (nv.getTrangThai() == 0) {
                 JOptionPane.showMessageDialog(this, "Tài khoản này đã bị khóa, do chủ nhân tài khoản này đã bị ẨN khỏi hệ thống!");
                 return;
@@ -122,7 +111,6 @@ public class DangNhap extends JFrame {
                 taiKhoanLogin = tk;
                 nhanVienLogin = nv;
                 quyenLogin = new QuyenBUS().getQuyen(nhanVienLogin.getQuyen());
-                System.out.println(quyenLogin.getChitiet());
                 new Main().setVisible(true);
                 this.dispose();
             } else {
