@@ -99,6 +99,9 @@ public class HoaDon extends JPanel {
                 JOptionPane.showMessageDialog(this, "Hủy thanh toán");
             }
         });
+        huy.addActionListener((e) -> {
+           Main.BacktoMain();
+        });
     }
 
     public void timKhuyenMai() {

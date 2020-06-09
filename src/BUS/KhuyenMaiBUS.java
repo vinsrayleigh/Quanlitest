@@ -53,25 +53,62 @@ public class KhuyenMaiBUS {
             return "KM1";
         }
     }
-    public ArrayList<KhuyenMaiDTO> search(String value, String type) {
+    public ArrayList<KhuyenMaiDTO> search(String value, String type, LocalDate ngaybatdau, LocalDate ngayketthuc) {
         ArrayList<KhuyenMaiDTO> result = new ArrayList<>();
+        
         list.forEach((km) -> {
-           switch(type) {
-               case "Tất cả":{
-                   if(km.getMakhuyenmai().toLowerCase().contains(value)||
-                           km.getTenkhuyenmai().toLowerCase().contains(value)||
-                           km.getMaSanPham().toLowerCase().contains(value)||
-                           String.valueOf(km.getGiamgia()).toLowerCase().contains(value)||
-                           km.getChitiet().toLowerCase().contains(value))
-                       result.add(km);
+                switch(type) {
+                   case "Tất cả":{
+                       if(km.getMakhuyenmai().toLowerCase().contains(value)||
+                               km.getTenkhuyenmai().toLowerCase().contains(value)||
+                               km.getMaSanPham().toLowerCase().contains(value)||
+                               String.valueOf(km.getGiamgia()).toLowerCase().contains(value)||
+                               km.getChitiet().toLowerCase().contains(value))
+                           result.add(km);
+                       break;
+                    }
+                    case "Mã Khuyến mãi":{
+                        if(km.getMakhuyenmai().toLowerCase().contains(value.toLowerCase())){
+                            result.add(km);
+                        }
                    break;
                }
+                    case "Tên Khuyến mãi":{
+                        if(km.getTenkhuyenmai().toLowerCase().contains(value.toLowerCase())){
+                            result.add(km);
            }
-        });
+                        break;
+                    }
+                    case "Giảm Giá":{
+                        if(String.valueOf(km.getGiamgia()).toLowerCase().contains(value.toLowerCase())){
+                            result.add(km);
+           }
+                        break;
+                    }
+                    case "Ngày bắt đầu":{
+                        if(km.getNgaybatdau().toString().toLowerCase().contains(value.toLowerCase())){
+                            result.add(km);
+                        }
+                        break;
+                    }
+                    case "Ngày Kết thúc":{
+                        if(km.getNgayketthuc().toString().toLowerCase().contains(value.toLowerCase())){
+                            result.add(km);
+                        }
+                        break;
+                    }
+                    case "Chi tiết":{
+                        if(km.getChitiet().toLowerCase().contains(value.toLowerCase())){
+                            result.add(km);
+                        }
+                        break;
+                    }
+                }
+            });
         for (int i = result.size() - 1; i >= 0; i--) {
             KhuyenMaiDTO km = result.get(i);
-            LocalDate ngaybatdau = km.getNgaybatdau().toLocalDate();
-            LocalDate ngayketthuc = km.getNgayketthuc().toLocalDate();
+             ngaybatdau = km.getNgaybatdau().toLocalDate();
+             ngayketthuc = km.getNgayketthuc().toLocalDate();
             LocalDate now = LocalDate.now();
             Boolean ngayKhongThoa = (now.isAfter(ngayketthuc)||now.isBefore(ngaybatdau));
 

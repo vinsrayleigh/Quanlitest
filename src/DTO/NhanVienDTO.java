@@ -83,7 +83,9 @@ public class NhanVienDTO {
     public String getTenNhanVien() {
         return tenNhanVien;
     }
-
+    public String getFullFame(){
+        return hoNhanVien+" "+tenNhanVien;
+    }
     public void setTenNhanVien(String tenNhanVien) {
         this.tenNhanVien = tenNhanVien;
     }

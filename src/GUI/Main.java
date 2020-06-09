@@ -21,6 +21,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionAdapter;
+import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import javax.swing.JOptionPane;
@@ -47,11 +48,13 @@ public class Main extends JFrame implements MouseListener {
     QuanLiSanPhamForm sanpham;
     ThongKe thongke;
     QuanLiNhaCungCap nhacungcap;
+    QuanLiKhuyenMaiForm khuyenmai;
     public static JFrame All = new JFrame();
-
+    public int status;
     //test
     //String quyen = "qlBanHangqlNhapHangqlNCCqlQuyenqlKhachHangqlSanPhamqlLoaiSanPhamqlHoaDonqlPhieuNhapqlKhuyenMai";
     public Main() {
+        status=1;
         setLayout(new BorderLayout());
         setSize(WIDTH, HEIGHT);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -230,6 +233,7 @@ public class Main extends JFrame implements MouseListener {
         All.setVisible(true);
         All.dispose();
     }
+
     public void doAction(String nameAction) {
         plContent.removeAll();
         switch (nameAction) {
@@ -262,6 +266,12 @@ public class Main extends JFrame implements MouseListener {
                 plContent.setBackground(Color.DARK_GRAY);
                 plContent.add(banhang, BorderLayout.CENTER);
                 break;
+                case "Khuyến mãi":
+                if (khuyenmai == null) {
+                    khuyenmai = new QuanLiKhuyenMaiForm();
+                }
+                plContent.add(khuyenmai, BorderLayout.CENTER);
+                break;
             case "Nhập hàng":
                 ChonNhaCungCap.value = "";
                 ChonNhaCungCap cNCC = new ChonNhaCungCap(null);
@@ -277,17 +287,24 @@ public class Main extends JFrame implements MouseListener {
                             nhaphang.phieunhap.txNCC.setText(ChonNhaCungCap.value);
                             plContent.add(nhaphang, BorderLayout.CENTER);
                         }
+                        status=1;
                         revalidate();//refresh ui and layout
                         repaint();
                     }
+                    @Override
+                    public void windowOpened(java.awt.event.WindowEvent windowevent) {
+                        status=0;
+                        //
+                    }
+                    
                 });
 
                 break;
-            case "Nhà cung cấp":{
-                if(nhacungcap==null){
+            case "Nhà cung cấp": {
+                if (nhacungcap == null) {
                     nhacungcap = new QuanLiNhaCungCap();
                 }
-                plContent.add(nhacungcap,BorderLayout.CENTER);
+                plContent.add(nhacungcap, BorderLayout.CENTER);
                 break;
             }
             case "Thống kê":
@@ -325,13 +342,13 @@ public class Main extends JFrame implements MouseListener {
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        if (e.getSource() instanceof NavBarButton) {
+        if (e.getSource() instanceof NavBarButton&&status==1) {
 
             NavBarButton btn = (NavBarButton) e.getSource();
             if (currentTab != null) {
                 currentTab.setActive(false);
             }
-            
+
             btn.setActive(true);
             currentTab = btn;
             doAction(btn.text);

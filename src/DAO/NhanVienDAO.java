@@ -43,7 +43,6 @@ public class NhanVienDAO {
             while(rs.next()){
                 NhanVienDTO sp = new NhanVienDTO(rs.getString(1), rs.getString(2), rs.getString(3), rs.getDate(4), rs.getString(5), rs.getString(6),rs.getString(7), rs.getDouble(8),rs.getInt(9));
                 list.add(sp);
-                System.out.println(sp.getMaNhanVien());
             }
             conn.close();
         }catch(Exception e){

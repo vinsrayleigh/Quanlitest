@@ -65,12 +65,12 @@ public class HienThiKhuyenMai extends FormHienThi{
         mtb = new MyTable();
         mtb.setPreferredSize(new Dimension(1200 - 250, 600));
         mtb.setHeaders(new String[]{"STT", "Mã khuyến mại","Tên khuyến mại", "Mã sản phẩm", "Giảm giá", "Ngày bắt đầu", "Ngày kết thúc","Chi tiết"});
-        mtb.setColumnsWidth(new double[]{.5, 1.5, 2.5, 1.3, 3, 1.5, 1,1,});
+        mtb.setColumnsWidth(new double[]{.5, 1.5, 2.5, 1.3, 3, 1.5, 1.5,1});
         mtb.setAlignment(0, JLabel.CENTER);
         mtb.setupSort();
         
         setDataToTable(qlKhuyenMai.list, mtb);
-        cbTypeSearch = new JComboBox<>(new String[]{"Tất cả", "Mã khuyến mại","Tên khuyến mại", "Mã sản phẩm"});
+        cbTypeSearch = new JComboBox<>(new String[]{"Tất cả", "Mã khuyến mại","Tên khuyến mại", "Mã sản phẩm", "Giảm giá", "Ngày bắt đầu", "Ngày kết thúc","Chi tiết"});
 
         JPanel plHeader = new JPanel();
         JPanel plTim = new JPanel();
@@ -92,6 +92,14 @@ public class HienThiKhuyenMai extends FormHienThi{
         btnrefresh.addActionListener((ae) -> {
             refresh();
         });
+        
+        dPicker1.addDateChangeListener((dce) -> {
+            txKhoangNgay1.setText(dPicker1.getDateStringOrEmptyString());
+        });
+        dPicker2.addDateChangeListener((dce) -> {
+            txKhoangNgay2.setText(dPicker2.getDateStringOrEmptyString());
+        });
+        
         // https://stackoverflow.com/questions/3953208/value-change-listener-to-jtextfield
         addDocumentListener(txTim);
         addDocumentListener(txKhoangNgay1);
@@ -105,7 +113,6 @@ public class HienThiKhuyenMai extends FormHienThi{
         txField.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void changedUpdate(DocumentEvent e) {
-                txSearchOnChange();
             }
 
             @Override
@@ -119,7 +126,8 @@ public class HienThiKhuyenMai extends FormHienThi{
             }
         });
     }
-    private void setDataToTable(ArrayList<KhuyenMaiDTO> list, MyTable mtb) {
+    public void setDataToTable(ArrayList<KhuyenMaiDTO> list, MyTable mtb) {
+        
         int stt=1;
         mtb.clear();
         for(KhuyenMaiDTO km:list){
@@ -131,19 +139,36 @@ public class HienThiKhuyenMai extends FormHienThi{
                 km.getGiamgia()+"",
                 km.getNgaybatdau().toString(),
                 km.getNgayketthuc().toString(),
-                km.getChitiet()
+                km.getChitiet(),
             });
         }
     }
 //String makhuyenmai, String tenkhuyenmai, String maSanPham, String giamgia, Date ngaybatdau, Date ngayketthuc, String chitiet) {
-    private void txSearchOnChange() {
-        setDataToTable(qlKhuyenMai.search(txTim.getText(), cbTypeSearch.getSelectedItem().toString()), mtb);
+    public void txSearchOnChange() {
+        LocalDate km_1 = null,km_2 = null;
+        try {
+            km_1 = java.time.LocalDate.parse(txKhoangNgay1.getText());
+            txKhoangNgay1.setForeground(Color.black);
+        } catch (DateTimeParseException e) {
+            txKhoangNgay1.setForeground(Color.red);
+        }
+        try {
+            km_2 = java.time.LocalDate.parse(txKhoangNgay2.getText());
+            txKhoangNgay2.setForeground(Color.black);
+        } catch (DateTimeParseException e) {
+            txKhoangNgay2.setForeground(Color.red);
+        }
+        setDataToTable(qlKhuyenMai.search(txTim.getText(), cbTypeSearch.getSelectedItem().toString(), km_1, km_2), mtb);
    
     }
 
-    private void refresh() {
+    public void refresh() {
         qlKhuyenMai.getData();
         setDataToTable(qlKhuyenMai.list, mtb);
+        txTim.setText("");
+        txKhoangNgay1.setText("");
+        txKhoangNgay2.setText("");
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+    
 }

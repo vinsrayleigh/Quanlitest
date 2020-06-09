@@ -44,7 +44,14 @@ public class HoaDonBUS {
         }
     }
 
-
+    public HoaDonDTO getHD(String mahd){
+        for(HoaDonDTO hd : list){
+            if(hd.getMaHoaDon().equals(mahd)){
+                return hd;
+            }
+        }
+        return null;
+    }
     public void getData() {
         list = HoaDonDAO.getHoaDon();
     }

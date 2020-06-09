@@ -35,7 +35,9 @@ public class KhachHangDTO {
     public String getTenKhachHang() {
         return tenKhachHang;
     }
-
+    public String getFullName(){
+        return hoKhachHang+" "+tenKhachHang;
+    }
     public void setTenKhachHang(String tenKhachHang) {
         this.tenKhachHang = tenKhachHang;
     }

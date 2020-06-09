@@ -5,7 +5,6 @@ import DAO.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
-
 public class NhanVienBUS {
 
     public ArrayList<NhanVienDTO> list;
@@ -117,7 +116,11 @@ public class NhanVienBUS {
                         || nv.getGioiTinh().toLowerCase().contains(value.toLowerCase())
                         || nv.getSdt().toLowerCase().contains(value.toLowerCase())
                         || nv.getQuyen().toLowerCase().contains(value.toLowerCase())
-                        || String.valueOf(nv.getTrangThai() == 1 ? "Ẩn" : "Hiện").toLowerCase().contains(value.toLowerCase())) {
+                        || String.valueOf(nv.getTrangThai() == 1 ? "Ẩn" : "Hiện").toLowerCase().contains(value.toLowerCase())
+                        || Tool.removeAccent(nv.getMaNhanVien()).contains(Tool.removeAccent(value))
+                        || Tool.removeAccent(nv.getHoNhanVien()).contains(Tool.removeAccent(value))
+                        || Tool.removeAccent(nv.getTenNhanVien()).contains(Tool.removeAccent(value))
+                        || Tool.removeAccent(nv.getQuyen()).contains(Tool.removeAccent(value))) {
                     result.add(nv);
                 }
             } else {

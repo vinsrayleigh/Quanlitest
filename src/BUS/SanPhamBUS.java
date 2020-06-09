@@ -52,7 +52,6 @@ public class SanPhamBUS {
         return clone;
     }
     public void getData(){
-        System.out.println("Đọc Sản Phẩm");
         list = SanPhamDAO.getSanPham();
     };
     //String maSanPham, String tenSanPham, int dongia, int soLuong, Date namSx, String maNCC, String maLoaiSP, String maThuongHieu, String image

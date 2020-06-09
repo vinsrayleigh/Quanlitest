@@ -172,11 +172,6 @@ public class ChonSanPham extends JPanel {
                 //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
             }
         });
-        tagetPN.ThanhToan.addActionListener((e) -> {
-            //qlsp.getData();
-            System.out.println("ê");
-            this.refreshTable();
-        });
     }
     public void hienthi(SanPhamDTO sp1) {
         txma.setText(sp1.getMaSanPham());
@@ -335,7 +330,6 @@ public class ChonSanPham extends JPanel {
     public void setDatatoTable(ArrayList<SanPhamDTO> list) {
         tbSanPham.clear();
         list.forEach((sp) -> {
-            System.out.println(sp.getMaSanPham());
             tbSanPham.addRow(new String[]{sp.getMaSanPham(), sp.getTenLoaiSP(), sp.getTenSanPham(), String.valueOf(sp.getDongia()), String.valueOf(sp.getSoLuong())});
         });
     }

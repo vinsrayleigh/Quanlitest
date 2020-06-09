@@ -30,10 +30,15 @@ public class MyTable extends JPanel {
         setLayout(new BorderLayout());
 
         tb = new JTable();
-        tbModel = new DefaultTableModel();
+        tbModel = new DefaultTableModel(){
+          @Override
+          public boolean isCellEditable(int row, int colum){
+              return false;
+          }
+        };
         pane = new JScrollPane(tb);
         pane.getVerticalScrollBar().setUnitIncrement(8);
-
+        //editcell unennable
         tb.setFillsViewportHeight(true);
         tb.setFont(new Font("Segoe UI", 0, 16));
         tb.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 16));
