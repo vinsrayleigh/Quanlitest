@@ -154,7 +154,7 @@ public class Tool {
         for (int i = 0; i < sb.length(); i++) {
             sb.setCharAt(i, removeAccent(sb.charAt(i)));
         }
-        return sb.toString();
+        return sb.toString().toLowerCase();
     }
     public static void AddDocumentListener(String type,JTextField tx){
         tx.getDocument().addDocumentListener(new DocumentListener() {

@@ -3,22 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/phuon/Documents/NetBeansProjects/Quanli/src/BUS/CTHDBUS.java</file>
+            <file>file:/C:/Users/phuon/Documents/NetBeansProjects/Quanli/src/DAO/ThongKeDAO.java</file>
+            <file>file:/C:/Users/phuon/Documents/NetBeansProjects/Quanli/src/BUS/Tool.java</file>
             <file>file:/C:/Users/phuon/Documents/NetBeansProjects/Quanli/src/GUI/DangNhap.java</file>
             <file>file:/C:/Users/phuon/Documents/NetBeansProjects/Quanli/src/GUI/Quanli/ThongKe.java</file>
-            <file>file:/C:/Users/phuon/Documents/NetBeansProjects/Quanli/src/GUI/HienThi/ThemSuaKhachHang.java</file>
-            <file>file:/C:/Users/phuon/Documents/NetBeansProjects/Quanli/src/BUS/KhuyenMaiBUS.java</file>
-            <file>file:/C:/Users/phuon/Documents/NetBeansProjects/Quanli/src/GUI/Main.java</file>
-            <file>file:/C:/Users/phuon/Documents/NetBeansProjects/Quanli/src/GUI/HienThi/ThemSuaKhuyenMai.java</file>
-            <file>file:/C:/Users/phuon/Documents/NetBeansProjects/Quanli/src/BUS/HoaDonBUS.java</file>
-            <file>file:/C:/Users/phuon/Documents/NetBeansProjects/Quanli/src/DTO/NhanVienDTO.java</file>
-            <file>file:/C:/Users/phuon/Documents/NetBeansProjects/Quanli/src/DTO/KhachHangDTO.java</file>
-            <file>file:/C:/Users/phuon/Documents/NetBeansProjects/Quanli/src/GUI/HienThi/ChonKhuyenMai.java</file>
-            <file>file:/C:/Users/phuon/Documents/NetBeansProjects/Quanli/src/GUI/Quanli/QuanLiKhuyenMaiForm.java</file>
-            <file>file:/C:/Users/phuon/Documents/NetBeansProjects/Quanli/src/GUI/MyTable.java</file>
-            <file>file:/C:/Users/phuon/Documents/NetBeansProjects/Quanli/src/GUI/HienThi/HienThiCTHoaDon.java</file>
-            <file>file:/C:/Users/phuon/Documents/NetBeansProjects/Quanli/src/GUI/HienThi/HienThiKhuyenMai.java</file>
-            <file>file:/C:/Users/phuon/Documents/NetBeansProjects/Quanli/src/GUI/HienThi/HienThiNhanVien.java</file>
         </group>
     </open-files>
 </project-private>

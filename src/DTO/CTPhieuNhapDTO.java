@@ -13,9 +13,9 @@ public class CTPhieuNhapDTO {
     private String maPhieuNhap;
     private String maSanPham;
     private int soLuong;
-    private double dongia;
+    private int dongia;
 
-    public CTPhieuNhapDTO(String maPhieuNhap, String maSanPham, int soLuong, double dongia) {
+    public CTPhieuNhapDTO(String maPhieuNhap, String maSanPham, int soLuong, int dongia) {
         this.maPhieuNhap = maPhieuNhap;
         this.maSanPham = maSanPham;
         this.soLuong = soLuong;
@@ -49,11 +49,11 @@ public class CTPhieuNhapDTO {
         this.soLuong = soLuong;
     }
 
-    public double getDongia() {
+    public int getDongia() {
         return dongia;
     }
 
-    public void setDongia(double dongia) {
+    public void setDongia(int dongia) {
         this.dongia = dongia;
     }
 }

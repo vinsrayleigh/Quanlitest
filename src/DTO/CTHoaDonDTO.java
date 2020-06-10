@@ -30,6 +30,9 @@ public class CTHoaDonDTO {
     public String getMaHoaDon() {
         return maHoaDon;
     }
+    public boolean equal(CTHoaDonDTO cthd){
+        return (this.maHoaDon.equals(cthd.getMaHoaDon())&&this.maSanPham.equals(cthd.getMaSanPham()));
+    }
 
     public void setMaHoaDon(String maHoaDon) {
         this.maHoaDon = maHoaDon;

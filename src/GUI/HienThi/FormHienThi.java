@@ -29,7 +29,9 @@ public class FormHienThi extends JPanel {
         }
         return null;
     }
-    
+    public void setHeaders(String[] a){
+        mtb.setHeaders(a);
+    }
     public MyTable getTable() {
         return this.mtb;
     }

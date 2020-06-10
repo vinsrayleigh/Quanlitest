@@ -90,9 +90,9 @@ public class HoaDon extends JPanel {
         ThanhToan.addActionListener((e) -> {
             int reply = JOptionPane.showConfirmDialog(this, "Xác nhận thanh toán");
             if (reply == JOptionPane.YES_OPTION) {
-                int money = (TongTien-Giamgia);
+                int money = (TongTien - Giamgia);
                 DoThanhToan();
-                JOptionPane.showMessageDialog(this, "Thanh toán thành công\n Tổng thanh toán là: " + money+ "000đ");
+                JOptionPane.showMessageDialog(this, "Thanh toán thành công\n Tổng thanh toán là: " + money + "000đ");
                 txTongTien.setText("0");
                 Main.BacktoMain();
             } else {
@@ -100,16 +100,22 @@ public class HoaDon extends JPanel {
             }
         });
         huy.addActionListener((e) -> {
-           Main.BacktoMain();
+            Main.BacktoMain();
         });
     }
 
     public void timKhuyenMai() {
+        btnKhuyenMai.setEnabled(false);
+        btnTimKhach.setEnabled(false);
+        txKm.setText("");
         ChonKhuyenMai chonkm = new ChonKhuyenMai(txKm);
         chonkm.setVisible(true);
+        chonkm.setAlwaysOnTop(true);
         chonkm.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosed(java.awt.event.WindowEvent windowEvent) {
+                btnKhuyenMai.setEnabled(true);
+                btnTimKhach.setEnabled(true);
                 String maKM = txKm.getText();
                 KhuyenMaiDTO km = new KhuyenMaiBUS().getKM(maKM);
                 boolean check = false;
@@ -132,7 +138,19 @@ public class HoaDon extends JPanel {
     }
 
     public void timKhach() {
-        new ChonKhachHangForm(txKh).setVisible(true);
+        txKh.setText("");
+        btnTimKhach.setEnabled(false);
+        btnKhuyenMai.setEnabled(false);
+        ChonKhachHangForm chon = new ChonKhachHangForm(txKh);
+        chon.setAlwaysOnTop(true);
+        chon.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosed(java.awt.event.WindowEvent windowEvent) {
+                btnKhuyenMai.setEnabled(true);
+                btnTimKhach.setEnabled(true);
+            }
+
+        });
     }
 
     public void Sua() {

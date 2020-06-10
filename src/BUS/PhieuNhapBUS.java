@@ -43,8 +43,14 @@ public class PhieuNhapBUS {
         } catch (Exception e) {
             return "PN1";
         }
+    }   
+    public PhieuNhapDTO getPN(String maPN){
+        for(PhieuNhapDTO ph:list){
+            if(ph.getMaPhieuNhap().equals(maPN))
+                return ph;
+        }
+        return null;
     }
-
     public void getData() {
         list = PhieuNhapDAO.getPhieuNhap();
     }

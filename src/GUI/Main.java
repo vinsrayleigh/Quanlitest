@@ -276,6 +276,7 @@ public class Main extends JFrame implements MouseListener {
                 ChonNhaCungCap.value = "";
                 ChonNhaCungCap cNCC = new ChonNhaCungCap(null);
                 cNCC.setVisible(true);
+                cNCC.setAlwaysOnTop(true);
                 cNCC.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosed(java.awt.event.WindowEvent windowevent) {

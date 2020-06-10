@@ -273,7 +273,7 @@ public class PhieuNhap extends JPanel {
         listSP.forEach((sp) -> {
 //            CTHoaDonDTO cthd = new CTHoaDonDTO(txmaHD.getText(), sp.getMaSanPham(), sp.getSoLuong(), sp.getDongia() * sp.getSoLuong(), sp.getDongia());
 //            CTHoaDonDAO.insertCTHD(cthd);
-            CTPhieuNhapDTO ctPN = new CTPhieuNhapDTO(txmaHD.getText(), sp.getMaSanPham(), sp.getSoLuong(), sp.getDongia()*sp.getSoLuong());
+            CTPhieuNhapDTO ctPN = new CTPhieuNhapDTO(txmaHD.getText(), sp.getMaSanPham(), sp.getSoLuong(), sp.getDongia());
             CTPhieuNhapDAO.insertCTPhieuNhap(ctPN);
             SanPhamDTO spkho = qlsp.getSanPham(ctPN.getMaSanPham());
             spkho.setSoLuong(spkho.getSoLuong() + sp.getSoLuong());

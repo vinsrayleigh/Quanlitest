@@ -177,7 +177,7 @@ public class ChonSanPham extends JPanel {
         txma.setText(sp1.getMaSanPham());
         txLoai.setText(sp1.getTenLoaiSP());
         txTen.setText(sp1.getTenSanPham());
-        txDongia.setText(sp1.getDongia() + "000đ");
+        txDongia.setText(Tool.getMonney(sp1.getDongia()) + ",000đ");
         txNCC.setText(sp1.getTenNCC());
         txThuongHieu.setText(sp1.getTenThuongHieu());
         txMota.setText(sp1.getMota());
