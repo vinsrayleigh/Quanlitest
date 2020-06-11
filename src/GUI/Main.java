@@ -49,12 +49,14 @@ public class Main extends JFrame implements MouseListener {
     ThongKe thongke;
     QuanLiNhaCungCap nhacungcap;
     QuanLiKhuyenMaiForm khuyenmai;
+    QuanLiThuongHieu thuonghieu;
     public static JFrame All = new JFrame();
     public int status;
+
     //test
     //String quyen = "qlBanHangqlNhapHangqlNCCqlQuyenqlKhachHangqlSanPhamqlLoaiSanPhamqlHoaDonqlPhieuNhapqlKhuyenMai";
     public Main() {
-        status=1;
+        status = 1;
         setLayout(new BorderLayout());
         setSize(WIDTH, HEIGHT);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -77,7 +79,7 @@ public class Main extends JFrame implements MouseListener {
             "Nhân viên", "support_50px.png", "xemNhanVien", "qlNhanVien",
             "Khách hàng", "user_male_50px.png", "xemKhachHang", "qlKhachHang",
             "Nhà cung cấp", "company_50px.png", "xemNCC", "qlNCC",
-            "Thương Hiệu", "company_50px.png", "xemThuongHieu", "qlThuongHieu",
+            "Thương hiệu", "company_50px.png", "xemThuongHieu", "qlThuongHieu",
             "seperate", "1", "", "",
             "Tài khoản", "key_50px.png", "xemTaiKhoan", "qlTaiKhoan",
             "Quyền", "lock_50px.png", "xemQuyen", "qlQuyen",
@@ -251,6 +253,12 @@ public class Main extends JFrame implements MouseListener {
                 plContent.setBackground(Color.DARK_GRAY);
                 plContent.add(khachhang, BorderLayout.CENTER);
                 break;
+            case "Thương hiệu":
+                if (thuonghieu == null) {
+                    thuonghieu = new QuanLiThuongHieu();
+                }
+                plContent.add(thuonghieu, BorderLayout.CENTER);
+                break;
             case "Sản phẩm":
                 if (sanpham == null) {
                     sanpham = new QuanLiSanPhamForm();
@@ -266,7 +274,7 @@ public class Main extends JFrame implements MouseListener {
                 plContent.setBackground(Color.DARK_GRAY);
                 plContent.add(banhang, BorderLayout.CENTER);
                 break;
-                case "Khuyến mãi":
+            case "Khuyến mãi":
                 if (khuyenmai == null) {
                     khuyenmai = new QuanLiKhuyenMaiForm();
                 }
@@ -288,16 +296,17 @@ public class Main extends JFrame implements MouseListener {
                             nhaphang.phieunhap.txNCC.setText(ChonNhaCungCap.value);
                             plContent.add(nhaphang, BorderLayout.CENTER);
                         }
-                        status=1;
+                        status = 1;
                         revalidate();//refresh ui and layout
                         repaint();
                     }
+
                     @Override
                     public void windowOpened(java.awt.event.WindowEvent windowevent) {
-                        status=0;
+                        status = 0;
                         //
                     }
-                    
+
                 });
 
                 break;
@@ -343,7 +352,7 @@ public class Main extends JFrame implements MouseListener {
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        if (e.getSource() instanceof NavBarButton&&status==1) {
+        if (e.getSource() instanceof NavBarButton && status == 1) {
 
             NavBarButton btn = (NavBarButton) e.getSource();
             if (currentTab != null) {

@@ -8,7 +8,6 @@ package BUS;
 import DAO.ThuongHieuDAO;
 import java.util.ArrayList;
 import DTO.*;
-import java.util.Arrays;
 /**
  *
  * @author phuon
@@ -28,26 +27,53 @@ public class ThuongHieuBUS {
         }
         return null;
     }
-    public String bigNum(){
-        int[] a = new int[list.size()];
-        for(int i=0 ;i<list.size();i++){
-            String temp = list.get(i).getMaThuongHieu().replaceAll("TH","");
-            try {
-                a[i]=Integer.parseInt(temp);
-            } catch (Exception e) {
-                a[i] = 0;
+    public ArrayList<ThuongHieuDTO> getTH(){
+        return list;
+    }
+    public ThuongHieuDTO getThuongHieu(String maThuongHieu){
+        for(ThuongHieuDTO th:list){
+            if(th.getMaThuongHieu().equals(maThuongHieu)){
+                return th;
             }
-            
         }
-        Arrays.sort(a);
-        System.out.println(a[a.length-1]);
-        return String.valueOf(a[a.length-1]);
+        return null;
     }
     public String getNextID() {
+        //throw new UnsupportedOperationException("Not supported yet.");
         try {
-            return "Q" + bigNum()+1;
+            String temp = list.get(list.size() - 1).getMaThuongHieu().replaceAll("TH", "");
+            return "TH" + String.valueOf(Integer.parseInt(temp)+1);
         } catch (Exception e) {
-            return "Q1";
+            return "TH0001";
         }
+    }//To change body of generated methods, choose Tools | Templates.j
+     public ArrayList<ThuongHieuDTO> search(String value, String type) {
+        ArrayList<ThuongHieuDTO> result = new ArrayList<>();
+
+        list.forEach((TH) -> {
+            if (type.equals("Tất cả")) {
+                if ( TH.getMaThuongHieu().toLowerCase().contains(value.toLowerCase())
+                        || TH.getTenThuongHieu().toString().toLowerCase().contains(value.toLowerCase())
+                        ||Tool.removeAccent(TH.getMaThuongHieu()).contains(Tool.removeAccent(value))
+                        ||Tool.removeAccent(TH.getTenThuongHieu()).contains(Tool.removeAccent(value)))
+                        {
+                    result.add(TH);
+                }
+            } else {
+                switch (type) {
+                    case "Mã thương hiệu":
+                        if (TH.getMaThuongHieu().toLowerCase().contains(value.toLowerCase())) {
+                            result.add(TH);
+                        }
+                        break;
+                    case "Tên thương hiệu":
+                        if (TH.getTenThuongHieu().toLowerCase().contains(value.toLowerCase())) {
+                            result.add(TH);
+                        }
+                        break;
+                  }
+            }
+        });
+    return result;
     }
 }
