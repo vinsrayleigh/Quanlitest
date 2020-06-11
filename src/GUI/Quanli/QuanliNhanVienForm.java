@@ -11,6 +11,7 @@ import DAO.NhanVienDAO;
 import DTO.NhanVienDTO;
 import GUI.Button.*;
 import GUI.*;
+import GUI.Excel.DocExcel;
 import GUI.Excel.XuatExcel;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -75,7 +76,7 @@ public class QuanliNhanVienForm extends JPanel {
             new XuatExcel().xuatFileExcelNhanVien();
         });
         btnNhapExcel.addActionListener((ActionEvent ae) -> {
-            //new DocExcel().docFileExcelNhanVien();
+            new DocExcel().docFileExcelNhanVien();
         });
     }
 

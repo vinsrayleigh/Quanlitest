@@ -6,6 +6,8 @@
 package GUI.Excel;
 
 import BUS.NhanVienBUS;
+import BUS.Tool;
+import DAO.NhanVienDAO;
 import DTO.NhanVienDTO;
 import GUI.*;
 import java.awt.FileDialog;
@@ -13,6 +15,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.sql.Date;
 import java.time.LocalDate;
 import java.util.Iterator;
 import javax.swing.JFrame;
@@ -390,94 +393,104 @@ public class DocExcel {
 //    }
 //
 //    //Đọc file excel Nhân viên
-//    public void docFileExcelNhanVien() {
-//        fd.setTitle("Nhập dữ liệu nhân viên từ excel");
-//        String url = getFile();
-//        if (url == null) {
-//            return;
-//        }
-//
-//        FileInputStream inputStream = null;
-//        try {
-//            inputStream = new FileInputStream(new File(url));
-//
-//            HSSFWorkbook workbook = new HSSFWorkbook(inputStream);
-//            HSSFSheet sheet = workbook.getSheetAt(0);
-//            Iterator<Row> rowIterator = sheet.iterator();
-//            Row row1 = rowIterator.next();
-//
-//            String hanhDongKhiTrung = "";
-//            int countThem = 0;
-//            int countGhiDe = 0;
-//            int countBoQua = 0;
-//
-//            while (rowIterator.hasNext()) {
-//                Row row = rowIterator.next();
-//                Iterator<Cell> cellIterator = row.cellIterator();
-//
-//                while (cellIterator.hasNext()) {
-//
-//                    int stt = (int) cellIterator.next().getNumericCellValue();
-//                    String ma = cellIterator.next().getStringCellValue();
-//                    String ten = cellIterator.next().getStringCellValue();
-//                    LocalDate ngaysinh = LocalDate.parse(cellIterator.next().getStringCellValue());
-//                    String diachi = cellIterator.next().getStringCellValue();
-//                    String sdt = cellIterator.next().getStringCellValue();
-//                    int trangthai = (cellIterator.next().getStringCellValue().equals("Ẩn") ? 1 : 0);
-//
-//                    NhanVienBUS qlnvBUS = new NhanVienBUS();
-//                    NhanVienDTO nvOld = qlnvBUS.getNV(ma);
-//
-//                    if (nvOld != null) {
-//                        if (!hanhDongKhiTrung.contains("tất cả")) {
-//                            MyTable mtb = new MyTable();
-//                            mtb.setHeaders(new String[]{"", "Mã", "Tên", "Ngày sinh", "Địa chỉ", "SDT", "Trạng thái"});
-//                            mtb.addRow(new String[]{
-//                                "Cũ:", nvOld.getMaNV(),
-//                                nvOld.getTenNV(),
-//                                String.valueOf(nvOld.getNgaySinh()),
-//                                nvOld.getDiaChi(),
-//                                nvOld.getSDT(),
-//                                String.valueOf(nvOld.getTrangThai())
-//                            });
-//                            mtb.addRow(new String[]{
-//                                "Mới:", ma, ten, String.valueOf(ngaysinh), diachi, sdt, String.valueOf(trangthai)
-//                            });
-//
-//                            MyJOptionPane mop = new MyJOptionPane(mtb, hanhDongKhiTrung);
-//                            hanhDongKhiTrung = mop.getAnswer();
-//                        }
-//                        if (hanhDongKhiTrung.contains("Ghi đè")) {
-//                            qlnvBUS.update(ma, ten, ngaysinh, diachi, sdt, trangthai);
-//                            countGhiDe++;
-//                        } else {
-//                            countBoQua++;
-//                        }
-//                    } else {
-//                        NhanVien nv = new NhanVien(ma, ten, ngaysinh, diachi, sdt, trangthai);
-//                        qlnvBUS.add(nv);
-//                        countThem++;
-//                    }
-//                }
-//            }
-//            JOptionPane.showMessageDialog(null, "Đọc thành công, "
-//                    + "Thêm " + countThem
-//                    + "; Ghi đè " + countGhiDe
-//                    + "; Bỏ qua " + countBoQua
-//                    + ". Vui lòng làm mới để thấy kết quả");
-//
-//        } catch (Exception ex) {
-//            JOptionPane.showMessageDialog(null, "Lỗi khi nhập dữ liệu từ file: " + ex.getMessage());
-//        } finally {
-//            try {
-//                if (inputStream != null) {
-//                    inputStream.close();
-//                }
-//            } catch (IOException ex) {
-//                JOptionPane.showMessageDialog(null, "Lỗi khi đóng inputstream: " + ex.getMessage());
-//            }
-//        }
-//    }
+    public void docFileExcelNhanVien() {
+        fd.setTitle("Nhập dữ liệu nhân viên từ excel");
+        String url = getFile();
+        if (url == null) {
+            return;
+        }
+
+        FileInputStream inputStream = null;
+        try {
+            inputStream = new FileInputStream(new File(url));
+
+            HSSFWorkbook workbook = new HSSFWorkbook(inputStream);
+            HSSFSheet sheet = workbook.getSheetAt(0);
+            Iterator<Row> rowIterator = sheet.iterator();
+            Row row1 = rowIterator.next();
+
+            String hanhDongKhiTrung = "";
+            int countThem = 0;
+            int countGhiDe = 0;
+            int countBoQua = 0;
+
+            while (rowIterator.hasNext()) {
+                Row row = rowIterator.next();
+                Iterator<Cell> cellIterator = row.cellIterator();
+
+                while (cellIterator.hasNext()) {
+
+                    int stt = (int) cellIterator.next().getNumericCellValue();
+                    String ma = cellIterator.next().getStringCellValue();
+                    String ho = cellIterator.next().getStringCellValue();
+                    String ten = cellIterator.next().getStringCellValue();
+                    LocalDate ngaysinh = LocalDate.parse(cellIterator.next().getStringCellValue());
+                    String gioitinh = cellIterator.next().getStringCellValue();
+                    String sdt = cellIterator.next().getStringCellValue();
+                    String quyen = cellIterator.next().getStringCellValue();
+                    int luong  =(int) cellIterator.next().getNumericCellValue();
+                    int trangthai = (cellIterator.next().getStringCellValue().equals("Ẩn") ? 0 : 1);
+
+                    NhanVienBUS qlnvBUS = new NhanVienBUS();
+                    NhanVienDTO nvOld = qlnvBUS.getNV(ma);
+
+                    if (nvOld != null) {
+                        if (!hanhDongKhiTrung.contains("tất cả")) {
+                            MyTable mtb = new MyTable();
+                            mtb.setHeaders(new String[]{"", "Mã","Họ", "Tên", "Ngày sinh", "Giới tính", "SDT","Quyền","Lương", "Trạng thái"});
+//                          "STT", "Mã nhân viên","Họ nhân viên", "Tên nhân viên", "Ngày sinh", "Giới tính", "Số điện thoại","Quyền", "Lương","Trạng thái"});
+                            mtb.addRow(new String[]{
+                                "Cũ:", nvOld.getMaNhanVien(),
+                                nvOld.getHoNhanVien(),
+                                nvOld.getTenNhanVien(),
+                                String.valueOf(nvOld.getNgaySinh()),
+                                nvOld.getGioiTinh(),
+                                nvOld.getSdt(),
+                                nvOld.getQuyen(),
+                                nvOld.getLuong()+"",
+                                String.valueOf(nvOld.getTrangThai())
+                            });
+                            mtb.addRow(new String[]{
+                                "Mới:", ma,ho, ten, String.valueOf(ngaysinh), gioitinh, sdt,quyen,luong+"", String.valueOf(trangthai)
+                            });
+
+                            MyJOptionPane mop = new MyJOptionPane(mtb, hanhDongKhiTrung);
+                            hanhDongKhiTrung = mop.getAnswer();
+                        }
+                        if (hanhDongKhiTrung.contains("Ghi đè")) {
+                            NhanVienDTO nv = new NhanVienDTO(ma, ten,ho, Date.valueOf(ngaysinh),gioitinh, sdt, quyen, luong,trangthai);
+                            NhanVienDAO.updateNhanVien(nv);
+                            countGhiDe++;
+                        } else {
+                            countBoQua++;
+                        }
+                    } else {
+                        NhanVienDTO nv = new NhanVienDTO(ma, ten,ho, Date.valueOf(ngaysinh),gioitinh, sdt, quyen, luong,trangthai);
+                        NhanVienDAO.insertNhanVien(nv);
+                        qlnvBUS.add(nv);
+                        countThem++;
+                    }
+                }
+            }
+            JOptionPane.showMessageDialog(null, "Đọc thành công, "
+                    + "Thêm " + countThem
+                    + "; Ghi đè " + countGhiDe
+                    + "; Bỏ qua " + countBoQua
+                    + ". Vui lòng làm mới để thấy kết quả");
+
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "Lỗi khi nhập dữ liệu từ file: " + ex.getMessage());
+            ex.printStackTrace();
+        } finally {
+            try {
+                if (inputStream != null) {
+                    inputStream.close();
+                }
+            } catch (IOException ex) {
+                JOptionPane.showMessageDialog(null, "Lỗi khi đóng inputstream: " + ex.getMessage());
+            }
+        }
+    }
 
 //    //Đọc file excel Khuyến mãi
 //    public void docFileExcelKhuyenMai() {

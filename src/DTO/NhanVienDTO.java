@@ -36,7 +36,7 @@ public class NhanVienDTO {
         this.maQuyen = maQuyen;
     }
 
-    public NhanVienDTO(String maNhanVien, String tenNhanVien, String hoNhanVien, Date ngaySinh, String gioiTinh, String sdt, String maQuyen, double luong, int trangThai) {
+    public NhanVienDTO(String maNhanVien, String tenNhanVien, String hoNhanVien, Date ngaySinh, String gioiTinh, String sdt, String maQuyen, int luong, int trangThai) {
         this.maNhanVien = maNhanVien;
         this.tenNhanVien = tenNhanVien;
         this.hoNhanVien = hoNhanVien;
@@ -48,7 +48,7 @@ public class NhanVienDTO {
         this.trangThai = trangThai;
     }
     private String maQuyen;
-    private double luong;
+    private int luong;
     private int trangThai;
 
     public int getTrangThai() {
@@ -62,7 +62,7 @@ public class NhanVienDTO {
     public NhanVienDTO() {
     }
 
-    public NhanVienDTO(String maNhanVien, String tenNhanVien, String hoNhanVien, Date ngaySinh, String gioiTinh, String maChucVu, double luong) {
+    public NhanVienDTO(String maNhanVien, String tenNhanVien, String hoNhanVien, Date ngaySinh, String gioiTinh, String maChucVu, int luong) {
         this.maNhanVien = maNhanVien;
         this.tenNhanVien = tenNhanVien;
         this.hoNhanVien = hoNhanVien;
@@ -122,11 +122,11 @@ public class NhanVienDTO {
         this.maQuyen = maChucVu;
     }
 
-    public double getLuong() {
+    public int getLuong() {
         return luong;
     }
 
-    public void setLuong(double luong) {
+    public void setLuong(int luong) {
         this.luong = luong;
     }
 }
