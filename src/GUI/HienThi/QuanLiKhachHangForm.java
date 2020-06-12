@@ -9,6 +9,7 @@ import GUI.Button.SuaButton;
 import GUI.Button.ThemButton;
 import GUI.Button.XoaButton;
 import GUI.DangNhap;
+import GUI.Excel.DocExcel;
 import GUI.Excel.XuatExcel;
 import GUI.HienThi.HienThiKhachHang;
 import java.awt.BorderLayout;
@@ -59,10 +60,10 @@ public class QuanLiKhachHangForm extends JPanel {
             btnSuaMouseClicked();
         });
         btnnhapexcel.addActionListener((ActionEvent ae) -> {
-            //new XuatExcel().
+            new DocExcel().docFileExcelKhachhang();
         });
         btnxuatexcel.addActionListener((ActionEvent ae) -> {
-            new XuatExcel().xuatFileExcelNhanVien();
+            new XuatExcel().xuatFileExcelKhachHang();
         });
 
     }

@@ -12,6 +12,7 @@ import DAO.NhanVienDAO;
 import DTO.ThuongHieuDTO;
 import GUI.Button.*;
 import GUI.*;
+import GUI.Excel.DocExcel;
 import GUI.Excel.XuatExcel;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -67,10 +68,10 @@ public class QuanLiThuongHieu extends JPanel {
             btnSuaMouseClicked();
         });
         btnXuatExcel.addActionListener((ActionEvent ae) -> {
-            new XuatExcel().xuatFileExcelNhanVien();
+            new XuatExcel().xuatFileExcelTuongHieu();
         });
         btnNhapExcel.addActionListener((ActionEvent ae) -> {
-            //new DocExcel().docFileExcelNhanVien();
+            new DocExcel().docFileExcelThuongHieu();
         });
     }
 

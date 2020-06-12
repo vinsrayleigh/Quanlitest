@@ -3,6 +3,8 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
+// them 2 form chuyen nghiep
 package GUI.Quanli;
 
 import BUS.*;

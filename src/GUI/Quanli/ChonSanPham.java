@@ -139,8 +139,7 @@ public class ChonSanPham extends JPanel {
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Số lượng phải là số nguyên dương và nhỏ hơn số lượng của sp");
         }
-        else{
-            
+        else{           
         }
 
         //HoaDon.list.add();

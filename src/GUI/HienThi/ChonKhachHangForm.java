@@ -16,7 +16,7 @@ public class ChonKhachHangForm extends JFrame {
     JButton btnCancel = new JButton("Thoát");
     JTextField txTarget;
 
-    public ChonKhachHangForm(JTextField _txTarget) {
+    public ChonKhachHangForm(JTextField _txTarget) { // txFeild thành String ;;
         this.setTitle("Chọn khách hàng");
         this.setLayout(new BorderLayout());
         this.setSize(1200 - 200, 600);
@@ -44,6 +44,7 @@ public class ChonKhachHangForm extends JFrame {
 
             } else {
                 JOptionPane.showMessageDialog(this, "Chưa chọn khách hàng nào!");
+                this.dispose();
             }
         });
         

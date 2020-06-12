@@ -50,7 +50,7 @@ public class ThuongHieuDAO {
             Statement st = conn.createStatement();
             String Sql = "UPDATE tblthuonghieu "
                     +"SET tenthuonghieu = '"+sp.getTenThuongHieu()+"',"
-                    +" mota = '"+sp.getMoTa()+"',"
+                    +" mota = '"+sp.getMoTa()+"' "
                     +"WHERE mathuonghieu = '"+sp.getMaThuongHieu()+"';";
             int row = st.executeUpdate(Sql);
             if(row>0) result =true;
