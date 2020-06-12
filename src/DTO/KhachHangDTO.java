@@ -9,9 +9,9 @@ public class KhachHangDTO {
     private Date ngaySinh;
     private String sdt;
     private String loaiKhachHang;
-    private double tichLuy;
+    private int tichLuy;
 
-    public KhachHangDTO(String maKhachHang, String tenKhachHang, String hoKhachHang, Date ngaySinh, String sdt, String loaiKhachHang, double tichLuy) {
+    public KhachHangDTO(String maKhachHang, String tenKhachHang, String hoKhachHang, Date ngaySinh, String sdt, String loaiKhachHang, int tichLuy) {
         this.maKhachHang = maKhachHang;
         this.tenKhachHang = tenKhachHang;
         this.hoKhachHang = hoKhachHang;
@@ -74,11 +74,11 @@ public class KhachHangDTO {
         this.loaiKhachHang = loaiKhachHang;
     }
 
-    public double getTichLuy() {
+    public int getTichLuy() {
         return tichLuy;
     }
 
-    public void setTichLuy(double tichLuy) {
+    public void setTichLuy(int tichLuy) {
         this.tichLuy = tichLuy;
     }
 }

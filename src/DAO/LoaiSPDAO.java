@@ -7,7 +7,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-public class MaSPDAO {
+public class LoaiSPDAO {
     
     public static boolean insertMaSP(LoaiSPDTO sp){
         boolean result = false;

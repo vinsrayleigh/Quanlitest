@@ -5,6 +5,7 @@
  */
 package GUI;
 
+import GUI.Excel.XuatExcel;
 import GUI.HienThi.ChonNhaCungCap;
 import GUI.HienThi.QuanLiKhachHangForm;
 import GUI.NavBar.*;
@@ -50,12 +51,14 @@ public class Main extends JFrame implements MouseListener {
     QuanLiNhaCungCap nhacungcap;
     QuanLiKhuyenMaiForm khuyenmai;
     QuanLiThuongHieu thuonghieu;
+    QuanLiHoaDon hoadon;
     public static JFrame All = new JFrame();
     public int status;
 
     //test
     //String quyen = "qlBanHangqlNhapHangqlNCCqlQuyenqlKhachHangqlSanPhamqlLoaiSanPhamqlHoaDonqlPhieuNhapqlKhuyenMai";
     public Main() {
+        XuatExcel.setParent(this);
         status = 1;
         setLayout(new BorderLayout());
         setSize(WIDTH, HEIGHT);
@@ -258,6 +261,12 @@ public class Main extends JFrame implements MouseListener {
                     thuonghieu = new QuanLiThuongHieu();
                 }
                 plContent.add(thuonghieu, BorderLayout.CENTER);
+                break;
+                case "Hóa đơn":
+                if (hoadon == null) {
+                    hoadon = new QuanLiHoaDon();
+                }
+                plContent.add(hoadon, BorderLayout.CENTER);
                 break;
             case "Sản phẩm":
                 if (sanpham == null) {

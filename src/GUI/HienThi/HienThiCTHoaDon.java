@@ -23,11 +23,9 @@ import javax.swing.plaf.RootPaneUI;
 public class HienThiCTHoaDon extends JPanel{
     CTHDBUS qlCTHD = new CTHDBUS();
     MyTable tbCTHD = new MyTable();
-    String maHD = "";
-    public HienThiCTHoaDon(String maHD){
-        setSize(700, 500);
+    public HienThiCTHoaDon(){
+        //setSize(700, 500);
         setLayout(new BorderLayout());
-        this.maHD=maHD;
         String[] header = new String[]{
             "STT",
             "Mã hóa đơn",
@@ -37,7 +35,6 @@ public class HienThiCTHoaDon extends JPanel{
             "Thành tiền"
         };
         tbCTHD.setHeaders(header);
-        setDataToTable(qlCTHD.Seacrh(maHD));
         add(tbCTHD,BorderLayout.CENTER);
     }
     public void setDataToTable(ArrayList<CTHoaDonDTO> list){

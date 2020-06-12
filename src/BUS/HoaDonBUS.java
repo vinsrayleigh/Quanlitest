@@ -8,6 +8,7 @@ package BUS;
 import static BUS.PhieuNhapBUS.list;
 import DAO.HoaDonDAO;
 import DTO.HoaDonDTO;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -54,5 +55,60 @@ public class HoaDonBUS {
     }
     public void getData() {
         list = HoaDonDAO.getHoaDon();
+    }
+    public ArrayList<HoaDonDTO> Search(String value,String type, LocalDate date1 , LocalDate date2,int gia1,int gia2){
+        ArrayList<HoaDonDTO> result = new ArrayList<>();
+        NhanVienBUS qlNhanVien = new NhanVienBUS();
+        KhachHangBUS qlKhachHang = new KhachHangBUS();
+//        "Tất cả", "Mã hóa đơn", "Nhân viên", "Khách hàng", "Ngày lập", "Tổng tiền", "Khuyến mãi"});
+        list.forEach((hd) -> {
+           switch(type){
+               case "Tất cả":{
+                   if(hd.getMaHoaDon().toLowerCase().contains(value.toLowerCase())
+                           ||Tool.removeAccent(qlNhanVien.getNV(hd.getMaNhanVien()).getFullFame()).contains(Tool.removeAccent(value))
+                           ||Tool.removeAccent(qlKhachHang.getKH(hd.getMaKM()).getFullName()).contains(Tool.removeAccent(value))
+                           ||hd.getMaKhachHang().toLowerCase().contains(value.toLowerCase())
+                           ||hd.getMaNhanVien().toLowerCase().contains(value.toLowerCase())
+                           ||hd.getMaKM().toLowerCase().contains(value.toLowerCase()))
+                       result.add(hd);
+                   break;
+               }
+               case "Khuyến mãi":{
+                   if(hd.getMaKM().toLowerCase().contains(value.toLowerCase()))
+                       result.add(hd);
+                   break;
+               }
+               case "Khách hàng":{
+                   if(Tool.removeAccent(qlKhachHang.getKH(hd.getMaKM()).getFullName()).contains(Tool.removeAccent(value))
+                           ||hd.getMaKhachHang().toLowerCase().contains(value.toLowerCase())){
+                       result.add(hd);
+                   }
+                   break;
+               }
+               case "Mã hóa đơn":{
+                   if(hd.getMaHoaDon().toLowerCase().contains(value.toLowerCase())){
+                       result.add(hd);
+                   }
+                   break;
+               }
+               case "Nhân viên":{
+                   if(Tool.removeAccent(qlNhanVien.getNV(hd.getMaNhanVien()).getFullFame()).contains(Tool.removeAccent(value))||
+                           hd.getMaNhanVien().toLowerCase().contains(value.toLowerCase()))
+                       result.add(hd);
+                       break;
+               }
+           }
+           
+        });
+         for (int i = result.size() - 1; i >= 0; i--) {
+             HoaDonDTO hd = result.get(i);
+            LocalDate ngaysinh = hd.getNgayLap().toLocalDate();
+            boolean ngayKhongThoa = (date1 != null && ngaysinh.isBefore(date1)) || (date2 != null && ngaysinh.isAfter(date2));
+            Boolean giaKhongThoa =(gia1!=0&&hd.getTongTien()<gia1)||(gia2!=0&&hd.getTongTien()>gia2);
+            if (ngayKhongThoa||giaKhongThoa) {
+                result.remove(hd);
+            }
+        }
+        return result;
     }
 }

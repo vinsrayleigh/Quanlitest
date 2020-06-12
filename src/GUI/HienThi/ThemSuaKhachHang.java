@@ -2,6 +2,7 @@
 package GUI.HienThi;
 
 import BUS.KhachHangBUS;
+import BUS.Tool;
 import DAO.KhachHangDAO;
 import DAO.QuyenDAO;
 import DAO.TaiKhoanDAO;
@@ -137,7 +138,7 @@ import java.text.SimpleDateFormat;
     
     private void themKH() {
         txTichluy.setText("0");
-        KhachHangDTO kh = new KhachHangDTO(txMakh.getText(), txHokh.getText(), txTenkh.getText(), new Date(0), txSDT.getText(), txloaikh.getSelectedItem().toString(), Double.parseDouble(txTichluy.getText()));
+        KhachHangDTO kh = new KhachHangDTO(txMakh.getText(), txHokh.getText(), txTenkh.getText(), new Date(0), txSDT.getText(), txloaikh.getSelectedItem().toString(), Tool.getInt(txTichluy.getText()));
         kh.setMaKhachHang(txMakh.getText());
         kh.setHoKhachHang(txHokh.getText());
         kh.setTenKhachHang(txTenkh.getText());
@@ -147,7 +148,7 @@ import java.text.SimpleDateFormat;
         kh.setNgaySinh(java.sql.Date.valueOf(localDate));
         kh.setSdt(txSDT.getText());
         kh.setLoaiKhachHang(txloaikh.getSelectedItem().toString());
-        kh.setTichLuy(Double.valueOf(txTichluy.getText()));
+        kh.setTichLuy(Tool.getInt(txTichluy.getText()));
         new KhachHangDAO().insertKhachHang(kh);
         //new TaiKhoanDAO().insertTaiKhoan(new TaiKhoanDTO(kh.getMaKhachHang(), "123456"));
         //this.dispose();
@@ -164,7 +165,7 @@ import java.text.SimpleDateFormat;
         khsua.setNgaySinh(java.sql.Date.valueOf(localDate));
         khsua.setSdt(txSDT.getText());
         khsua.setLoaiKhachHang(txloaikh.getSelectedItem().toString());
-        khsua.setTichLuy(Double.valueOf(txTichluy.getText()));
+        khsua.setTichLuy(Tool.getInt(txTichluy.getText()));
         int reply = JOptionPane.showConfirmDialog(rootPane,"Bạn có chắc muốn sửa nhân viên");
         if(reply==JOptionPane.YES_OPTION){
             new KhachHangDAO().updateKhachHang(khsua);

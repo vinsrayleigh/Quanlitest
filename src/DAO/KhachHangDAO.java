@@ -38,7 +38,7 @@ public class KhachHangDAO {
             String Sql ="SELECT * FROM tblkhachhang";
             ResultSet rs = st.executeQuery(Sql);
             while(rs.next()){
-                KhachHangDTO sp = new KhachHangDTO(rs.getString(1), rs.getString(2), rs.getString(3), rs.getDate(4), rs.getString(5), rs.getString(6), rs.getDouble(7));
+                KhachHangDTO sp = new KhachHangDTO(rs.getString(1), rs.getString(2), rs.getString(3), rs.getDate(4), rs.getString(5), rs.getString(6), rs.getInt(7));
                 list.add(sp);
             }
             conn.close();

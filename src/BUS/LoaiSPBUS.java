@@ -5,7 +5,7 @@
  */
 package BUS;
 
-import DAO.MaSPDAO;
+import DAO.LoaiSPDAO;
 import DTO.*;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -20,7 +20,7 @@ public class LoaiSPBUS {
         getData();
     }
     public void getData(){
-        list = MaSPDAO.getMaSP();
+        list = LoaiSPDAO.getMaSP();
     }
     public static LoaiSPDTO getLoaiSP(String masp){
         return new LoaiSPBUS().getLoaiSPDTO(masp);

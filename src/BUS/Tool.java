@@ -47,6 +47,7 @@ public class Tool {
         try {
             a= Integer.valueOf(input);
         } catch (Exception e) {
+            return 0;
         }
         return a;
     }
