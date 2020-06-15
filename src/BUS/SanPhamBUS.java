@@ -37,11 +37,11 @@ public class SanPhamBUS {
 //    private String maThuongHieu="";
 //    private String image="";
 //    private String mota="";
-    public static SanPhamDTO getClone(SanPhamDTO sp,int sl){
+    public static SanPhamDTO getClone(SanPhamDTO sp,int sl,int dongia){
         SanPhamDTO clone = new SanPhamDTO();
         clone.setMaSanPham(sp.getMaSanPham());
         clone.setTenSanPham(sp.getTenSanPham());
-        clone.setDongia(sp.getDongia());
+        clone.setDongia(dongia);
         clone.setSoLuong(sl);
         clone.setNamSx(sp.getNamSx());
         clone.setMaNCC(sp.getMaNCC());
@@ -63,14 +63,18 @@ public class SanPhamBUS {
                 case "Tất cả":{
                     if(sp.getMaSanPham().toLowerCase().contains(value)||
                             sp.getTenSanPham().toLowerCase().contains(value)||
+                            Tool.removeAccent(sp.getTenSanPham().toLowerCase()).contains(value)||
                             String.valueOf(sp.getDongia()).toLowerCase().contains(value)||
                             sp.getNamSx().toString().toLowerCase().contains(value)||
                             sp.getMaLoaiSP().toLowerCase().contains(value)||
                             sp.getTenLoaiSP().toLowerCase().contains(value)||
+                            Tool.removeAccent(sp.getTenLoaiSP().toLowerCase()).contains(value)||
                             sp.getMaThuongHieu().toLowerCase().contains(value)||
                             sp.getTenThuongHieu().toLowerCase().contains(value)||
+                            Tool.removeAccent(sp.getTenThuongHieu().toLowerCase()).contains(value)||
                             sp.getMaNCC().toLowerCase().contains(value)||
-                            sp.getTenNCC().toLowerCase().contains(value))
+                            sp.getTenNCC().toLowerCase().contains(value)||
+                            Tool.removeAccent(sp.getTenNCC().toLowerCase()).contains(value))
                         result.add(sp);
                     break;
                 }

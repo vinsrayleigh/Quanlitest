@@ -61,6 +61,7 @@ public class ChonSanPham extends JPanel {
     HoaDon tagetHD;
     PhieuNhap tagetPN;
     String type;
+
     public ChonSanPham() {
         setLayout(new BorderLayout());
         setPreferredSize(new Dimension(700, 0));
@@ -80,6 +81,8 @@ public class ChonSanPham extends JPanel {
 //                hienthi(sp);
 //            }
 //        });
+        Tool.AddDocumentListener("Num", txDongia);
+        Tool.AddDocumentListener("Num", txSoLuong);
         tbSanPham.getTable().addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -118,65 +121,83 @@ public class ChonSanPham extends JPanel {
         thembtn.addActionListener((e) -> {
             Them();
         });
-        type="";
-        if(type.equals("PN")){
+        type = "";
+        if (type.equals("PN")) {
 //            public ArrayList<SanPhamDTO> search(String value, String type, int soluong1, int soluong2, float gia1, float gia2) {
-            setDatatoTable(qlsp.search(tagetPN.txNCC.getText(),"Nhà cung cấp" , -1, -1, -1, -1));
+            setDatatoTable(qlsp.search(tagetPN.txNCC.getText(), "Nhà cung cấp", -1, -1, -1, -1));
         }
-        
+
     }
 
     public void Them() {
         int row = tbSanPham.getTable().getSelectedRow();
-        if(row>-1)
-        try {
-            int sl = 0;
-            sl = Integer.parseInt(txSoLuong.getText());
-            if(type.equals("HD"))
-            tagetHD.addCTHD(SanPhamBUS.getClone(sp, sl));
-            else
-                tagetPN.addCTPN(SanPhamBUS.getClone(sp, sl));
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Số lượng phải là số nguyên dương và nhỏ hơn số lượng của sp");
-        }
-        else{           
+        if (row > -1) {
+            try {
+                int sl = 0;
+                sl = Integer.parseInt(txSoLuong.getText());
+                if (type.equals("HD")) {
+                    if(tagetHD.addCTHD(SanPhamBUS.getClone(sp, sl,sp.getDongia())))
+                    tbSanPham.getTable().getModel().setValueAt((Tool.getInt((String)tbSanPham.getTable().getValueAt(row, 4))-sl)+"", row, 4);
+                } else {
+                    int dongia=0;
+                    try {
+                        dongia = Integer.parseInt(txDongia.getText());
+                        tagetPN.addCTPN(SanPhamBUS.getClone(sp, sl,dongia));
+                        tbSanPham.getTable().getModel().setValueAt((Tool.getInt((String)tbSanPham.getTable().getValueAt(row, 4))+sl)+"", row, 4);
+                    } catch (Exception e) {
+                        JOptionPane.showMessageDialog(this, "Đơn giá phải là số nguyên dương");
+                    }
+                    
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                JOptionPane.showMessageDialog(this, "Số lượng phải là số nguyên dương và nhỏ hơn số lượng của sp");
+            }
+        } else {
         }
 
         //HoaDon.list.add();
     }
 
-    public void setTaget(HoaDon taget,String type) {
+    public void setTaget(HoaDon taget, String type) {
         this.tagetHD = taget;
-        this.type =  type;
+        txSoLuong.setText("1");
+        txSoLuong.setEditable(false);
+        this.type = type;
     }
-    public void setTaget(PhieuNhap taget,String type){
+
+    public void setTaget(PhieuNhap taget, String type) {
         this.tagetPN = taget;
-        this.type =  type;
+        this.type = type;
+        txDongia.setEditable(true);
         tagetPN.txNCC.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
-                setDatatoTable(qlsp.search(tagetPN.txNCC.getText(),"Nhà cung cấp" , -1, -1, -1, -1));
+                setDatatoTable(qlsp.search(tagetPN.txNCC.getText(), "Nhà cung cấp", -1, -1, -1, -1));
                 //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
             }
 
             @Override
             public void removeUpdate(DocumentEvent e) {
-                setDatatoTable(qlsp.search(tagetPN.txNCC.getText(),"Nhà cung cấp" , -1, -1, -1, -1));
-               // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                setDatatoTable(qlsp.search(tagetPN.txNCC.getText(), "Nhà cung cấp", -1, -1, -1, -1));
+                // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
             }
 
             @Override
             public void changedUpdate(DocumentEvent e) {
-                setDatatoTable(qlsp.search(tagetPN.txNCC.getText(),"Nhà cung cấp" , -1, -1, -1, -1));
+                setDatatoTable(qlsp.search(tagetPN.txNCC.getText(), "Nhà cung cấp", -1, -1, -1, -1));
                 //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
             }
         });
     }
+
     public void hienthi(SanPhamDTO sp1) {
         txma.setText(sp1.getMaSanPham());
         txLoai.setText(sp1.getTenLoaiSP());
         txTen.setText(sp1.getTenSanPham());
-        txDongia.setText(Tool.getMonney(sp1.getDongia()) + ",000đ");
+        if(type.equals("PN")){
+            txDongia.setText((int)(sp.getDongia()-sp.getDongia()*0.4)+"");
+        }
         txNCC.setText(sp1.getTenNCC());
         txThuongHieu.setText(sp1.getTenThuongHieu());
         txMota.setText(sp1.getMota());
@@ -227,12 +248,12 @@ public class ChonSanPham extends JPanel {
                         if (!txSoLuong.getText().equals("")) {
                             int i = Integer.parseInt(txSoLuong.getText());
                             txSoLuong.setForeground(Color.BLACK);
-                            if(i>sp.getSoLuong()){
-                                txSoLuong.setForeground(Color.red);   
+                            if (i > sp.getSoLuong()) {
+                                txSoLuong.setForeground(Color.red);
                             }
                         }
                     } catch (NumberFormatException ex) {
-                        txSoLuong.setForeground(Color.red);   
+                        txSoLuong.setForeground(Color.red);
                     }
                 }
 

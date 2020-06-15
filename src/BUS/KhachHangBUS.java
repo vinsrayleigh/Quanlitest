@@ -95,79 +95,83 @@ public class KhachHangBUS {
         return list;
     }
 
-    public ArrayList<KhachHangDTO> search(String value, String type, LocalDate Ngay_1, LocalDate Ngay_2) {
-
+    public ArrayList<KhachHangDTO> search(String value, String type, LocalDate Ngay_1, LocalDate Ngay_2){
+        
         ArrayList<KhachHangDTO> result = new ArrayList<>();
-
+        
         list.forEach((kh) -> {
-            if (type.equals("Tất cả")) {
-                if (kh.getMaKhachHang().toLowerCase().contains(value.toLowerCase())
-                        || kh.getHoKhachHang().toLowerCase().contains(value.toLowerCase())
-                        || kh.getTenKhachHang().toLowerCase().contains(value.toLowerCase())
-                        || kh.getNgaySinh().toString().toLowerCase().contains(value.toLowerCase())
-                        || kh.getSdt().toLowerCase().contains(value.toLowerCase())
-                        || kh.getLoaiKhachHang().toLowerCase().contains(value.toLowerCase())
-                        || String.valueOf(kh.getTichLuy()).toLowerCase().contains(value.toLowerCase())) {
-                    result.add(kh);
-                }
-            } else {
-                switch (type) {
-                    case "Mã Khách Hàng": {
-                        if (kh.getHoKhachHang().toLowerCase().contains(value.toLowerCase())) {
-                            result.add(kh);
+                if(type.equals("Tất cả")){
+                    if(kh.getMaKhachHang().toLowerCase().contains(value.toLowerCase())
+                            || kh.getHoKhachHang().toLowerCase().contains(value.toLowerCase())
+                            || kh.getTenKhachHang().toLowerCase().contains(value.toLowerCase())
+                            || Tool.removeAccent(kh.getHoKhachHang().toLowerCase()).contains(value.toLowerCase())
+                            || Tool.removeAccent(kh.getTenKhachHang().toLowerCase()).contains(value.toLowerCase())
+                            || kh.getNgaySinh().toString().toLowerCase().contains(value.toLowerCase())
+                            || kh.getSdt().toLowerCase().contains(value.toLowerCase())
+                            || kh.getLoaiKhachHang().toLowerCase().contains(value.toLowerCase())
+                            || String.valueOf(kh.getTichLuy()).toLowerCase().contains(value.toLowerCase())){
+                        result.add(kh);
                         }
-                        break;
-                    }
-                    case "Họ Khách Hàng": {
-                        if (kh.getHoKhachHang().toLowerCase().contains(value.toLowerCase())) {
-                            result.add(kh);
+                    }else {
+                        switch(type)
+                        {
+                            case "Mã Khách Hàng":{
+                                if(kh.getHoKhachHang().toLowerCase().contains(value.toLowerCase())){
+                                    result.add(kh);
+                                }
+                                break;
+                            }
+                            case "Họ Khách Hàng":{
+                                if(kh.getHoKhachHang().toLowerCase().contains(value.toLowerCase())){
+                                    result.add(kh);
+                                }
+                                break;
+                            }
+                            case "Tên Khách Hàng":{
+                                if(kh.getTenKhachHang().toLowerCase().contains(value.toLowerCase())){
+                                    result.add(kh);
+                                }
+                                break;
+                            }
+                            case "Ngày Sinh":{
+                                if(kh.getNgaySinh().toString().toLowerCase().contains(value.toLowerCase())){
+                                    result.add(kh);
+                                }
+                                break;
+                            }
+                            case "Số điện thoại":{
+                                if(kh.getSdt().toLowerCase().contains(value.toLowerCase())){
+                                    result.add(kh);
+                                }
+                                break;
+                            }
+                            case "Loại Khách Hàng":{
+                                if(String.valueOf(kh.getLoaiKhachHang()).toLowerCase().contains(value.toLowerCase())){
+                                    result.add(kh);
+                                }
+                                break;
+                            }
+                            case "Tích lũy":{
+                                if(String.valueOf(kh.getTichLuy()).toLowerCase().contains(value.toLowerCase())){
+                                    result.add(kh);
+                                }
+                                break;
+                            }
                         }
-                        break;
                     }
-                    case "Tên Khách Hàng": {
-                        if (kh.getTenKhachHang().toLowerCase().contains(value.toLowerCase())) {
-                            result.add(kh);
-                        }
-                        break;
-                    }
-                    case "Ngày Sinh": {
-                        if (kh.getNgaySinh().toString().toLowerCase().contains(value.toLowerCase())) {
-                            result.add(kh);
-                        }
-                        break;
-                    }
-                    case "Số điện thoại": {
-                        if (kh.getSdt().toLowerCase().contains(value.toLowerCase())) {
-                            result.add(kh);
-                        }
-                        break;
-                    }
-                    case "Loại Khách Hàng": {
-                        if (String.valueOf(kh.getLoaiKhachHang()).toLowerCase().contains(value.toLowerCase())) {
-                            result.add(kh);
-                        }
-                        break;
-                    }
-                    case "Tích lũy": {
-                        if (String.valueOf(kh.getTichLuy()).toLowerCase().contains(value.toLowerCase())) {
-                            result.add(kh);
-                        }
-                        break;
-                    }
-                }
-            }
-        });
-
-        for (int i = result.size() - 1; i >= 0; i--) {
+                });
+                    
+                    
+        for(int i = result.size() - 1; i>=0; i --){
             KhachHangDTO kh = result.get(i);
             LocalDate ngaysinh = kh.getNgaySinh().toLocalDate();
-
+            
             Boolean ngaykhongthoa = (Ngay_1 != null && ngaysinh.isBefore(Ngay_1)) || (Ngay_2 != null && ngaysinh.isAfter(Ngay_2));
-
-            if (ngaykhongthoa) {
+            
+            if(ngaykhongthoa){
                 result.remove(kh);
             }
-        }
+        }            
         return result;
-    }
+        }
 }

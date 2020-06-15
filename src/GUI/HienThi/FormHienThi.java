@@ -18,7 +18,7 @@ public class FormHienThi extends JPanel {
     MyTable mtb = new MyTable();
     public FormHienThi() {
         setLayout(new BorderLayout());
-        add(mtb);
+        add(mtb,BorderLayout.CENTER);
     }
     
     public String getSelectedRow(int col) {

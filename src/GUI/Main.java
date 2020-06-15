@@ -52,6 +52,8 @@ public class Main extends JFrame implements MouseListener {
     QuanLiKhuyenMaiForm khuyenmai;
     QuanLiThuongHieu thuonghieu;
     QuanLiHoaDon hoadon;
+    QuanLiBaoHanh baohanh;
+    QuanLiQuyen quyen;
     public static JFrame All = new JFrame();
     public int status;
 
@@ -78,6 +80,7 @@ public class Main extends JFrame implements MouseListener {
             "Hóa đơn", "hoadon.png", "xemHoaDon", "qlHoaDon",
             "Phiếu nhập", "truck_50px.png", "xemPheuNhap", "qlPhieuNhap",
             "Khuyến mãi", "gift_50px.png", "xemKhuyenMai", "qlKhuyenMai",
+            "Bảo hành", "contract_100px.png", "xemBaoHanh", "qlBaoHanh",
             "seperate", "1", "", "",
             "Nhân viên", "support_50px.png", "xemNhanVien", "qlNhanVien",
             "Khách hàng", "user_male_50px.png", "xemKhachHang", "qlKhachHang",
@@ -256,13 +259,25 @@ public class Main extends JFrame implements MouseListener {
                 plContent.setBackground(Color.DARK_GRAY);
                 plContent.add(khachhang, BorderLayout.CENTER);
                 break;
+            case "Bảo hành":
+                if (baohanh == null) {
+                    baohanh = new QuanLiBaoHanh();
+                }
+                plContent.add(baohanh, BorderLayout.CENTER);
+                break;
+            case "Quyền":
+                if (quyen == null) {
+                    quyen = new QuanLiQuyen();
+                }
+                plContent.add(quyen, BorderLayout.CENTER);
+                break;
             case "Thương hiệu":
                 if (thuonghieu == null) {
                     thuonghieu = new QuanLiThuongHieu();
                 }
                 plContent.add(thuonghieu, BorderLayout.CENTER);
                 break;
-                case "Hóa đơn":
+            case "Hóa đơn":
                 if (hoadon == null) {
                     hoadon = new QuanLiHoaDon();
                 }

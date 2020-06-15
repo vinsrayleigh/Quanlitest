@@ -4,6 +4,7 @@ import BUS.HoaDonBUS;
 import BUS.KhuyenMaiBUS;
 import BUS.SanPhamBUS;
 import BUS.Tool;
+import DAO.BaoHanhDAO;
 import DAO.CTHoaDonDAO;
 import DAO.HoaDonDAO;
 import DAO.SanPhamDAO;
@@ -164,7 +165,7 @@ public class HoaDon extends JPanel {
                     JOptionPane.showMessageDialog(this, "Số lượng vượt quá số sản phẩm trong kho");
                 } else {
                     listSP.remove(row);
-                    addCTHD(SanPhamBUS.getClone(sp, value));
+                    addCTHD(SanPhamBUS.getClone(sp, value,sp.getDongia()));
                 }
             } catch (Exception e) {
             }
@@ -178,26 +179,22 @@ public class HoaDon extends JPanel {
         txTongTien.setText("0");
     }
 
-    public void addCTHD(SanPhamDTO sp) {
+    public boolean addCTHD(SanPhamDTO sp) {
 //        CTHoaDonDTO cthd = new CTHoaDonDTO(new HoaDonBUS().getNextMaHD(), sp.getMaSanPham(), sp.getSoLuong(), sp.getDongia()*sp.getSoLuong(), sp.getDongia());
 //        list.add(cthd);
         if (listSP.size() == 0) {
             listSP.add(sp);
         } else {
-            listSP.forEach((SP) -> {
+            for(SanPhamDTO SP :listSP)
                 if (SP.getMaSanPham().equals(sp.getMaSanPham())) {
-                    if (SP.getSoLuong() + sp.getSoLuong() <= new SanPhamBUS().getSanPham(sp.getMaSanPham()).getSoLuong()) {
-                        SP.setSoLuong(SP.getSoLuong() + sp.getSoLuong());
-                    } else {
-                        JOptionPane.showMessageDialog(this, "Số lượng vượt quá số sản phẩm trong kho");
-                    }
+                    return false;
                 } else {
                     listSP.add(sp);
                 }
-            });
         }
         updateThanhTien();
         setDatatoTable(listSP);
+        return true;
     }
 
     public JPanel thongtinHoaDon() {
@@ -327,9 +324,12 @@ public class HoaDon extends JPanel {
         listSP.forEach((sp) -> {
             CTHoaDonDTO cthd = new CTHoaDonDTO(txmaHD.getText(), sp.getMaSanPham(), sp.getSoLuong(), sp.getDongia() * sp.getSoLuong(), sp.getDongia());
             CTHoaDonDAO.insertCTHD(cthd);
+            int temp = (int)(sp.getDongia()/100)%2==0?2:1;
+            BaoHanhDTO bh = new BaoHanhDTO(txmaHD.getText(), sp.getMaSanPham(), Tool.getDate(txDate.getText()), temp);
             SanPhamDTO spkho = qlsp.getSanPham(cthd.getMaSanPham());
             spkho.setSoLuong(spkho.getSoLuong() - sp.getSoLuong());
             SanPhamDAO.updateSanPham(spkho);
+            BaoHanhDAO.insertBaoHanh(bh);
         });
         clear();
     }

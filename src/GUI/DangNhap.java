@@ -15,7 +15,6 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public class DangNhap extends JFrame {
-    
     public static String saveFileName = "temp";
     public static QuyenDTO quyenLogin;
     public static NhanVienDTO nhanVienLogin;

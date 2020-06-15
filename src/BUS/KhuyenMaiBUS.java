@@ -61,9 +61,11 @@ public class KhuyenMaiBUS {
                    case "Tất cả":{
                        if(km.getMakhuyenmai().toLowerCase().contains(value)||
                                km.getTenkhuyenmai().toLowerCase().contains(value)||
+                               Tool.removeAccent(km.getTenkhuyenmai().toLowerCase()).contains(value)||
                                km.getMaSanPham().toLowerCase().contains(value)||
                                String.valueOf(km.getGiamgia()).toLowerCase().contains(value)||
-                               km.getChitiet().toLowerCase().contains(value))
+                               km.getChitiet().toLowerCase().contains(value)||
+                               Tool.removeAccent(km.getChitiet().toLowerCase()).contains(value))
                            result.add(km);
                        break;
                     }

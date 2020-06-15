@@ -47,33 +47,41 @@ public class ThuongHieuBUS {
             return "TH0001";
         }
     }//To change body of generated methods, choose Tools | Templates.j
-     public ArrayList<ThuongHieuDTO> search(String value, String type) {
-        ArrayList<ThuongHieuDTO> result = new ArrayList<>();
-
-        list.forEach((TH) -> {
-            if (type.equals("Tất cả")) {
-                if ( TH.getMaThuongHieu().toLowerCase().contains(value.toLowerCase())
-                        || TH.getTenThuongHieu().toString().toLowerCase().contains(value.toLowerCase())
-                        ||Tool.removeAccent(TH.getMaThuongHieu()).contains(Tool.removeAccent(value))
-                        ||Tool.removeAccent(TH.getTenThuongHieu()).contains(Tool.removeAccent(value)))
-                        {
-                    result.add(TH);
-                }
-            } else {
-                switch (type) {
-                    case "Mã thương hiệu":
-                        if (TH.getMaThuongHieu().toLowerCase().contains(value.toLowerCase())) {
-                            result.add(TH);
-                        }
-                        break;
-                    case "Tên thương hiệu":
-                        if (TH.getTenThuongHieu().toLowerCase().contains(value.toLowerCase())) {
-                            result.add(TH);
-                        }
-                        break;
-                  }
-            }
-        });
-    return result;
-    }
+    public ArrayList<ThuongHieuDTO> search(String value, String type) {
+       ArrayList<ThuongHieuDTO> result = new ArrayList<>();
+       
+       list.forEach((th) ->{
+           if(type.equals("Tất cả")){
+               if(th.getMaThuongHieu().toLowerCase().contains(value.toLowerCase())
+                       || th.getTenThuongHieu().toLowerCase().contains(value.toLowerCase())
+                       || Tool.removeAccent(th.getTenThuongHieu().toLowerCase()).contains(value.toLowerCase())
+                       || th.getMoTa().toLowerCase().contains(value.toLowerCase())
+                       || Tool.removeAccent(th.getMoTa().toLowerCase()).contains(value.toLowerCase())){
+                   result.add(th);
+               }
+           }else{
+               switch(type) {
+                   case "Mã Thương hiệu": {
+                       if(th.getMaThuongHieu().toLowerCase().contains(value.toLowerCase())){
+                           result.add(th);
+                       }
+                       break;
+                   }
+                   case "Tên Thương hiệu": {
+                       if(th.getTenThuongHieu().toLowerCase().contains(value.toLowerCase())){
+                           result.add(th);
+                       }
+                       break;
+                   }
+                   case "Mô tả": {
+                       if(th.getMoTa().toLowerCase().contains(value.toLowerCase())){
+                           result.add(th);
+                       }
+                       break;
+                   }
+               }
+           }
+       });
+        return result;
+   }
 }

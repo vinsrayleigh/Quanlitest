@@ -60,7 +60,7 @@ public class QuanLiKhuyenMaiForm extends JPanel{
             btnSuaMouseClicked();
         });
         btnXuatExcel.addActionListener((ActionEvent ae) -> {
-          //  new XuatExcel().xuatFileExcelKhuyenMai();
+        //    new XuatExcel().xuatFileExcelKhuyenMai();
         });
         btnNhapExcel.addActionListener((ActionEvent ae) -> {
             //new DocExcel().docFileExcelKhuyenMai();

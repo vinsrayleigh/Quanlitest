@@ -62,7 +62,9 @@ public class NhaCungCapBUS {
                 if (NhaCungCap.getMaNCC().toLowerCase().contains(value.toLowerCase())
                         || NhaCungCap.getMaNCC().toLowerCase().contains(value.toLowerCase())
                         || NhaCungCap.getTenNCC().toString().toLowerCase().contains(value.toLowerCase())
+                        || Tool.removeAccent(NhaCungCap.getTenNCC().toString().toLowerCase()).contains(value.toLowerCase())
                         || NhaCungCap.getDiaChi().toString().toLowerCase().contains(value.toLowerCase())
+                        || Tool.removeAccent(NhaCungCap.getDiaChi().toString().toLowerCase()).contains(value.toLowerCase())
                         || NhaCungCap.getEmail().toLowerCase().contains(value.toLowerCase()))
                         {
                     result.add(NhaCungCap);

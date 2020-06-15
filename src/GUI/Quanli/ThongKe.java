@@ -39,6 +39,7 @@ import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
@@ -66,7 +67,7 @@ public class ThongKe extends JPanel {
     JButton btnKhachHang = new JButton("Khách hàng");
     JButton btnNhaCungCap = new JButton("Nhà cung cấp");
     thongKeTongQuat tkTQ = new thongKeTongQuat();
-
+    thongKeSanPham tkSP = new thongKeSanPham();
     public ThongKe() {
         setLayout(new BorderLayout());
         JPanel plButton = new JPanel(new FlowLayout(FlowLayout.LEFT));
@@ -75,6 +76,8 @@ public class ThongKe extends JPanel {
         plButton.add(btnNhanVien);
         plButton.add(btnKhachHang);
         plButton.add(btnNhaCungCap);
+        btnThongKetatca.setIcon(new ImageIcon("src/Image/bar_chart_50px.png"));
+        btnThongKeSanPham.setIcon(new ImageIcon("src/Image/product_50px.png"));
         JPanel plCenter = new JPanel();
         add(plButton, BorderLayout.NORTH);
         add(plCenter, BorderLayout.CENTER);
@@ -86,8 +89,87 @@ public class ThongKe extends JPanel {
             revalidate();
             repaint();
         });
+        btnThongKeSanPham.addActionListener((e) -> {
+           plCenter.removeAll();
+           plCenter.add(tkSP);
+           revalidate();
+           repaint();
+        });
     }
+    public class thongKeSanPham extends JPanel{
+        JComboBox<String> cbNam = new JComboBox<>();
+        JComboBox<String> cbTypeSearch = new JComboBox<>();
+        JComboBox<String> cbValue = new JComboBox<>();
 
+        public thongKeSanPham() {
+            //menu.setPreferredSize(new Dimension(1920 - 300, 750));
+            setPreferredSize(new Dimension(1920-300, 800));
+            setBackground(Color.DARK_GRAY);
+            setLayout(new BorderLayout());
+            JPanel plHeader = new JPanel(new BorderLayout());
+            JPanel plheadLeft = new JPanel();
+            JPanel plheadvalue = new JPanel(new FlowLayout(FlowLayout.LEFT));
+            plHeader.add(plheadLeft,BorderLayout.WEST);
+            plHeader.add(plheadvalue,BorderLayout.CENTER);
+            for(int i= 2010;i<=LocalDate.now().getYear();i++){
+                cbNam.addItem(i+"");
+            }
+            cbNam.setBorder(BorderFactory.createTitledBorder("Chọn năm"));
+            cbTypeSearch.setBorder(BorderFactory.createTitledBorder("Thống kê theo"));
+            cbValue.setBorder(BorderFactory.createTitledBorder("Tháng"));
+            cbNam.setPreferredSize(new Dimension(100, 60));
+            cbTypeSearch.setPreferredSize(new Dimension(100, 60));
+            cbValue.setPreferredSize(new Dimension(100, 60));
+            plheadLeft.add(cbNam);
+            plheadLeft.add(cbTypeSearch);
+            cbTypeSearch.addItem("Năm");
+            cbTypeSearch.addItem("Quý");
+            cbTypeSearch.addItem("Tháng");
+            cbTypeSearch.addItemListener((e) -> {
+                String type = (String) cbTypeSearch.getSelectedItem();
+                plheadvalue.removeAll();
+                cbValue.removeAllItems();
+                switch(type){
+                    case "Năm":{
+                        break;
+                    }
+                    case "Quý":{
+                        cbValue.addItem("1");
+                        cbValue.addItem("2");
+                        cbValue.addItem("3");
+                        cbValue.addItem("4");
+                        plheadvalue.add(cbValue);
+                        cbValue.setBorder(BorderFactory.createTitledBorder("Quý"));
+                        break;
+                    }
+                    case "Tháng":{
+                        cbValue.addItem("1");
+                        cbValue.addItem("2");
+                        cbValue.addItem("3");
+                        cbValue.addItem("4");
+                        cbValue.addItem("5");
+                        cbValue.addItem("6");
+                        cbValue.addItem("7");
+                        cbValue.addItem("8");
+                        cbValue.addItem("9");
+                        cbValue.addItem("10");
+                        cbValue.addItem("11");
+                        cbValue.addItem("12");
+                        plheadvalue.add(cbValue);
+                        cbValue.setBorder(BorderFactory.createTitledBorder("Tháng"));
+                        break;
+                    }
+                }
+                revalidate();
+                repaint();
+            });
+            JPanel work = new JPanel();
+            work.setBackground(Color.DARK_GRAY);
+            this.add(plHeader,BorderLayout.NORTH);
+            this.add(work,BorderLayout.CENTER);
+        }
+        
+    }
     public class thongKeTongQuat extends JPanel {
 
         RefreshButton btnRefresh = new RefreshButton();

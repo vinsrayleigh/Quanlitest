@@ -123,7 +123,7 @@ public class PhieuNhap extends JPanel {
                 if (value > 0) {
                     SanPhamDTO sp = listSP.get(row);
                     listSP.remove(row);
-                    addCTPN(SanPhamBUS.getClone(sp, value));
+                    addCTPN(SanPhamBUS.getClone(sp, value,sp.getDongia()));
                 } else {
                     JOptionPane.showMessageDialog(this, "Số lượng phải là số nguyên dương");
                 }

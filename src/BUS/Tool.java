@@ -195,6 +195,8 @@ public class Tool {
         NumberFormat en = NumberFormat.getInstance(localeEN);
         return  en.format(num);
     }
-    
+    public boolean checkNonAccent(String string1, String string2){
+        return Tool.removeAccent(string1).contains(Tool.removeAccent(string2));
+    }
 }
 

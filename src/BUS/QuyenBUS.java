@@ -13,12 +13,12 @@ import java.util.Arrays;
  * @author phuon
  */
 public class QuyenBUS {
-    public static ArrayList<QuyenDTO> list = new ArrayList<>();
+    public  ArrayList<QuyenDTO> list = new ArrayList<>();
 
     public QuyenBUS() {
         getData();
-    }
-    public static void getData(){
+    } 
+    public void getData(){
         list=QuyenDAO.getQuyen();
     }
     public QuyenDTO getQuyen(String maQ){
