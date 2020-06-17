@@ -16,7 +16,7 @@ import java.util.Arrays;
  */
 public class LoaiSPBUS {
 
-    private ArrayList<LoaiSPDTO> list = new ArrayList<>();
+    public ArrayList<LoaiSPDTO> list = new ArrayList<>();
 
     public LoaiSPBUS() {
         getData();

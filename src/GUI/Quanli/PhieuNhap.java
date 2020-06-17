@@ -146,13 +146,17 @@ public class PhieuNhap extends JPanel {
         if (listSP.size() == 0) {
             listSP.add(sp);
         } else {
-            listSP.forEach((SP) -> {
+            int k =0;
+            for(SanPhamDTO SP: listSP){
                 if (SP.getMaSanPham().equals(sp.getMaSanPham())) {
                     SP.setSoLuong(SP.getSoLuong() + sp.getSoLuong());
-                } else {
-                    listSP.add(sp);
+                    k=1;
+                    break;
                 }
-            });
+            }
+            if(k==0){
+                listSP.add(sp);
+            }
         }
         setDatatoTable(listSP);
     }

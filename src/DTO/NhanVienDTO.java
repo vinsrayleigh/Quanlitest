@@ -6,6 +6,7 @@
 package DTO;
 
 import BUS.QuyenBUS;
+import java.awt.Color;
 import java.sql.Date;
 
 /**
@@ -115,9 +116,11 @@ public class NhanVienDTO {
     }
 
     public String getQuyen() {
-        return new QuyenBUS().getQuyen(this.maQuyen).getTenQuyen();
+        return this.maQuyen;
     }
-
+    public String getTenQuyen(){
+        return new QuyenBUS().getQuyen(maQuyen).getTenQuyen();
+    }
     public void setQuyen(String maChucVu) {
         this.maQuyen = maChucVu;
     }

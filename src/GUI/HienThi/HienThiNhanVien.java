@@ -139,7 +139,7 @@ public class HienThiNhanVien extends FormHienThi{
                     nv.getNgaySinh().toString(),
                     nv.getGioiTinh(),
                     nv.getSdt(),
-                    nv.getQuyen(),
+                    nv.getTenQuyen(),
                     nv.getLuong()+"",
                     nv.getTrangThai()==0?"Ẩn":"Hiện",
                 });

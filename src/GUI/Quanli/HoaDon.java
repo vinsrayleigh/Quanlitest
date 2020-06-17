@@ -185,12 +185,16 @@ public class HoaDon extends JPanel {
         if (listSP.size() == 0) {
             listSP.add(sp);
         } else {
+            int k=0;
             for(SanPhamDTO SP :listSP)
                 if (SP.getMaSanPham().equals(sp.getMaSanPham())) {
+                    SP.setSoLuong(SP.getSoLuong() + sp.getSoLuong());
+                    k=1;
                     return false;
-                } else {
-                    listSP.add(sp);
                 }
+            if(k==0){
+                listSP.add(sp);
+            }
         }
         updateThanhTien();
         setDatatoTable(listSP);

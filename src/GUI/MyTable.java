@@ -86,24 +86,78 @@ public class MyTable extends JPanel {
             sortKeys.add(new RowSorter.SortKey(i, SortOrder.ASCENDING));
             sorter.setComparator(i, new Comparator<String>() {
 
-            @Override
-            public int compare(String name1, String name2) {
-                try{
-                    int so1 = Integer.parseInt(name1);
-                    int so2 = Integer.parseInt(name2);
-                    if(so1==so2) return 0;
-                    if(so1>so2) return -1;
-                    if(so1<so2) return 1;
-                }catch(NumberFormatException e){
+                @Override
+                public int compare(String name1, String name2) {
+                    try {
+                        int so1 = Integer.parseInt(name1);
+                        int so2 = Integer.parseInt(name2);
+                        if (so1 == so2) {
+                            return 0;
+                        }
+                        if (so1 < so2) {
+                            return -1;
+                        }
+                        if (so1 > so2) {
+                            return 1;
+                        }
+                    } catch (NumberFormatException e) {
+                        try {
+                            name1 = name1.replace(",", "");
+                            name2 = name2.replace(",", "");
+                            int so1 = Integer.parseInt(name1);
+                            int so2 = Integer.parseInt(name2);
+                            if (so1 == so2) {
+                                return 0;
+                            }
+                            if (so1 < so2) {
+                                return -1;
+                            }
+                            if (so1 > so2) {
+                                return 1;
+                            }
+                        } catch (Exception ex) {
+                            try {
+                                name1 = name1.substring(2);
+                                name2 = name2.substring(2);
+                                int so1 = Integer.parseInt(name1);
+                                int so2 = Integer.parseInt(name2);
+                                if (so1 == so2) {
+                                    return 0;
+                                }
+                                if (so1 < so2) {
+                                    return -1;
+                                }
+                                if (so1 > so2) {
+                                    return 1;
+                                }
+                            } catch (Exception exx) {
+                                try {
+                                    name1 = name1.substring(3);
+                                    name2 = name2.substring(3);
+                                    int so1 = Integer.parseInt(name1);
+                                    int so2 = Integer.parseInt(name2);
+                                    if (so1 == so2) {
+                                        return 0;
+                                    }
+                                    if (so1 < so2) {
+                                        return -1;
+                                    }
+                                    if (so1 > so2) {
+                                        return 1;
+                                    }
+                                } catch (Exception es) {
+                                }
+                            }
+                            return name1.compareTo(name2);
+                        }
+                    }
                     return name1.compareTo(name2);
                 }
-                return name1.compareTo(name2);
-            }
-        });
+            });
         }
         sorter.setSortKeys(sortKeys);
         tb.setRowSorter(sorter);
-        
+
         sorter.addRowSorterListener(new RowSorterListener() {
             @Override
             public void sorterChanged(RowSorterEvent evt) {

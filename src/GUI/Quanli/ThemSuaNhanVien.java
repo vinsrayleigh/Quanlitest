@@ -330,6 +330,7 @@ public class ThemSuaNhanVien extends JFrame {
         LocalDate localDate = LocalDate.parse(txNgaysinh.getText(), formatter);
         nv.setNgaySinh(java.sql.Date.valueOf(localDate));
         nv.setSdt(txSDT.getText());
+        nv.setMaQuyen(listQ.get(cbChonQuyen.getSelectedIndex()).getMaQuyen());
         nv.setGioiTinh(cbChonGT.getSelectedItem().toString());
         nv.setTrangThai(cbChonTrangThai.getSelectedIndex());
         new NhanVienDAO().insertNhanVien(nv);
@@ -345,7 +346,6 @@ public class ThemSuaNhanVien extends JFrame {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
   //convert String to LocalDate
         nvsua.setMaQuyen(listQ.get(cbChonQuyen.getSelectedIndex()).getMaQuyen());
-        System.out.println(nvsua.getMaQuyen()+"   "+nvsua.getQuyen());
         LocalDate localDate = LocalDate.parse(txNgaysinh.getText(), formatter);
         nvsua.setNgaySinh(java.sql.Date.valueOf(localDate));
         nvsua.setSdt(txSDT.getText());

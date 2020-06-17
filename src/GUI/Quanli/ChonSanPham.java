@@ -136,15 +136,16 @@ public class ChonSanPham extends JPanel {
                 int sl = 0;
                 sl = Integer.parseInt(txSoLuong.getText());
                 if (type.equals("HD")) {
-                    if(tagetHD.addCTHD(SanPhamBUS.getClone(sp, sl,sp.getDongia())))
-                    tbSanPham.getTable().getModel().setValueAt((Tool.getInt((String)tbSanPham.getTable().getValueAt(row, 4))-sl)+"", row, 4);
+                    if(tagetHD.addCTHD(SanPhamBUS.getClone(sp, sl,sp.getDongia()))){
+                    }
+                    //tbSanPham.getTable().getModel().setValueAt((Tool.getInt((String)tbSanPham.getTable().getValueAt(row, 4))-sl)+"", row, 4);
                 } else {
                     int dongia=0;
                     try {
                         dongia = Integer.parseInt(txDongia.getText());
                         tagetPN.addCTPN(SanPhamBUS.getClone(sp, sl,dongia));
-                        tbSanPham.getTable().getModel().setValueAt((Tool.getInt((String)tbSanPham.getTable().getValueAt(row, 4))+sl)+"", row, 4);
-                    } catch (Exception e) {
+                        //tbSanPham.getTable().getModel().setValueAt((Tool.getInt((String)tbSanPham.getTable().getValueAt(row, 4))+sl)+"", row, 4);
+                    } catch (NumberFormatException e) {
                         JOptionPane.showMessageDialog(this, "Đơn giá phải là số nguyên dương");
                     }
                     

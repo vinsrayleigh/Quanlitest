@@ -20,11 +20,11 @@ import javax.swing.plaf.RootPaneUI;
  *
  * @author phuon
  */
-public class HienThiCTHoaDon extends JPanel{
+public class HienThiCTHoaDon extends JFrame{
     CTHDBUS qlCTHD = new CTHDBUS();
     MyTable tbCTHD = new MyTable();
-    public HienThiCTHoaDon(){
-        //setSize(700, 500);
+    public HienThiCTHoaDon(String mahd){
+        setSize(700, 500);
         setLayout(new BorderLayout());
         String[] header = new String[]{
             "STT",
@@ -35,6 +35,7 @@ public class HienThiCTHoaDon extends JPanel{
             "Thành tiền"
         };
         tbCTHD.setHeaders(header);
+        setDataToTable(qlCTHD.Seacrh(mahd));
         add(tbCTHD,BorderLayout.CENTER);
     }
     public void setDataToTable(ArrayList<CTHoaDonDTO> list){

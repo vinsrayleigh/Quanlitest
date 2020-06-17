@@ -17,21 +17,26 @@ import GUI.HienThi.ThemSuaQuyen;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import javax.swing.JPanel;
 
 /**
  *
  * @author phuon
  */
-public class QuanLiQuyen extends JPanel{
-     ThemButton btnThem = new ThemButton();
+public class QuanLiQuyen extends JPanel {
+
+    ThemButton btnThem = new ThemButton();
     SuaButton btnSua = new SuaButton();
     ExportExcelButton btnXuatExcel = new ExportExcelButton();
     ImportExcelButton btnNhapExcel = new ImportExcelButton();
     HienThiQuyen formHienThi = new HienThiQuyen();
-    public QuanLiQuyen(){
+
+    public QuanLiQuyen() {
         setLayout(new BorderLayout());
-        if(!DangNhap.quyenLogin.getChitiet().contains("qlQuyen")){
+        if (!DangNhap.quyenLogin.getChitiet().contains("qlQuyen")) {
             btnThem.setEnabled(false);
             btnSua.setEnabled(false);
             btnNhapExcel.setEnabled(false);
@@ -47,11 +52,47 @@ public class QuanLiQuyen extends JPanel{
             ThemSuaQuyen themsua = new ThemSuaQuyen("Thêm", "");
             themsua.setVisible(true);
             themsua.setAlwaysOnTop(true);
+            themsua.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowOpened(WindowEvent e) {
+                    btnThem.setEnabled(false);
+                    btnSua.setEnabled(false);
+                    btnNhapExcel.setEnabled(false);
+                    btnXuatExcel.setEnabled(false);
+                }
+
+                @Override
+                public void windowClosed(WindowEvent e) {
+                    btnThem.setEnabled(true);
+                    btnSua.setEnabled(true);
+                    btnNhapExcel.setEnabled(true);
+                    btnXuatExcel.setEnabled(true);
+                    formHienThi.refresh();
+                }
+            });
         });
         btnSua.addActionListener((e) -> {
-            ThemSuaQuyen themsua = new ThemSuaQuyen("Sửa",formHienThi.getSelectedRow(1));
+            ThemSuaQuyen themsua = new ThemSuaQuyen("Sửa", formHienThi.getSelectedRow(1));
             themsua.setVisible(true);
             themsua.setAlwaysOnTop(true);
+            themsua.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowOpened(WindowEvent e) {
+                    btnThem.setEnabled(false);
+                    btnSua.setEnabled(false);
+                    btnNhapExcel.setEnabled(false);
+                    btnXuatExcel.setEnabled(false);
+                }
+
+                @Override
+                public void windowClosed(WindowEvent e) {
+                    btnThem.setEnabled(true);
+                    btnSua.setEnabled(true);
+                    btnNhapExcel.setEnabled(true);
+                    btnXuatExcel.setEnabled(true);
+                    formHienThi.refresh();
+                }
+            });
         });
         this.add(plBtn, BorderLayout.NORTH);
         this.add(formHienThi, BorderLayout.CENTER);

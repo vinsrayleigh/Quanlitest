@@ -21,8 +21,7 @@ public class DangNhap extends JFrame {
     public static TaiKhoanDTO taiKhoanLogin;
     JTextField txTaiKhoan;
     JPasswordField txMatKhau;
-    JCheckBox nhoMK = new JCheckBox("Giữ đăng nhập");
-    
+    JCheckBox nhoMK = new JCheckBox("Giữ đăng nhập");   
     public DangNhap() {
         setUndecorated(true);
         setSize(350, 400);

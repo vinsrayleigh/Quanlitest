@@ -9,6 +9,7 @@ import DAO.HoaDonDAO;
 import DAO.PhieuNhapDAO;
 import DTO.HoaDonDTO;
 import DTO.PhieuNhapDTO;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -53,5 +54,66 @@ public class PhieuNhapBUS {
     }
     public void getData() {
         list = PhieuNhapDAO.getPhieuNhap();
+    }
+    public ArrayList<PhieuNhapDTO> Search(String value,String type, LocalDate date1 , LocalDate date2,int gia1,int gia2){
+        ArrayList<PhieuNhapDTO> result = new ArrayList<>();
+        NhanVienBUS qlNhanVien = new NhanVienBUS();
+//        "Tất cả", "Mã hóa đơn", "Nhân viên", "Khách hàng", "Ngày lập", "Tổng tiền", "Khuyến mãi"});
+        list.forEach((hd) -> {
+           switch(type){
+               case "Tất cả":{
+                   if(hd.getMaPhieuNhap().toLowerCase().contains(value.toLowerCase())
+                           ||hd.getMaNhanVien().toLowerCase().contains(value.toLowerCase())
+                           ||hd.getMaNCC().toLowerCase().contains(value.toLowerCase())
+                           ||hd.getNgayLap().toString().toLowerCase().contains(value.toLowerCase())
+                           ||String.valueOf(hd.getTongTien()).toLowerCase().contains(value.toLowerCase()))
+                       result.add(hd);
+                   break;
+               }
+               
+               case "Mã Phiếu Nhập":{
+                   if(hd.getMaPhieuNhap().toLowerCase().contains(value.toLowerCase())){
+                       result.add(hd);
+                   }
+                   break;
+               }
+               case "Mã NCC":{
+                   if(hd.getMaNCC().toLowerCase().contains(value.toLowerCase())){
+                       result.add(hd);
+                   }
+                   break;
+               }
+               case "Ngày Lập":{
+                   if(hd.getNgayLap().toString().toLowerCase().contains(value.toLowerCase())){
+                       result.add(hd);
+                   }
+                   break;
+               }
+               case "Tổng Tiền":{
+                   if(String.valueOf(hd.getTongTien()).toLowerCase().contains(value.toLowerCase())){
+                       result.add(hd);
+                   }
+                   break;
+               }
+               
+               case "Nhân viên":{
+                   if(Tool.removeAccent(qlNhanVien.getNV(hd.getMaNhanVien()).getFullFame()).contains(Tool.removeAccent(value))||
+                           hd.getMaNhanVien().toLowerCase().contains(value.toLowerCase()))
+                       result.add(hd);
+                       break;
+               }
+           }
+           
+        });
+         for (int i = result.size() - 1; i >= 0; i--) {
+             PhieuNhapDTO hd = result.get(i);
+            LocalDate ngaysinh = hd.getNgayLap().toLocalDate();
+            boolean ngayKhongThoa = (date1 != null && ngaysinh.isBefore(date1)) || (date2 != null && ngaysinh.isAfter(date2));
+            Boolean giaKhongThoa =(gia1!=0&&hd.getTongTien()<gia1)||(gia2!=0&&hd.getTongTien()>gia2);
+            if (ngayKhongThoa||giaKhongThoa) {
+                result.remove(hd);
+            }
+        }
+        return result;
     }
 }

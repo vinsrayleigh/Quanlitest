@@ -1,4 +1,3 @@
-
 package GUI.HienThi;
 
 import BUS.HoaDonBUS;
@@ -11,6 +10,7 @@ import DTO.HoaDonDTO;
 import DTO.KhachHangDTO;
 import GUI.Button.DateButton;
 import GUI.Button.ExportExcelButton;
+import GUI.Button.RefreshButton;
 import GUI.MyTable;
 import com.github.lgooddatepicker.components.DatePicker;
 import com.github.lgooddatepicker.components.DatePickerSettings;
@@ -32,13 +32,15 @@ import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-public class HienThiHoaDon extends FormHienThi{
+public class HienThiHoaDon extends FormHienThi {
+
     HoaDonBUS qlHoaDon = new HoaDonBUS();
     NhanVienBUS qlNhanVien = new NhanVienBUS();
     KhachHangBUS qlkhachhang = new KhachHangBUS();
     JTextField txTim = new JTextField(15);
     JComboBox<String> cbTypeSearch;
-    JButton btnRefresh = new JButton("Làm mới");
+    RefreshButton btnRefresh = new RefreshButton();
+    JButton btnChiTiet = new JButton("Chi tiết");
     KhachHangDTO nvSua = new KhachHangDTO();
     JTextField txKhoangNgay1 = new JTextField(8);
     JTextField txKhoangNgay2 = new JTextField(8);
@@ -46,9 +48,10 @@ public class HienThiHoaDon extends FormHienThi{
     DatePicker dPicker2;
     JTextField txKhoangGia1 = new JTextField(8);
     JTextField txKhoangGia2 = new JTextField(8);
-    HienThiCTHoaDon target;
+    //HienThiCTHoaDon target;
     ExportExcelButton btnXuatExcel = new ExportExcelButton();
-    public HienThiHoaDon(){
+
+    public HienThiHoaDon() {
         setLayout(new BorderLayout());
         //khoang ngay
         DatePickerSettings pickerSettings = new DatePickerSettings();
@@ -73,7 +76,7 @@ public class HienThiHoaDon extends FormHienThi{
         mtb.setupSort();
         setDataToTable(qlHoaDon.list, mtb);
         cbTypeSearch = new JComboBox<>(new String[]{"Tất cả", "Mã hóa đơn", "Nhân viên", "Khách hàng", "Khuyến mãi"});
-        
+
         JPanel plHeader = new JPanel();
         JPanel plTim = new JPanel();
         plTim.setBorder(BorderFactory.createTitledBorder("Tìm kiếm"));
@@ -96,8 +99,9 @@ public class HienThiHoaDon extends FormHienThi{
         plTimKiemKhoangGia.add(txKhoangGia2);
         plTimKiemKhoangGia.setPreferredSize(new Dimension(270, 80));
         plHeader.add(plTimKiemKhoangGia);
-        btnRefresh.setIcon(new ImageIcon("src/Image/sync_50px.png"));
+        btnChiTiet.setIcon(new ImageIcon("src/Image/edit_property_50px.png"));
         plHeader.add(btnRefresh);
+        plHeader.add(btnChiTiet);
         plHeader.add(btnXuatExcel);
 
         cbTypeSearch.addActionListener((ActionEvent e) -> {
@@ -111,7 +115,17 @@ public class HienThiHoaDon extends FormHienThi{
         btnRefresh.addActionListener((ae) -> {
             refresh();
         });
-
+        btnChiTiet.addActionListener((e) -> {
+            int row = mtb.getTable().getSelectedRow();
+            if (row > -1) {
+                HienThiCTHoaDon hienthi = new HienThiCTHoaDon(getSelectedRow(1));
+                hienthi.setVisible(true);
+                hienthi.setAlwaysOnTop(true);
+                hienthi.setLocationRelativeTo(null);
+            }else{
+                JOptionPane.showMessageDialog(this, "Chọn hóa đơn");
+            }
+        });
         dPicker1.addDateChangeListener((dce) -> {
             txKhoangNgay1.setText(dPicker1.getDateStringOrEmptyString());
         });
@@ -135,8 +149,9 @@ public class HienThiHoaDon extends FormHienThi{
             nvSua = qlkhachhang.getKH(manv);
         });
         //thay đổi cell's data;
-        
+
     }
+
     private void setDataToTable(ArrayList<HoaDonDTO> data, MyTable table) {
         table.clear();
         int stt = 1; // lưu số thứ tự dòng hiện tại
@@ -144,23 +159,24 @@ public class HienThiHoaDon extends FormHienThi{
         Boolean hienKhachHangAn = true;
         for (HoaDonDTO hd : data) {
 //            "Mã hóa đơn", "Tên nhân viên", "Tên Khách Hàng", "Tổng tiền", "Ngày lập", "Mã khuyến mãi", "Giảm giá"});
-            if (hienKhachHangAn ) {
+            if (hienKhachHangAn) {
                 table.addRow(new String[]{
                     String.valueOf(stt),
                     hd.getMaHoaDon(),
                     qlNhanVien.getNV(hd.getMaNhanVien()).getFullFame(),
                     qlkhachhang.getKH(hd.getMaKhachHang()).getFullName(),
-                    Tool.getMonney(hd.getTongTien())+",000",
+                    Tool.getMonney(hd.getTongTien()) + ",000",
                     hd.getNgayLap().toString(),
                     hd.getMaKM(),
-                    hd.getGiamGia()+""
+                    hd.getGiamGia() + ""
                 });
                 stt++;
             }
 
-        }       
+        }
     }
-    private void txSearchOnChange(){
+
+    private void txSearchOnChange() {
         LocalDate ngay1 = null, ngay2 = null;
         try {
             ngay1 = java.time.LocalDate.parse(txKhoangNgay1.getText());
@@ -174,8 +190,9 @@ public class HienThiHoaDon extends FormHienThi{
         } catch (DateTimeParseException e) {
             txKhoangNgay2.setForeground(Color.red);
         }
-        setDataToTable(qlHoaDon.Search(txTim.getText(), cbTypeSearch.getSelectedItem().toString(), ngay1, ngay2,Tool.getInt(txKhoangGia1.getText()),Tool.getInt(txKhoangGia2.getText())), mtb);
+        setDataToTable(qlHoaDon.Search(txTim.getText(), cbTypeSearch.getSelectedItem().toString(), ngay1, ngay2, Tool.getInt(txKhoangGia1.getText()), Tool.getInt(txKhoangGia2.getText())), mtb);
     }
+
     public void refresh() {
         qlkhachhang.getData();
         setDataToTable(qlHoaDon.list, mtb);
@@ -185,6 +202,7 @@ public class HienThiHoaDon extends FormHienThi{
         txKhoangGia1.setText("");
         txKhoangGia2.setText("");
     }
+
     private void addDocumentListener(JTextField txField) {
         txField.getDocument().addDocumentListener(new DocumentListener() {
             @Override
@@ -203,4 +221,4 @@ public class HienThiHoaDon extends FormHienThi{
             }
         });
     }
-}   
+}

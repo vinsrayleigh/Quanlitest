@@ -54,6 +54,8 @@ public class Main extends JFrame implements MouseListener {
     QuanLiHoaDon hoadon;
     QuanLiBaoHanh baohanh;
     QuanLiQuyen quyen;
+    QuanLiLoaiSP lsanpham;
+    QuanLiPhieuNhap phieunhap;
     public static JFrame All = new JFrame();
     public int status;
 
@@ -270,6 +272,18 @@ public class Main extends JFrame implements MouseListener {
                     quyen = new QuanLiQuyen();
                 }
                 plContent.add(quyen, BorderLayout.CENTER);
+                break;
+            case "Phiếu nhập":
+                if (phieunhap == null) {
+                    phieunhap = new QuanLiPhieuNhap();
+                }
+                plContent.add(phieunhap, BorderLayout.CENTER);
+                break;
+            case "Loại sản phẩm":
+                if (lsanpham == null) {
+                    lsanpham = new QuanLiLoaiSP();
+                }
+                plContent.add(lsanpham, BorderLayout.CENTER);
                 break;
             case "Thương hiệu":
                 if (thuonghieu == null) {

@@ -49,6 +49,7 @@ public class HienThiQuyen extends FormHienThi {
         plTim.add(cbTypeSearch);
         plTim.add(txTim);
         plHeader.add(plTim);
+        plHeader.add(btnRefresh);
         add(plHeader, BorderLayout.NORTH);
         mtb.setHeaders(new String[]{"STT", "Mã quyền", "Tên quyền"});
         mtb.setColumnsWidth(new double[]{.5, 1.5, 2.5});
@@ -80,6 +81,12 @@ public class HienThiQuyen extends FormHienThi {
                 ctQuyen.setData(qlQuyen.getQuyen(getSelectedRow(1)));
             }
        });
+        btnRefresh.addActionListener((e) -> {
+            setDataToTable(qlQuyen.list);
+        });
+    }
+    public void refresh(){
+        setDataToTable(qlQuyen.list);
     }
     public void setDataToTable(ArrayList<QuyenDTO> list) {
         int stt = 1;
