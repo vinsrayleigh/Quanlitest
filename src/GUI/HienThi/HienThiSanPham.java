@@ -106,6 +106,7 @@ public class HienThiSanPham extends FormHienThi {
         int stt = 1; // lưu số thứ tự dòng hiện tại
 //        "STT", "Mã sản phẩm", "Tên sản phẩm", "Loại sản phẩm", "Năm sx", "Nhà cung cấp", "Thương hiệu", "Đơn giá", "Số lượng","Mô tả", "Ảnh"});
         for (SanPhamDTO sp : list) {
+            if(sp.getSoLuong()>0){
             table.addRow(new String[]{
                 String.valueOf(stt),
                 sp.getMaSanPham(),
@@ -117,7 +118,7 @@ public class HienThiSanPham extends FormHienThi {
             sp.getDongia()+"000",
             sp.getSoLuong()+"",
             sp.getMota(),sp.getImage()});
-            stt++;
+            stt++;}
         }
     }
 

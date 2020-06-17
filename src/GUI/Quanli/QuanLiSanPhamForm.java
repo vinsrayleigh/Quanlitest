@@ -71,10 +71,10 @@ public class QuanLiSanPhamForm extends JPanel{
             btnSuaMouseClicked();
         });
         btnNhapExcel.addActionListener((ActionEvent ae) -> {
-            new DocExcel().docFileExcelKhachhang();
+            new DocExcel().docFileExcelSanPham();
         });
         btnXuatExcel.addActionListener((ActionEvent ae) -> {
-            new XuatExcel().xuatFileExcelKhachHang();
+            new XuatExcel().xuatFileExcelSanPham();
         });
     }
     private void btnThemMouseClicked() {

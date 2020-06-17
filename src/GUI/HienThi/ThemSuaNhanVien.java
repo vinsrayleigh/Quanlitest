@@ -26,6 +26,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import javafx.util.converter.LocalDateStringConverter;
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 /**
  *
@@ -145,177 +147,75 @@ public class ThemSuaNhanVien extends JFrame {
         dPickerNgaySinh.addDateChangeListener((dce) -> {
             txNgaysinh.setText(dPickerNgaySinh.getDateStringOrEmptyString());
         });
+        txNgaysinh.setEditable(false);
         Tool.AddDocumentListener("Tên", txTennv);
         Tool.AddDocumentListener("Date", txNgaysinh);
-
-//
-//        // inputs
-//        txManv.setBorder(BorderFactory.createTitledBorder("Mã nhân viên"));
-//        txHonv.setBorder(BorderFactory.createTitledBorder("Họ nhân viên"));
-//        txTennv.setBorder(BorderFactory.createTitledBorder("Tên nhân viên"));
-//        txSDT.setBorder(BorderFactory.createTitledBorder("Số điện thoại"));
-//        cbChonTrangThai = new JComboBox<>(new String[]{"Ẩn", "Hiện"});
-//        cbChonGT = new JComboBox<>(new String[]{"Nam", "Nữ", "Khác"});
-//        JPanel plChonTT = new JPanel();
-//        plChonTT.setBorder(BorderFactory.createTitledBorder("Trạng thái"));
-//        JLabel lbChonTT = new JLabel("Trạng thái: ");
-//        plChonTT.add(lbChonTT);
-//        plChonTT.add(cbChonTrangThai);
-//        JPanel plChonGT = new JPanel();
-//        plChonGT.setBorder(BorderFactory.createTitledBorder("Giới Tính"));
-//        JLabel lbChonGT = new JLabel("Giới tính: ");
-//        plChonGT.add(lbChonGT);
-//        plChonGT.add(cbChonGT);
-//
-//        JPanel plInput = new JPanel();
-//        plInput.add(txManv);
-//        plInput.add(txHonv);
-//        plInput.add(txTennv);
-//        plInput.add(plNgaysinh);
-//        plInput.add(txSDT);
-//        plInput.add(plChonTT);
-//        plInput.add(plChonGT);
-//        JPanel plButton = new JPanel();
-//
-//        // 2 case Thêm - Sửa
-//        if (this.type.equals("Thêm")) {
-//            this.setTitle("Thêm nhân viên");
-//            txManv.setText(qlNhanVien.getNextID());
-//            cbChonTrangThai.setSelectedItem("Hiện");
-//
-//            btnThem.setIcon(new ImageIcon("src/Image/add_new_50px.png"));
-//            plButton.add(btnThem);
-//
-//        } else {
-//            this.setTitle("Sửa nhân viên");
-//            for (NhanVienDTO nv : qlNhanVien.list) {
-//                if (nv.getMaNhanVien().equals(manv)) {
-//                    this.nvsua = nv;
-//                }
-//            }
-//            if (this.nvsua == null) {
-//                JOptionPane.showMessageDialog(null, "Lỗi, không tìm thấy nhân viên");
-//                this.dispose();
-//            }
-//
-//            cbChonTrangThai.setSelectedItem(this.nvsua.getTrangThai() == 0 ? "Hiện" : "Ẩn");
-//            txManv.setText(this.nvsua.getMaNhanVien());
-//            txHonv.setText(this.nvsua.getHoNhanVien());
-//            txTennv.setText(this.nvsua.getTenNhanVien());
-//            txNgaysinh.setText(this.nvsua.getNgaySinh().toString());
-//            dPickerNgaySinh.setDate(this.nvsua.getNgaySinh().toLocalDate());
-//            txSDT.setText(this.nvsua.getSdt());
-//            txManv.setEditable(false);
-//            txManv.addFocusListener(new FocusListener() {
-//                @Override
-//                public void focusGained(FocusEvent e) {
-//                    txHonv.requestFocus();
-//                    //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-//                }
-//
-//                @Override
-//                public void focusLost(FocusEvent e) {
-//                    //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-//                }
-//            });
-//            btnSua.setIcon(new ImageIcon("src/Image/maintenance_50px.png"));
-//            plButton.add(btnSua);
-//        }
-//        btnHuy.setIcon(new ImageIcon("src/Image/delete_50px.png"));
-//        plButton.add(btnHuy);
-//        this.add(plInput, BorderLayout.CENTER);
-//        this.add(plButton, BorderLayout.SOUTH);
-//        btnThem.addActionListener((ae) -> {
-//            btnThemMouseClicked();
-//        });
-//        btnSua.addActionListener((ae) -> {
-//            btnSuaMouseClicked();
-//        });
-//        btnHuy.addActionListener((ae) -> {
-//            this.dispose();
-//        });
-//        dPickerNgaySinh.addDateChangeListener((dce) -> {
-//            txNgaysinh.setText(dPickerNgaySinh.getDateStringOrEmptyString());
-//        });
-//
-//        this.setVisible(true);
+        addDocument(txHonv);
+        addDocument(txTennv);
+        addDocument(txSDT);
+        
     }
-//
-//    private Boolean checkEmpty() {
-//        String manv = txManv.getText();
-//        String honv = txHonv.getText();
-//        String tennv = txTennv.getText();
-//        String ngaysinh = txNgaysinh.getText();
-//        String sdt = txSDT.getText();
-//
-//        if (manv.trim().equals("")) {
-//            return showErrorTx(txManv, "Mã nhân viên không được để trống");
-//
-//        } else if (tennv.trim().equals("")) {
-//            return showErrorTx(txTennv, "Tên nhân viên không được để trống");
-//
-//        } else if (ngaysinh.trim().equals("")) {
-//            return showErrorTx(txTennv, "Ngày sinh không được để trống");
-//
-//        } else if (honv.trim().equals("")) {
-//            return showErrorTx(txTennv, "Địa chỉ không được để trống");
-//
-//        } else if (sdt.trim().equals("")) {
-//            return showErrorTx(txTennv, "Số điện thoại không được để trống");
-//
-//        } else {
-//            try {
-//                LocalDate.parse(ngaysinh);
-//            } catch (Exception e) {
-//                return showErrorTx(txTennv, "Ngày sinh không hợp lệ");
-//            }
-//        }
-//
-//        return true;
-//    }
-//
-//    private Boolean showErrorTx(JTextField tx, String errorInfo) {
-//        JOptionPane.showMessageDialog(tx, errorInfo);
-//        tx.requestFocus();
-//        return false;
-//    }
-//
-//    public static void main(String[] args) {
-//        new ThemSuaNhanVien("Thêm", "ADMIN").setVisible(true);
-//    }
-//
-//    private void btnThemMouseClicked() {
-//        if (checkEmpty()) {
-//            String manv = txManv.getText();
-//            String honv = txHonv.getText();
-//            String tennv = txTennv.getText();
-//            String ngaysinh = txNgaysinh.getText();
-//            String sdt = txSDT.getText();
-//            int trangthai = (cbChonTrangThai.getSelectedItem().toString().equals("Hiện") ? 1 : 0);
-//            String GT = (String) cbChonGT.getSelectedItem();
-//            NhanVienDTO nv = new NhanVienDTO(manv, tennv, honv,Date.valueOf(dPickerNgaySinh.getDate()),GT,sdt, "zero", 0,trangthai);
-//            qlNhanVien.add(nv);
-//            //NhanVienDTO nv  = new NhanVienDTO("admin", "Phuong Tay", "Le", new Date(0), "Nam","0393203261", "admin", 0,1);
-//        }
-//    }
-//
-//    private void btnSuaMouseClicked() {
-//            if (checkEmpty()) {
-//            //String manv = txManv.getText();
-//            String honv = txHonv.getText();
-//            String tennv = txTennv.getText();
-//            String ngaysinh = txNgaysinh.getText();
-//            String sdt = txSDT.getText();
-//            int trangthai = (cbChonTrangThai.getSelectedItem().toString().equals("Hiện") ? 1 : 0);
-//            String GT = (String) cbChonGT.getSelectedItem();
-//            NhanVienDTO nv = new NhanVienDTO(nvsua.getMaNhanVien(), tennv, honv,Date.valueOf(dPickerNgaySinh.getDate()),GT,sdt, "zero", 0,trangthai);
-//            qlNhanVien.add(nv);
-//            //NhanVienDTO nv  = new NhanVienDTO("admin", "Phuong Tay", "Le", new Date(0), "Nam","0393203261", "admin", 0,1);
-//        }
-//
-//        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-//    }
+    public void addDocument(JTextField tx){
+        tx.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                check(tx);
+            }
 
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                check(tx);
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                check(tx);
+            }
+        });
+    }
+    public void check(JTextField tx){
+        if (tx.equals(txHonv)) {
+            if (tx.getText().trim().length() > 40) {
+                tx.setForeground(Color.red);
+                btnThem.setEnabled(false);
+                btnSua.setEnabled(false);
+            } else {
+                tx.setForeground(Color.black);
+                btnThem.setEnabled(true);
+                btnSua.setEnabled(true);
+            }
+        }else
+        if (tx.equals(txTennv)) {
+            if (tx.getText().trim().length() > 30) {
+                tx.setForeground(Color.red);
+                btnThem.setEnabled(false);
+                btnSua.setEnabled(false);
+            } else {
+                tx.setForeground(Color.black);
+                btnThem.setEnabled(true);
+                btnSua.setEnabled(true);
+            }
+        }else
+        if (tx.equals(txSDT)) {
+            String vnf_regex = "^\\+?\\d{1,3}?[- .]?\\(?(?:\\d{2,3})\\)?[- .]?\\d\\d\\d[- .]?\\d\\d\\d\\d$";
+            if (tx.getText().matches(vnf_regex)) {
+                tx.setForeground(Color.black);
+                btnThem.setEnabled(true);
+                btnSua.setEnabled(true);
+            } else {
+                tx.setForeground(Color.red);
+                btnThem.setEnabled(false);
+                btnSua.setEnabled(false);
+            }
+        }else
+        if (txTennv.getText().trim().equals("") || txHonv.getText().trim().equals("") || txSDT.getText().trim().equals("")) {
+            btnThem.setEnabled(false);
+            btnSua.setEnabled(false);
+        } else {
+            btnThem.setEnabled(true);
+            btnSua.setEnabled(true);
+        }
+    }
     public static void main(String[] args) {
         new ThemSuaNhanVien("Thêm", "").setVisible(true);
     }

@@ -54,10 +54,9 @@ public class QuyenDAO {
             Connection conn = MySQLConnUtils.getMySQLConnection();
             Statement st = conn.createStatement();
             String Sql = "UPDATE tblquyen "
-                    +"SET maquyen = '"+q.getMaQuyen()+"',"
-                    +" tenquyen = '"+q.getTenQuyen()+"',"
+                    +"SET tenquyen = '"+q.getTenQuyen()+"',"
                     +" chitiet = '"+q.getChitiet()+"',"
-                    +"WHERE maphieunhap = '"+q.getMaQuyen()+"';";
+                    +"WHERE maquyen = '"+q.getMaQuyen()+"';";
             int row = st.executeUpdate(Sql);
             if(row>0) result =true;
             conn.close();

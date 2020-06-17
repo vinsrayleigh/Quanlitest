@@ -11,6 +11,8 @@ import GUI.Button.SuaButton;
 import GUI.Button.ThemButton;
 import GUI.Button.XoaButton;
 import GUI.DangNhap;
+import GUI.Excel.DocExcel;
+import GUI.Excel.XuatExcel;
 import GUI.HienThi.HienThiQuyen;
 import GUI.HienThi.HienThiSanPham;
 import GUI.HienThi.ThemSuaQuyen;
@@ -48,6 +50,12 @@ public class QuanLiQuyen extends JPanel {
         plBtn.add(btnSua);
         plBtn.add(btnNhapExcel);
         plBtn.add(btnXuatExcel);
+        btnNhapExcel.addActionListener((e) -> {
+           new DocExcel().docFileExcelQuyen();
+        });
+        btnXuatExcel.addActionListener((e) -> {
+           new XuatExcel().xuatFileExcelQuyen();
+        });
         btnThem.addActionListener((e) -> {
             ThemSuaQuyen themsua = new ThemSuaQuyen("Thêm", "");
             themsua.setVisible(true);

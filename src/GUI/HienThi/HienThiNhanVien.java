@@ -130,6 +130,7 @@ public class HienThiNhanVien extends FormHienThi{
         int stt = 1; // lưu số thứ tự dòng hiện tại
         Boolean hienNhanVienAn = true;
         for (NhanVienDTO nv : data) {
+            if(!nv.getMaNhanVien().equals("ADMIN"))
             if (hienNhanVienAn || nv.getTrangThai() == 0) {
                 table.addRow(new String[]{
                     String.valueOf(stt),

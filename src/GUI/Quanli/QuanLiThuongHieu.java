@@ -68,7 +68,7 @@ public class QuanLiThuongHieu extends JPanel {
             btnSuaMouseClicked();
         });
         btnXuatExcel.addActionListener((ActionEvent ae) -> {
-            new XuatExcel().xuatFileExcelTuongHieu();
+            new XuatExcel().xuatFileExcelThuongHieu();
         });
         btnNhapExcel.addActionListener((ActionEvent ae) -> {
             new DocExcel().docFileExcelThuongHieu();

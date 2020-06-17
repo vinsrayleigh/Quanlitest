@@ -6,6 +6,7 @@
 package GUI.Quanli;
 
 import BUS.KhuyenMaiBUS;
+import BUS.Tool;
 import DAO.KhuyenMaiDAO;
 import DTO.KhuyenMaiDTO;
 import GUI.Button.DateButton;
@@ -28,6 +29,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 /**
  *
@@ -74,12 +77,13 @@ public class ThemSuaKhuyenMai extends JFrame {
         add(Title);
         txMaSP.setEditable(false);
         DatePickerSettings pickerSettings = new DatePickerSettings();
+        DatePickerSettings pickerSettings1 = new DatePickerSettings();
         pickerSettings.setVisibleDateTextField(false);
         dPickerKetThuc = new DatePicker(pickerSettings);
-        dPickerBatDau = new DatePicker(pickerSettings);
+        dPickerBatDau = new DatePicker(pickerSettings.copySettings());
         dPickerBatDau.setDateToToday();
         dPickerKetThuc.setDateToToday();
-        DateButton db = new DateButton(dPickerKetThuc);
+        //DateButton db = new DateButton(dPickerKetThuc);
         String[] lbName = new String[]{"Mã khuyến mãi", "Mã sản phẩm", "Tên khuyến mãi", "Giảm giá", "Ngày Bắt đầu", "ngày kết thúc", "Chi tiết"};
         JButton chonSp = new JButton("...");
         chonSp.setBounds(330, 90, 30, 30);
@@ -106,17 +110,19 @@ public class ThemSuaKhuyenMai extends JFrame {
             lb.setBounds(50, 40 * i + 50, 150, 30);
             add(lb);
             if (com[i].equals(txNgayBD)) {
+                add(com[i]);
                 com[i].setBounds(180, 40 * i + 50, 150, 30);
-                dPickerKetThuc.setBounds(330, 40 * i + 50, 35, 30);
-                add(dPickerKetThuc);
+                dPickerBatDau.setBounds(330, 40 * i + 50, 35, 30);
+                add(dPickerBatDau);
             } else if (com[i].equals(txNgayKT)) {
                 com[i].setBounds(180, 40 * i + 50, 150, 30);
+                add(com[i]);
                 dPickerKetThuc.setBounds(330, 40 * i + 50, 35, 30);
                 add(dPickerKetThuc);
-            } else if(com[i].equals(txNgayKT)){
+            } else{
                 com[i].setBounds(180, 40 * i + 50, 150, 30);
+                add(com[i]);
             }
-            add(com[i]);
         }
         if (type.equals("Thêm")) {
             btnThem.setBounds(50, 400, 100, 30);
@@ -130,9 +136,7 @@ public class ThemSuaKhuyenMai extends JFrame {
             btnSua.setBounds(50, 400, 100, 30);
             add(btnSua);
             kmsua = qlKhuyenMai.getKM(makm);
-            if (kmsua == null) {
-                System.out.println("SAI CMNR");
-            } else {
+            if (kmsua != null) {
 //            String[] lbName = new String[]{"Mã nhân viên", "Họ nhân viên", "Tên nhân viên", "Ngày sinh", "Số điện thoại", "Giới tính", "Trạng thái"};
                 txMakm.setText(kmsua.getMakhuyenmai());
                 txMakm.setEditable(false);
@@ -156,14 +160,94 @@ public class ThemSuaKhuyenMai extends JFrame {
         btnHuy.addActionListener((e) -> {
             this.dispose();
         });
-        dPickerKetThuc.addDateChangeListener((dce) -> {
-            txNgayBD.setText(dPickerKetThuc.getDateStringOrEmptyString());
+        dPickerBatDau.addDateChangeListener((dce) -> {
+            txNgayBD.setText(dPickerBatDau.getDateStringOrEmptyString());
         });
         dPickerKetThuc.addDateChangeListener((dce) -> {
             txNgayKT.setText(dPickerKetThuc.getDateStringOrEmptyString());
         });
+        txNgayBD.setEditable(false);
+        txNgayKT.setEnabled(false);
+        btnThem.setEnabled(false);
+        btnSua.setEnabled(false);
+        addDocumentListner(txTenkm);
+        addDocumentListner(txGiamGia);
+        addDocumentListner(txNgayBD);
+        addDocumentListner(txNgayKT);
+        addDocumentListner(txChiTiet);
+        
     }
+    public void addDocumentListner(JTextField tx){
+        tx.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                check(tx);
+            }
 
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                 check(tx);
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                 check(tx);
+            }
+        });
+        
+    }
+    public void check(JTextField tx){
+        
+        
+        if(tx.equals(txTenkm)){
+            if(tx.getText().length()>40){
+                tx.setForeground(Color.red);
+                btnThem.setEnabled(false);
+                btnSua.setEnabled(false);
+            }else{
+                tx.setForeground(Color.black);
+                btnThem.setEnabled(true);
+                btnSua.setEnabled(true);
+            }
+        }
+        if(tx.equals(txGiamGia)){
+            try {
+                Integer.parseInt(tx.getText());
+                tx.setForeground(Color.black);
+                btnThem.setEnabled(true);
+                btnSua.setEnabled(true);
+            } catch (Exception e) {
+                tx.setForeground(Color.red);
+                btnThem.setEnabled(false);
+                btnSua.setEnabled(false);
+            }
+        }
+        if(tx.equals(txNgayBD)||tx.equals(txNgayKT)){
+            try{
+            Date date1 = Tool.getDate(txNgayBD.getText());
+            Date date2 = Tool.getDate(txNgayKT.getText());
+            if(!date1.before(date2)){
+                txNgayBD.setForeground(Color.red);
+                txNgayKT.setForeground(Color.red);
+                btnThem.setEnabled(false);
+                btnSua.setEnabled(false);
+            }else{
+                txNgayBD.setForeground(Color.black);
+                txNgayKT.setForeground(Color.black);
+                btnThem.setEnabled(true);
+                btnSua.setEnabled(true);
+            }}catch(Exception e){
+                
+            }
+        }
+        if(txTenkm.getText().trim().equals("")||txGiamGia.getText().trim().equals("")||txNgayBD.getText().trim().equals("")||txNgayKT.getText().trim().equals("")||txChiTiet.getText().trim().equals("")){
+                btnThem.setEnabled(false);
+                btnSua.setEnabled(false);
+        }else{
+            btnThem.setEnabled(true);
+                btnSua.setEnabled(true);
+        }
+    }
     private void themKM() {
         KhuyenMaiDTO km = new KhuyenMaiDTO(txMakm.getText(), txTenkm.getText(), txMaSP.getText(), Integer.valueOf(txGiamGia.getText()), new Date(0), new Date(0), txChiTiet.getText());
         km.setMakhuyenmai(txMakm.getText());

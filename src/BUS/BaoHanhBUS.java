@@ -21,7 +21,7 @@ import java.util.ArrayList;
  */
 public class BaoHanhBUS {
 
-    ArrayList<BaoHanhDTO> list = new ArrayList<>();
+    public ArrayList<BaoHanhDTO> list = new ArrayList<>();
 
     public BaoHanhBUS() {
         getData();
@@ -54,6 +54,8 @@ public class BaoHanhBUS {
                         ||kh.getMaKhachHang().toLowerCase().contains(value.toLowerCase())
                         || bh.getMaSanPham().toLowerCase().contains(value.toLowerCase())
                         || Tool.removeAccent(sp.getTenSanPham()).toLowerCase().contains(value.toLowerCase())
+                        ||hd.getMaKhachHang().toLowerCase().contains(value.toLowerCase())
+                        ||Tool.removeAccent(kh.getFullName()).toLowerCase().contains(value.toLowerCase())
                         || bh.getNgayLap().toString().toLowerCase().contains(value.toLowerCase())
                         || String.valueOf(bh.getThoiHan()).toLowerCase().contains(value.toLowerCase())) {
                     result.add(bh);
@@ -67,13 +69,15 @@ public class BaoHanhBUS {
                         break;
                     }
                     case "Sản phẩm": {
-                        if (bh.getMaSanPham().toLowerCase().contains(value.toLowerCase())) {
+                        if (bh.getMaSanPham().toLowerCase().contains(value.toLowerCase())|| Tool.removeAccent(sp.getTenSanPham()).toLowerCase().contains(value.toLowerCase())
+                                ) {
                             result.add(bh);
                         }
                         break;
                     }
                     case "Khách hàng": {
-                        if (bh.getNgayLap().toString().toLowerCase().contains(value.toLowerCase())) {
+                        if (hd.getMaKhachHang().toLowerCase().contains(value.toLowerCase())
+                        ||Tool.removeAccent(kh.getFullName()).toLowerCase().contains(value.toLowerCase())) {
                             result.add(bh);
                         }
                         break;

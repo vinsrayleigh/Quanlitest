@@ -45,7 +45,105 @@ public class DocExcel {
         }
         return url;
     }
+public void docFileExcelSanPham() {
+        fd.setTitle("Nhập dữ liệu sản phẩm từ excel");
+        String url = getFile();
+        if (url == null) {
+            return;
+        }
 
+        FileInputStream inputStream = null;
+        try {
+            inputStream = new FileInputStream(new File(url));
+
+            HSSFWorkbook workbook = new HSSFWorkbook(inputStream);
+            HSSFSheet sheet = workbook.getSheetAt(0);
+            Iterator<Row> rowIterator = sheet.iterator();
+            Row row1 = rowIterator.next();
+            String hanhDongKhiTrung = "";
+            int countThem = 0;
+            int countGhiDe = 0;
+            int countBoQua = 0;
+
+            while (rowIterator.hasNext()) {
+                Row row = rowIterator.next();
+                Iterator<Cell> cellIterator = row.cellIterator();
+
+                while (cellIterator.hasNext()) {
+
+                    int stt = (int) cellIterator.next().getNumericCellValue();
+                    String ma = cellIterator.next().getStringCellValue();
+                    String ten = cellIterator.next().getStringCellValue();
+                    String maLoaiSP = cellIterator.next().getStringCellValue();
+                    LocalDate NamSX = LocalDate.parse(cellIterator.next().getStringCellValue());
+                    String MaNCC = cellIterator.next().getStringCellValue();
+                    String MaTH = cellIterator.next().getStringCellValue();
+                    int dongia = (int) cellIterator.next().getNumericCellValue();
+                    int soLuong = (int) cellIterator.next().getNumericCellValue();
+                    String mota = cellIterator.next().getStringCellValue();
+                    String image = cellIterator.next().getStringCellValue();
+                    
+
+                    SanPhamBUS qlspBUS = new SanPhamBUS();
+                    SanPhamDTO lspOld = qlspBUS.getSanPham(ma);
+
+                    if (lspOld != null) {
+                        if (!hanhDongKhiTrung.contains("tất cả")) {
+                            MyTable mtb = new MyTable();
+                            mtb.setHeaders(new String[]{"", "Mã", "Tên", "Mã loại sản phẩm", "Năm Sản Xuất", "Mã Nhà Cung Cấp", "Mã Thương Hiệu", "Đơn giá", "Số Lượng", "Mô tả", "image"});
+                            mtb.addRow(new String[]{
+                                "Cũ:", lspOld.getMaSanPham(),
+                                lspOld.getTenSanPham(),
+                                lspOld.getMaLoaiSP(),
+                                String.valueOf(lspOld.getNamSx()),
+                                lspOld.getMaNCC(),
+                                lspOld.getMaThuongHieu(),
+                                String.valueOf(lspOld.getDongia()),
+                                String.valueOf(lspOld.getSoLuong()),
+                                lspOld.getMota(),
+                                lspOld.getImage()});
+                                
+                            
+                            mtb.addRow(new String[]{
+                                "Mới:",ma, ten, maLoaiSP, String.valueOf(NamSX), MaNCC, MaTH, String.valueOf(dongia), String.valueOf(soLuong), mota, image
+                            });
+
+                            MyJOptionPane mop = new MyJOptionPane(mtb, hanhDongKhiTrung);
+                            hanhDongKhiTrung = mop.getAnswer();
+                        }
+                        if (hanhDongKhiTrung.contains("Ghi đè")) {
+                            SanPhamDTO sp = new SanPhamDTO(ma, ten, (int) dongia, (int) soLuong, Date.valueOf(NamSX), MaNCC, maLoaiSP, MaTH, image);
+                            sp.setMota(mota);
+                            SanPhamDAO.updateSanPham(sp);
+                            countGhiDe++;
+                        } else {
+                            countBoQua++;
+                        }
+                    } else {
+                            SanPhamDTO sp = new SanPhamDTO(ma, ten, (int) dongia, (int) soLuong, Date.valueOf(NamSX), MaNCC, maLoaiSP, MaTH, image);
+                            sp.setMota(mota);
+                            SanPhamDAO.insertSanPham(sp);
+                            countThem++;
+                    }
+                }
+            }
+            JOptionPane.showMessageDialog(null, "Đọc thành công, "
+                    + "Thêm " + countThem
+                    + "; Ghi đè " + countGhiDe
+                    + "; Bỏ qua " + countBoQua
+                    + ". Vui lòng làm mới để thấy kết quả");
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "Lỗi khi nhập dữ liệu từ file: " + ex.getMessage());
+        } finally {
+            try {
+                if (inputStream != null) {
+                    inputStream.close();
+                }
+            } catch (IOException ex) {
+                JOptionPane.showMessageDialog(null, "Lỗi khi đóng inputstream: " + ex.getMessage());
+            }
+        }
+    }
     //Đọc file excel Nhà cung cấp
     public void docFileExcelNhaCungCap() {
         fd.setTitle("Nhập dữ liệu nhà cung cấp từ excel");
@@ -187,7 +285,7 @@ public class DocExcel {
                             hanhDongKhiTrung = mop.getAnswer();
                         }
                         if (hanhDongKhiTrung.contains("Ghi đè")) {
-                            QuyenDTO q = new QuyenDTO(ten, ten, chitiet);
+                            QuyenDTO q = new QuyenDTO(ma, ten, chitiet);
                             if (QuyenDAO.updateQuyen(q)) {
                                 countGhiDe++;
                             }
@@ -195,7 +293,7 @@ public class DocExcel {
                             countBoQua++;
                         }
                     } else {
-                        QuyenDTO q = new QuyenDTO(ten, ten, chitiet);
+                        QuyenDTO q = new QuyenDTO(ma, ten, chitiet);
                         QuyenDAO.insertQuyen(q);
                         countThem++;
                     }

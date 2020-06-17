@@ -28,6 +28,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import javafx.util.converter.LocalDateStringConverter;
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 public class ThemSuaThuongHieu extends JFrame {
 
@@ -98,24 +100,65 @@ public class ThemSuaThuongHieu extends JFrame {
                 txtenThuongHieu.setText(thsua.getTenThuongHieu());
                 txmoTa.setText(thsua.getMoTa());
             }
-            
+
         }
         btnThem.addActionListener(e -> {
-                themTH();
-                this.dispose();
+            themTH();
+            this.dispose();
 
-            });
-            btnSua.addActionListener(e -> {
-                suaTH();
-                this.dispose();
+        });
+        btnSua.addActionListener(e -> {
+            suaTH();
+            this.dispose();
 
-            });
-            btnHuy.setBounds(250, 400, 100, 30);
-            add(btnHuy);
-            btnHuy.addActionListener((e) -> {
-                this.dispose();
-            });
+        });
+        btnHuy.setBounds(250, 400, 100, 30);
+        add(btnHuy);
+        btnHuy.addActionListener((e) -> {
+            this.dispose();
+        });
+        btnThem.setEnabled(false);
+        btnSua.setEnabled(false);
+        txtenThuongHieu.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                if (txtenThuongHieu.getText().length() > 40||txtenThuongHieu.getText().trim().equals("")) {
+                    txtenThuongHieu.setForeground(Color.red);
+                    btnThem.setEnabled(false);
+                    btnSua.setEnabled(false);
+                } else {
+                    txtenThuongHieu.setForeground(Color.black);
+                    btnThem.setEnabled(true);
+                    btnSua.setEnabled(true);
+                }
+            }
 
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                if (txtenThuongHieu.getText().length() > 40||txtenThuongHieu.getText().trim().equals("")) {
+                    txtenThuongHieu.setForeground(Color.red);
+                    btnThem.setEnabled(false);
+                    btnSua.setEnabled(false);
+                } else {
+                    txtenThuongHieu.setForeground(Color.black);
+                    btnThem.setEnabled(true);
+                    btnSua.setEnabled(true);
+                }
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                if (txtenThuongHieu.getText().length() > 40||txtenThuongHieu.getText().trim().equals("")) {
+                    txtenThuongHieu.setForeground(Color.red);
+                    btnThem.setEnabled(false);
+                    btnSua.setEnabled(false);
+                } else {
+                    txtenThuongHieu.setForeground(Color.black);
+                    btnThem.setEnabled(true);
+                    btnSua.setEnabled(true);
+                }
+            }
+        });
     }
 
     private void themTH() {
@@ -144,7 +187,8 @@ public class ThemSuaThuongHieu extends JFrame {
         }
         this.dispose();
     }
-    public static void main(String[] argv){
+
+    public static void main(String[] argv) {
         new ThemSuaThuongHieu("Thêm", "").setVisible(true);
     }
 }

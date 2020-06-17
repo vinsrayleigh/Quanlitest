@@ -97,7 +97,24 @@ public class HienThiBaoHanh extends FormHienThi{
         addDocumentListener(txTim);
         addDocumentListener(txKhoangNgay1);
         addDocumentListener(txKhoangNgay2);
-        
+        btnRefresh.addActionListener((e) -> {
+            txTim.setText("");
+            txKhoangNgay1.setText("");
+            txKhoangNgay2.setText("");
+            refresh();
+        });
+        dPicker1.addDateChangeListener((dce) -> {
+            txKhoangNgay1.setText(dPicker1.getDateStringOrEmptyString());
+        });
+        dPicker2.addDateChangeListener((dce) -> {
+            txKhoangNgay2.setText(dPicker2.getDateStringOrEmptyString());
+        });
+        btnXuatExcel.addActionListener((e) -> {
+           new XuatExcel().xuatFileExcelBaoHanh();
+        });
+    }
+    public void refresh(){
+        setDataToTable(qlBH.getds());
     }
     private void addDocumentListener(JTextField txField) {
         txField.getDocument().addDocumentListener(new DocumentListener() {

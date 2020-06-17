@@ -16,6 +16,7 @@ import DTO.PhieuNhapDTO;
 import GUI.Button.DateButton;
 import GUI.Button.ExportExcelButton;
 import GUI.Button.RefreshButton;
+import GUI.Excel.XuatExcel;
 import GUI.MyTable;
 import com.github.lgooddatepicker.components.DatePicker;
 import com.github.lgooddatepicker.components.DatePickerSettings;
@@ -119,7 +120,9 @@ public class HienThiPhieuNhap extends FormHienThi{
                 txSearchOnChange();
             }
         });
-
+        btnXuatExcel.addActionListener((e) -> {
+           new XuatExcel().xuatFileExcelPhieuNhap();
+        });
         btnRefresh.addActionListener((ae) -> {
             refresh();
         });

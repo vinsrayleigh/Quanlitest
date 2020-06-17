@@ -15,6 +15,7 @@ import DTO.LoaiSPDTO;
 import DTO.ThuongHieuDTO;
 import GUI.Button.*;
 import GUI.*;
+import GUI.Excel.DocExcel;
 import GUI.Excel.XuatExcel;
 import GUI.Quanli.ThemSuaThuongHieu;
 import java.awt.BorderLayout;
@@ -71,10 +72,11 @@ public class QuanLiLoaiSP extends JPanel {
             btnSuaMouseClicked();
         });
         btnXuatExcel.addActionListener((ActionEvent ae) -> {
-            new XuatExcel().xuatFileExcelNhanVien();
+            new XuatExcel().xuatFileExcelLoaiSanPham();
+            
         });
         btnNhapExcel.addActionListener((ActionEvent ae) -> {
-            //new DocExcel().docFileExcelNhanVien();
+            new DocExcel().docFileExcelLoaiSanPham();
         });
     }
 

@@ -1,4 +1,3 @@
-
 package GUI.HienThi;
 
 import BUS.KhachHangBUS;
@@ -31,8 +30,9 @@ import java.text.SimpleDateFormat;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-    public class ThemSuaKhachHang extends JFrame {
+public class ThemSuaKhachHang extends JFrame {
 //
+
     ArrayList<QuyenDTO> listQ;
     String type;
     KhachHangBUS qlKhachHang = new KhachHangBUS();
@@ -74,7 +74,7 @@ import javax.swing.event.DocumentListener;
         dPickerNgaySinh.setDateToToday();
         DateButton db = new DateButton(dPickerNgaySinh);
         String[] lbName = new String[]{"Mã khách hàng", "Họ khách hàng", "Tên khách hàng", "Ngày sinh", "Số điện thoại", "Loại Khách Hàng", "Tích Lũy"};
-        JComponent[] com = new JComponent[]{txMakh, txHokh, txTenkh, txNgaysinh, txSDT,txloaikh, txTichluy};
+        JComponent[] com = new JComponent[]{txMakh, txHokh, txTenkh, txNgaysinh, txSDT, txloaikh, txTichluy};
         for (int i = 0; i <= 6; i++) {
             JLabel lb = new JLabel(lbName[i]);
             lb.setBounds(50, 40 * i + 50, 150, 30);
@@ -100,33 +100,31 @@ import javax.swing.event.DocumentListener;
             btnSua.setBounds(50, 400, 100, 30);
             add(btnSua);
             khsua = qlKhachHang.getKH(makh);
-            if(khsua==null){
-            }else{
+            if (khsua == null) {
+            } else {
 //            String[] lbName = new String[]{"Mã nhân viên", "Họ nhân viên", "Tên nhân viên", "Ngày sinh", "Số điện thoại", "Giới tính", "Trạng thái"};
-            txMakh.setText(khsua.getMaKhachHang());
-            txMakh.setEditable(false);
-            txHokh.setText(khsua.getHoKhachHang());
-            txTenkh.setText(khsua.getTenKhachHang());
-            txNgaysinh.setText(khsua.getNgaySinh().toString());
-            txSDT.setText(khsua.getSdt());
-            if(khsua.getLoaiKhachHang().equals("VIP"))
-            {
-                txloaikh.setSelectedItem("VIP");
-            }else if(khsua.getLoaiKhachHang().equals("Thường"))
-            {
-                txloaikh.setSelectedItem("Thường");
-            }
+                txMakh.setText(khsua.getMaKhachHang());
+                txMakh.setEditable(false);
+                txHokh.setText(khsua.getHoKhachHang());
+                txTenkh.setText(khsua.getTenKhachHang());
+                txNgaysinh.setText(khsua.getNgaySinh().toString());
+                txSDT.setText(khsua.getSdt());
+                if (khsua.getLoaiKhachHang().equals("VIP")) {
+                    txloaikh.setSelectedItem("VIP");
+                } else if (khsua.getLoaiKhachHang().equals("Thường")) {
+                    txloaikh.setSelectedItem("Thường");
+                }
             }
         }
         btnThem.addActionListener(e -> {
             themKH();
             this.dispose();
-            
+
         });
-        btnSua.addActionListener(e->{
+        btnSua.addActionListener(e -> {
             suaKH();
             this.dispose();
-            
+
         });
         btnHuy.setBounds(250, 400, 100, 30);
         add(btnHuy);
@@ -139,11 +137,11 @@ import javax.swing.event.DocumentListener;
         txTenkh.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
-                if(txTenkh.getText().contains(" ")||txTenkh.getText().length()>40){
+                if (txTenkh.getText().contains(" ") || txTenkh.getText().length() > 40) {
                     txTenkh.setForeground(Color.red);
                     btnThem.setEnabled(false);
                     btnSua.setEnabled(false);
-                }else{
+                } else {
                     txTenkh.setForeground(Color.black);
                     btnThem.setEnabled(true);
                     btnSua.setEnabled(true);
@@ -152,11 +150,11 @@ import javax.swing.event.DocumentListener;
 
             @Override
             public void removeUpdate(DocumentEvent e) {
-                if(txTenkh.getText().contains(" ")||txTenkh.getText().length()>40){
+                if (txTenkh.getText().contains(" ") || txTenkh.getText().length() > 40) {
                     txTenkh.setForeground(Color.red);
                     btnThem.setEnabled(false);
                     btnSua.setEnabled(false);
-                }else{
+                } else {
                     txTenkh.setForeground(Color.black);
                     btnThem.setEnabled(true);
                     btnSua.setEnabled(true);
@@ -165,18 +163,87 @@ import javax.swing.event.DocumentListener;
 
             @Override
             public void changedUpdate(DocumentEvent e) {
-                if(txTenkh.getText().contains(" ")||txTenkh.getText().length()>40){
+                if (txTenkh.getText().contains(" ") || txTenkh.getText().length() > 40) {
                     txTenkh.setForeground(Color.red);
                     btnThem.setEnabled(false);
                     btnSua.setEnabled(false);
-                }else{
+                } else {
                     txTenkh.setForeground(Color.black);
                     btnThem.setEnabled(true);
                     btnSua.setEnabled(true);
-                }            }
+                }
+            }
+        });
+        btnSua.setEnabled(false);
+        btnThem.setEnabled(false);
+        txNgaysinh.setEditable(false);
+        addDocumentListener(txSDT);
+        addDocumentListener(txHokh);
+    }
+
+    public void addDocumentListener(JTextField tx) {
+        tx.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                check(tx);
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                check(tx);
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                check(tx);
+            }
         });
     }
-    
+
+    public void check(JTextField tx) {
+        if (tx.equals(txHokh)) {
+            if (tx.getText().trim().length() > 40) {
+                tx.setForeground(Color.red);
+                btnThem.setEnabled(false);
+                btnSua.setEnabled(false);
+            } else {
+                tx.setForeground(Color.black);
+                btnThem.setEnabled(true);
+                btnSua.setEnabled(true);
+            }
+        }else
+        if (tx.equals(txTenkh)) {
+            if (tx.getText().trim().length() > 30) {
+                tx.setForeground(Color.red);
+                btnThem.setEnabled(false);
+                btnSua.setEnabled(false);
+            } else {
+                tx.setForeground(Color.black);
+                btnThem.setEnabled(true);
+                btnSua.setEnabled(true);
+            }
+        }else
+        if (tx.equals(txSDT)) {
+            String vnf_regex = "^\\+?\\d{1,3}?[- .]?\\(?(?:\\d{2,3})\\)?[- .]?\\d\\d\\d[- .]?\\d\\d\\d\\d$";
+            if (tx.getText().matches(vnf_regex)) {
+                tx.setForeground(Color.black);
+                btnThem.setEnabled(true);
+                btnSua.setEnabled(true);
+            } else {
+                tx.setForeground(Color.red);
+                btnThem.setEnabled(false);
+                btnSua.setEnabled(false);
+            }
+        }else
+        if (txTenkh.getText().trim().equals("") || txHokh.getText().trim().equals("") || txSDT.getText().trim().equals("")) {
+            btnThem.setEnabled(false);
+            btnSua.setEnabled(false);
+        } else {
+            btnThem.setEnabled(true);
+            btnSua.setEnabled(true);
+        }
+    }
+
     private void themKH() {
         txTichluy.setText("0");
         KhachHangDTO kh = new KhachHangDTO(txMakh.getText(), txHokh.getText(), txTenkh.getText(), new Date(0), txSDT.getText(), txloaikh.getSelectedItem().toString(), Tool.getInt(txTichluy.getText()));
@@ -196,7 +263,7 @@ import javax.swing.event.DocumentListener;
     }
 
     private void suaKH() {
-       // KhachHangDTO kh  = qlKhachHang.getKH()
+        // KhachHangDTO kh  = qlKhachHang.getKH()
         khsua.setMaKhachHang(txMakh.getText());
         khsua.setHoKhachHang(txHokh.getText());
         khsua.setTenKhachHang(txTenkh.getText());
@@ -207,15 +274,16 @@ import javax.swing.event.DocumentListener;
         khsua.setSdt(txSDT.getText());
         khsua.setLoaiKhachHang(txloaikh.getSelectedItem().toString());
         khsua.setTichLuy(Tool.getInt(txTichluy.getText()));
-        int reply = JOptionPane.showConfirmDialog(rootPane,"Bạn có chắc muốn sửa nhân viên");
-        if(reply==JOptionPane.YES_OPTION){
+        int reply = JOptionPane.showConfirmDialog(rootPane, "Bạn có chắc muốn sửa nhân viên");
+        if (reply == JOptionPane.YES_OPTION) {
             new KhachHangDAO().updateKhachHang(khsua);
             JOptionPane.showMessageDialog(rootPane, "Sửa thành công");
-        }else{
+        } else {
             JOptionPane.showMessageDialog(rootPane, "Sửa không thành công");
         }
     }
-        public static void main(String[] args) {
-           new ThemSuaKhachHang("Thêm","").setVisible(true);
-        }
+
+    public static void main(String[] args) {
+        new ThemSuaKhachHang("Thêm", "").setVisible(true);
+    }
 }

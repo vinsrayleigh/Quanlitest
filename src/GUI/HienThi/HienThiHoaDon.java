@@ -11,6 +11,7 @@ import DTO.KhachHangDTO;
 import GUI.Button.DateButton;
 import GUI.Button.ExportExcelButton;
 import GUI.Button.RefreshButton;
+import GUI.Excel.XuatExcel;
 import GUI.MyTable;
 import com.github.lgooddatepicker.components.DatePicker;
 import com.github.lgooddatepicker.components.DatePickerSettings;
@@ -132,7 +133,9 @@ public class HienThiHoaDon extends FormHienThi {
         dPicker2.addDateChangeListener((dce) -> {
             txKhoangNgay2.setText(dPicker2.getDateStringOrEmptyString());
         });
-
+        btnXuatExcel.addActionListener((e) -> {
+           new XuatExcel().xuatFileExcelHoaDon();
+        });
         // https://stackoverflow.com/questions/3953208/value-change-listener-to-jtextfield
         addDocumentListener(txTim);
         addDocumentListener(txKhoangNgay1);

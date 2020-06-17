@@ -27,6 +27,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import javafx.util.converter.LocalDateStringConverter;
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 /**
  *
@@ -93,7 +95,7 @@ public class ThemSuaNhaCungCap extends JFrame {
             add(btnSua);
             NCCsua = qlNhaCungCap.getNCC(MaNCC);
             if (NCCsua == null) {
-                JOptionPane.showMessageDialog(rootPane,"Không tìm thấy nhà cung cấp" );
+                JOptionPane.showMessageDialog(rootPane, "Không tìm thấy nhà cung cấp");
             } else {
 //            String[] lbName = new String[]{"Mã nhân viên", "Họ nhân viên", "Tên nhân viên", "Ngày sinh", "Số điện thoại", "Giới tính", "Trạng thái"};
                 txmaNCC.setText(NCCsua.getMaNCC());
@@ -102,23 +104,90 @@ public class ThemSuaNhaCungCap extends JFrame {
                 txEmail.setText(NCCsua.getEmail());
             }
         }
-            btnThem.addActionListener(e -> {
-                themncc();
-                //this.dispose();
+        btnThem.addActionListener(e -> {
+            themncc();
+            //this.dispose();
 
-            });
-            btnSua.addActionListener(e -> {
-                suaNCC();
-                //this.dispose();
+        });
+        btnSua.addActionListener(e -> {
+            suaNCC();
+            //this.dispose();
 
-            });
-            btnHuy.setBounds(250, 400, 100, 30);
-            add(btnHuy);
-            btnHuy.addActionListener((e) -> {
-                this.dispose();
-            });
+        });
+        btnHuy.setBounds(250, 400, 100, 30);
+        add(btnHuy);
+        btnHuy.addActionListener((e) -> {
+            this.dispose();
+        });
+        addDocumentListener(txtenNCC);
+        addDocumentListener(txDiaChi);
+        addDocumentListener(txEmail);
+        btnSua.setEnabled(false);
+        btnThem.setEnabled(false);
+    }
 
+    public void addDocumentListener(JTextField tx) {
+        tx.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                check(tx);
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                check(tx);
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                check(tx);
+            }
+        });
+    }
+
+    public void check(JTextField tx) {
+        if (tx.equals(txtenNCC)) {
+            if (tx.getText().length() > 40) {
+                tx.setForeground(Color.red);
+                btnThem.setEnabled(false);
+                btnSua.setEnabled(false);
+            } else {
+                tx.setForeground(Color.black);
+                btnThem.setEnabled(true);
+                btnSua.setEnabled(true);
+            }
+        }else if(tx.equals(txDiaChi)){
+            if (tx.getText().length() > 50) {
+                tx.setForeground(Color.red);
+                btnThem.setEnabled(false);
+                btnSua.setEnabled(false);
+            } else {
+                tx.setForeground(Color.black);
+                btnThem.setEnabled(true);
+                btnSua.setEnabled(true);
+            }
+        }else if(tx.equals(txEmail)){
+            String regex;
+            regex = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+            + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+            if (tx.getText().length() > 40||!tx.getText().matches(regex)) {
+                tx.setForeground(Color.red);
+                btnThem.setEnabled(false);
+                btnSua.setEnabled(false);
+            } else {
+                tx.setForeground(Color.black);
+                btnThem.setEnabled(true);
+                btnSua.setEnabled(true);
+            }
+        }else
+        if (txDiaChi.getText().trim().equals("") || txEmail.getText().trim().equals("") || txtenNCC.getText().trim().equals("")) {
+            btnThem.setEnabled(false);
+            btnSua.setEnabled(false);
+        } else {
+            btnThem.setEnabled(true);
+            btnSua.setEnabled(true);
         }
+    }
 
     private void themncc() {
         NhaCungCapDTO ncc = new NhaCungCapDTO();
@@ -146,6 +215,7 @@ public class ThemSuaNhaCungCap extends JFrame {
         }
         this.dispose();
     }
+
     public static void main(String[] args) {
         new ThemSuaNhaCungCap("Thêm", "").setVisible(true);
     }
