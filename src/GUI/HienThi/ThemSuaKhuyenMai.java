@@ -15,6 +15,9 @@ import com.github.lgooddatepicker.components.DatePickerSettings;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Rectangle;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -30,12 +33,12 @@ import javax.swing.JTextField;
  *
  * @author minkuppj
  */
-public class ThemSuaKhuyenMai extends JFrame{
-    
+public class ThemSuaKhuyenMai extends JFrame {
+
     String type;
     KhuyenMaiBUS qlKhuyenMai = new KhuyenMaiBUS();
     KhuyenMaiDTO kmsua;
-    
+    int checkin = 0;
     JTextField txMakm = new JTextField(15);
     JTextField txMaSP = new JTextField(15);
     JTextField txTenkm = new JTextField(15);
@@ -43,11 +46,12 @@ public class ThemSuaKhuyenMai extends JFrame{
     JTextField txNgayKT = new JTextField(15);
     JTextField txGiamGia = new JTextField(15);
     JTextField txChiTiet = new JTextField(15);
-    
+
     JButton btnThem = new JButton("Thêm");
     JButton btnSua = new JButton("Sửa");
     JButton btnHuy = new JButton("Hủy");
-    DatePicker dPickerGiamGia;
+    DatePicker dPickerKetThuc;
+    DatePicker dPickerBatDau;
 //
 
     public ThemSuaKhuyenMai(String type, String makm) {
@@ -68,27 +72,48 @@ public class ThemSuaKhuyenMai extends JFrame{
         Title.setForeground(Color.WHITE);
         Title.setBounds(0, 0, 400, 40);
         add(Title);
+        txMaSP.setEditable(false);
         DatePickerSettings pickerSettings = new DatePickerSettings();
         pickerSettings.setVisibleDateTextField(false);
-        dPickerGiamGia = new DatePicker(pickerSettings);
-        dPickerGiamGia.setDateToToday();
-        DateButton db = new DateButton(dPickerGiamGia);
-        String[] lbName = new String[]{"Mã khuyến mãi", "Mã sản phẩm", "Tên khuyến mãi", "Giảm giá","Ngày Bắt đầu", "ngày kết thúc",  "Chi tiết"};
-        
+        dPickerKetThuc = new DatePicker(pickerSettings);
+        dPickerBatDau = new DatePicker(pickerSettings);
+        dPickerBatDau.setDateToToday();
+        dPickerKetThuc.setDateToToday();
+        DateButton db = new DateButton(dPickerKetThuc);
+        String[] lbName = new String[]{"Mã khuyến mãi", "Mã sản phẩm", "Tên khuyến mãi", "Giảm giá", "Ngày Bắt đầu", "ngày kết thúc", "Chi tiết"};
+        JButton chonSp = new JButton("...");
+        chonSp.setBounds(330, 90, 30, 30);
+        chonSp.addActionListener((e) -> {
+            JFrame main = ChonSanPham.chonSanPham(txMaSP);
+            btnThem.setEnabled(false);
+            btnSua.setEnabled(false);
+            btnHuy.setEnabled(false);
+            main.setUndecorated(true);
+            main.setVisible(true);
+            main.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosed(WindowEvent e) {
+                    btnThem.setEnabled(true);
+                btnSua.setEnabled(true);
+                btnHuy.setEnabled(true);
+                }
+            });
+        });
+        this.add(chonSp);
         JComponent[] com = new JComponent[]{txMakm, txMaSP, txTenkm, txGiamGia, txNgayBD, txNgayKT, txChiTiet};
         for (int i = 0; i <= 6; i++) {
             JLabel lb = new JLabel(lbName[i]);
             lb.setBounds(50, 40 * i + 50, 150, 30);
             add(lb);
-            if (com[i].equals(txNgayBD )) {
+            if (com[i].equals(txNgayBD)) {
                 com[i].setBounds(180, 40 * i + 50, 150, 30);
-                dPickerGiamGia.setBounds(330, 40 * i + 50, 35, 30);
-                add(dPickerGiamGia);
-            } else if (com[i].equals(txNgayKT )) {
+                dPickerKetThuc.setBounds(330, 40 * i + 50, 35, 30);
+                add(dPickerKetThuc);
+            } else if (com[i].equals(txNgayKT)) {
                 com[i].setBounds(180, 40 * i + 50, 150, 30);
-                dPickerGiamGia.setBounds(330, 40 * i + 50, 35, 30);
-                add(dPickerGiamGia);
-            }else{
+                dPickerKetThuc.setBounds(330, 40 * i + 50, 35, 30);
+                add(dPickerKetThuc);
+            } else if(com[i].equals(txNgayKT)){
                 com[i].setBounds(180, 40 * i + 50, 150, 30);
             }
             add(com[i]);
@@ -97,48 +122,48 @@ public class ThemSuaKhuyenMai extends JFrame{
             btnThem.setBounds(50, 400, 100, 30);
             add(btnThem);
             txMakm.setText(qlKhuyenMai.getNextID());
-            txNgayBD.setText(dPickerGiamGia.getDateStringOrEmptyString());
-            txNgayKT.setText(dPickerGiamGia.getDateStringOrEmptyString());
+            txNgayBD.setText(dPickerKetThuc.getDateStringOrEmptyString());
+            txNgayKT.setText(dPickerKetThuc.getDateStringOrEmptyString());
             txMakm.setEditable(false);
         }
         if (type.equals("Sửa")) {
             btnSua.setBounds(50, 400, 100, 30);
             add(btnSua);
             kmsua = qlKhuyenMai.getKM(makm);
-            if(kmsua==null){
+            if (kmsua == null) {
                 System.out.println("SAI CMNR");
-            }else{
+            } else {
 //            String[] lbName = new String[]{"Mã nhân viên", "Họ nhân viên", "Tên nhân viên", "Ngày sinh", "Số điện thoại", "Giới tính", "Trạng thái"};
-            txMakm.setText(kmsua.getMakhuyenmai());
-            txMakm.setEditable(false);
-            txTenkm.setText(kmsua.getTenkhuyenmai());
-            txMaSP.setText(kmsua.getMaSanPham());
-            
+                txMakm.setText(kmsua.getMakhuyenmai());
+                txMakm.setEditable(false);
+                txTenkm.setText(kmsua.getTenkhuyenmai());
+                txMaSP.setText(kmsua.getMaSanPham());
+
             }
         }
         btnThem.addActionListener(e -> {
             themKM();
             this.dispose();
-            
+
         });
-        btnSua.addActionListener(e->{
+        btnSua.addActionListener(e -> {
             suaKM();
             this.dispose();
-            
+
         });
         btnHuy.setBounds(250, 400, 100, 30);
         add(btnHuy);
         btnHuy.addActionListener((e) -> {
             this.dispose();
         });
-        dPickerGiamGia.addDateChangeListener((dce) -> {
-            txNgayBD.setText(dPickerGiamGia.getDateStringOrEmptyString());
+        dPickerKetThuc.addDateChangeListener((dce) -> {
+            txNgayBD.setText(dPickerKetThuc.getDateStringOrEmptyString());
         });
-        dPickerGiamGia.addDateChangeListener((dce) -> {
-            txNgayKT.setText(dPickerGiamGia.getDateStringOrEmptyString());
+        dPickerKetThuc.addDateChangeListener((dce) -> {
+            txNgayKT.setText(dPickerKetThuc.getDateStringOrEmptyString());
         });
     }
-    
+
     private void themKM() {
         KhuyenMaiDTO km = new KhuyenMaiDTO(txMakm.getText(), txTenkm.getText(), txMaSP.getText(), Integer.valueOf(txGiamGia.getText()), new Date(0), new Date(0), txChiTiet.getText());
         km.setMakhuyenmai(txMakm.getText());
@@ -157,7 +182,7 @@ public class ThemSuaKhuyenMai extends JFrame{
     }
 
     private void suaKM() {
-       // KhuyenMaiDTO km  = qlKhuyenMai.getKH()
+        // KhuyenMaiDTO km  = qlKhuyenMai.getKH()
         kmsua.setMakhuyenmai(txMakm.getText());
         kmsua.setTenkhuyenmai(txTenkm.getText());
         kmsua.setMaSanPham(txMaSP.getText());
@@ -169,15 +194,16 @@ public class ThemSuaKhuyenMai extends JFrame{
         kmsua.setNgaybatdau(java.sql.Date.valueOf(localDate));
         kmsua.setNgayketthuc(java.sql.Date.valueOf(localDate1));
         kmsua.setChitiet(txChiTiet.getText());
-        int reply = JOptionPane.showConfirmDialog(rootPane,"Bạn có chắc muốn sửa nhân viên");
-        if(reply==JOptionPane.YES_OPTION){
+        int reply = JOptionPane.showConfirmDialog(rootPane, "Bạn có chắc muốn sửa nhân viên");
+        if (reply == JOptionPane.YES_OPTION) {
             new KhuyenMaiDAO().updateKhuyenMai(kmsua);
             JOptionPane.showMessageDialog(rootPane, "Sửa thành công");
-        }else{
+        } else {
             JOptionPane.showMessageDialog(rootPane, "Sửa không thành công");
         }
     }
-        public static void main(String[] args) {
-           new ThemSuaKhuyenMai("Thêm","").setVisible(true);
-        }
+
+    public static void main(String[] args) {
+        new ThemSuaKhuyenMai("Thêm", "").setVisible(true);
+    }
 }

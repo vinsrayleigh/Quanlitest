@@ -5,6 +5,7 @@
  */
 package GUI.Quanli;
 
+import GUI.HienThi.ThemSuaNhanVien;
 import GUI.HienThi.HienThiNhanVien;
 import BUS.NhanVienBUS;
 import DAO.NhanVienDAO;

@@ -28,7 +28,11 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import javafx.util.converter.LocalDateStringConverter;
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+
 public class ThemSuaLoaiSP extends JFrame {
+
     ArrayList<QuyenDTO> listQ;
     String type;
     LoaiSPBUS qlLoaiSP = new LoaiSPBUS();
@@ -79,7 +83,6 @@ public class ThemSuaLoaiSP extends JFrame {
             btnThem.setBounds(50, 400, 100, 30);
             add(btnThem);
             txmaLoaiSP.setText(qlLoaiSP.getNextID());
-            txmaLoaiSP.setEditable(false);
         }
         if (type.equals("Sửa")) {
             btnSua.setBounds(50, 400, 100, 30);
@@ -92,24 +95,97 @@ public class ThemSuaLoaiSP extends JFrame {
                 txmaLoaiSP.setText(spsua.getMaLoaiSP());
                 txtenLoaiSP.setText(spsua.getTenLoaiSP());
             }
-            
+
         }
         btnThem.addActionListener(e -> {
+            if (txtenLoaiSP.getForeground().equals(Color.black) && txmaLoaiSP.getForeground().equals(Color.black)) {
                 themLoaiSP();
                 this.dispose();
+            } else {
+                if (txtenLoaiSP.getForeground().equals(Color.red)) {
+                    txtenLoaiSP.requestFocus();
+                }
+                if (txmaLoaiSP.getForeground().equals(Color.red)) {
+                    txmaLoaiSP.requestFocus();
+                }
+            }
 
-            });
-            btnSua.addActionListener(e -> {
+        });
+        btnSua.addActionListener(e -> {
+
+            if (txtenLoaiSP.getForeground().equals(Color.black) && txmaLoaiSP.getForeground().equals(Color.black)) {
                 suaLoaiSP();
                 this.dispose();
+            } else {
+                if (txtenLoaiSP.getForeground().equals(Color.red)) {
+                    txtenLoaiSP.requestFocus();
+                }
+                if (txmaLoaiSP.getForeground().equals(Color.red)) {
+                    txmaLoaiSP.requestFocus();
+                }
+            }
+        });
+        btnHuy.setBounds(250, 400, 100, 30);
+        add(btnHuy);
+        btnHuy.addActionListener((e) -> {
+            this.dispose();
+        });
+        txtenLoaiSP.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                if (txtenLoaiSP.getText().length() > 40) {
+                    txtenLoaiSP.setForeground(Color.red);
+                } else {
+                    txtenLoaiSP.setForeground(Color.black);
+                }
+            }
 
-            });
-            btnHuy.setBounds(250, 400, 100, 30);
-            add(btnHuy);
-            btnHuy.addActionListener((e) -> {
-                this.dispose();
-            });
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                if (txtenLoaiSP.getText().length() > 40) {
+                    txtenLoaiSP.setForeground(Color.red);
+                } else {
+                    txtenLoaiSP.setForeground(Color.black);
+                }
+            }
 
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                if (txtenLoaiSP.getText().length() > 40) {
+                    txtenLoaiSP.setForeground(Color.red);
+                } else {
+                    txtenLoaiSP.setForeground(Color.black);
+                }
+            }
+        });
+        txmaLoaiSP.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                if (txmaLoaiSP.getText().contains(" ") || txmaLoaiSP.getText().length() > 10) {
+                    txmaLoaiSP.setForeground(Color.red);
+                } else {
+                    txmaLoaiSP.setForeground(Color.black);
+                }
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                if (txmaLoaiSP.getText().contains(" ") || txmaLoaiSP.getText().length() > 10) {
+                    txmaLoaiSP.setForeground(Color.red);
+                } else {
+                    txmaLoaiSP.setForeground(Color.black);
+                }
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                if (txmaLoaiSP.getText().contains(" ") || txmaLoaiSP.getText().length() > 10) {
+                    txmaLoaiSP.setForeground(Color.red);
+                } else {
+                    txmaLoaiSP.setForeground(Color.black);
+                }
+            }
+        });
     }
 
     private void themLoaiSP() {
@@ -136,7 +212,8 @@ public class ThemSuaLoaiSP extends JFrame {
         }
         this.dispose();
     }
-    public static void main(String[] argv){
-        new ThemSuaLoaiSP("Thêm", "").setVisible(true);
+
+    public static void main(String[] argv) {
+        new ThemSuaLoaiSP("Sửa", "").setVisible(true);
     }
 }

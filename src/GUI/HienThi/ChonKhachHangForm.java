@@ -1,4 +1,5 @@
 package GUI.HienThi;
+
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import javax.swing.ImageIcon;
@@ -11,7 +12,6 @@ import javax.swing.JTextField;
 public class ChonKhachHangForm extends JFrame {
 
     HienThiKhachHang formHienThi = new HienThiKhachHang();
-
     JButton btnOK = new JButton("Chọn");
     JButton btnCancel = new JButton("Thoát");
     JTextField txTarget;
@@ -22,15 +22,15 @@ public class ChonKhachHangForm extends JFrame {
         this.setSize(1200 - 200, 600);
         this.setLocationRelativeTo(null);
         this.txTarget = _txTarget;
-
+        setUndecorated(true);
         // ======= Buttons Panel ===========
         btnCancel.setIcon(new ImageIcon("src/Image/cancel_100px.png"));
         btnOK.setIcon(new ImageIcon("src/Image/add_new_50px.png"));
-        
+
         JPanel plBtns = new JPanel();
         plBtns.add(btnOK);
         plBtns.add(btnCancel);
-        
+
         this.add(formHienThi, BorderLayout.CENTER);
         this.add(plBtns, BorderLayout.SOUTH);
         this.setVisible(true);
@@ -47,7 +47,7 @@ public class ChonKhachHangForm extends JFrame {
                 this.dispose();
             }
         });
-        
+
         btnCancel.addActionListener((ae) -> {
             this.dispose();
         });

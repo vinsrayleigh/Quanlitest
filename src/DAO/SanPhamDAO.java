@@ -14,7 +14,7 @@ public class SanPhamDAO {
         try{
             Connection conn = MySQLConnUtils.getMySQLConnection();
             Statement st = conn.createStatement();
-            String Sql = "INSERT into tblsanpham (masanpham,tennsanpham,dongia,soluong,namsx,mota,mancc,maloaisp,mathuonghieu,image)"
+            String Sql = "INSERT into tblsanpham (masanpham,tensanpham,dongia,soluong,namsx,mota,mancc,maloaisp,mathuonghieu,image)"
                     +"VALUES ('"+sp.getMaSanPham()+"',"
                     +"'"+sp.getTenSanPham()+"',"
                     +"'"+sp.getDongia()+"',"

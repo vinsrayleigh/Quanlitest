@@ -5,7 +5,6 @@
  */
 package BUS;
 
-import static BUS.PhieuNhapBUS.list;
 import DAO.NhaCungCapDAO;
 import DTO.NhaCungCapDTO;
 import java.util.ArrayList;

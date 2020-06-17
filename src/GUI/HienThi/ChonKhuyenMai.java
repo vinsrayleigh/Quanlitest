@@ -29,8 +29,9 @@ public class ChonKhuyenMai extends JFrame{
         this.setLayout(new BorderLayout());
         this.setSize(1200 - 200, 600);
         this.setLocationRelativeTo(null);
+        
         this.txTarget = _txTarget;
-
+        setUndecorated(true);
         // ======= Buttons Panel ===========
         btnCancel.setIcon(new ImageIcon("src/Image/cancel_100px.png"));
         btnOK.setIcon(new ImageIcon("src/Image/add_new_50px.png"));

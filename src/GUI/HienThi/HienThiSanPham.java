@@ -13,6 +13,8 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -37,6 +39,7 @@ public class HienThiSanPham extends FormHienThi {
     NhanVienDTO nvSua = new NhanVienDTO();
     JTextField txGia1 = new JTextField(10);
     JTextField txGia2 = new JTextField(10);
+    HienThiThongTinSP target;
     public HienThiSanPham() {
         mtb = new MyTable();
         //String maSanPham, String tenSanPham, double dongia, int soLuong, Date namSx, String maNCC, String maLoaiSP, String maThuongHieu, String image) {
@@ -69,6 +72,21 @@ public class HienThiSanPham extends FormHienThi {
                 txSearchOnChange();
             }
         });
+        mtb.getTable().addMouseListener(new MouseAdapter(){
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                System.out.println("aa");
+                int row = mtb.getTable().getSelectedRow();
+                if (row > -1) {
+                    SanPhamDTO sp = qlSanPham.getSanPham(mtb.getModel().getValueAt(row, 1).toString());
+                    if (sp != null) {
+                        target.doAction(sp);
+                    } else {
+                    }
+                }
+                // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+        });
         btnRefresh.addActionListener((e) -> {
             refresh();
             txTim.setText("");
@@ -79,7 +97,9 @@ public class HienThiSanPham extends FormHienThi {
         this.add(plHeader,BorderLayout.NORTH);
         this.add(mtb,BorderLayout.CENTER);
     }
-    
+    public void setTaget(HienThiThongTinSP target){
+        this.target = target;
+    }
     private void setDataToTable(ArrayList<SanPhamDTO> list, MyTable table) {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         table.clear();
@@ -134,7 +154,7 @@ public class HienThiSanPham extends FormHienThi {
             }
         });
     }
-    private void refresh() {
+    public void refresh() {
         qlSanPham.getData();
         mtb.clear();
         setDataToTable(qlSanPham.list, mtb);

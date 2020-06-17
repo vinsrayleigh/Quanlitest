@@ -5,9 +5,10 @@
  */
 package BUS;
 
-import static BUS.PhieuNhapBUS.list;
 import DAO.HoaDonDAO;
 import DTO.HoaDonDTO;
+import DTO.KhachHangDTO;
+import DTO.NhanVienDTO;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -58,15 +59,25 @@ public class HoaDonBUS {
     }
     public ArrayList<HoaDonDTO> Search(String value,String type, LocalDate date1 , LocalDate date2,int gia1,int gia2){
         ArrayList<HoaDonDTO> result = new ArrayList<>();
-        NhanVienBUS qlNhanVien = new NhanVienBUS();
+        NhanVienBUS qlNhanVien= new NhanVienBUS();
         KhachHangBUS qlKhachHang = new KhachHangBUS();
 //        "Tất cả", "Mã hóa đơn", "Nhân viên", "Khách hàng", "Ngày lập", "Tổng tiền", "Khuyến mãi"});
         list.forEach((hd) -> {
+            NhanVienDTO NV = qlNhanVien.getNV(hd.getMaNhanVien());
+            KhachHangDTO KH = qlKhachHang.getKH(hd.getMaKhachHang());
+            if(NV==null){
+                NV.setHoNhanVien("");
+                NV.setTenNhanVien("");
+            }
+            if(KH==null){
+                KH.setHoKhachHang("");
+                KH.setTenKhachHang("");
+            }
            switch(type){
                case "Tất cả":{
                    if(hd.getMaHoaDon().toLowerCase().contains(value.toLowerCase())
-                           ||Tool.removeAccent(qlNhanVien.getNV(hd.getMaNhanVien()).getFullFame()).contains(Tool.removeAccent(value))
-                           ||Tool.removeAccent(qlKhachHang.getKH(hd.getMaKM()).getFullName()).contains(Tool.removeAccent(value))
+                           ||Tool.removeAccent(NV.getFullFame()).contains(Tool.removeAccent(value))
+                           ||Tool.removeAccent(KH.getFullName()).contains(Tool.removeAccent(value))
                            ||hd.getMaKhachHang().toLowerCase().contains(value.toLowerCase())
                            ||hd.getMaNhanVien().toLowerCase().contains(value.toLowerCase())
                            ||hd.getMaKM().toLowerCase().contains(value.toLowerCase()))
@@ -79,7 +90,7 @@ public class HoaDonBUS {
                    break;
                }
                case "Khách hàng":{
-                   if(Tool.removeAccent(qlKhachHang.getKH(hd.getMaKM()).getFullName()).contains(Tool.removeAccent(value))
+                   if(Tool.removeAccent(KH.getFullName()).contains(Tool.removeAccent(value))
                            ||hd.getMaKhachHang().toLowerCase().contains(value.toLowerCase())){
                        result.add(hd);
                    }
@@ -92,7 +103,7 @@ public class HoaDonBUS {
                    break;
                }
                case "Nhân viên":{
-                   if(Tool.removeAccent(qlNhanVien.getNV(hd.getMaNhanVien()).getFullFame()).contains(Tool.removeAccent(value))||
+                   if(Tool.removeAccent(NV.getFullFame()).contains(Tool.removeAccent(value))||
                            hd.getMaNhanVien().toLowerCase().contains(value.toLowerCase()))
                        result.add(hd);
                        break;

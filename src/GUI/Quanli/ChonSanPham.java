@@ -23,6 +23,7 @@ import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import javax.swing.BorderFactory;
 import javax.swing.JComboBox;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -61,7 +62,6 @@ public class ChonSanPham extends JPanel {
     HoaDon tagetHD;
     PhieuNhap tagetPN;
     String type;
-
     public ChonSanPham() {
         setLayout(new BorderLayout());
         setPreferredSize(new Dimension(700, 0));
@@ -128,7 +128,30 @@ public class ChonSanPham extends JPanel {
         }
 
     }
-
+    public static JFrame chonSanPham(JTextField tx){
+        ChonSanPham chon = new ChonSanPham();
+        chon.type="";
+        JFrame main = new JFrame();
+        main.setLayout(new BorderLayout());
+        main.setSize(700,900);
+        main.add(chon,BorderLayout.CENTER); 
+        main.setAlwaysOnTop(true);
+        chon.txSoLuong.setEditable(false);
+        chon.txSoLuong.setText("1");
+        chon.txDongia.setText("11");
+        try {
+            chon.thembtn.addActionListener((e) -> {
+                int row = chon.tbSanPham.getTable().getSelectedRow();
+                if(row>-1){
+                    tx.setText((String)chon.tbSanPham.getTable().getValueAt(row, 0));
+                }
+                main.dispose();
+            });
+        } catch (Exception e) {
+            main.dispose();
+        }   
+        return main;
+    }
     public void Them() {
         int row = tbSanPham.getTable().getSelectedRow();
         if (row > -1) {
@@ -151,7 +174,7 @@ public class ChonSanPham extends JPanel {
                     
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                if(!type.equals(""))
                 JOptionPane.showMessageDialog(this, "Số lượng phải là số nguyên dương và nhỏ hơn số lượng của sp");
             }
         } else {
@@ -198,6 +221,8 @@ public class ChonSanPham extends JPanel {
         txTen.setText(sp1.getTenSanPham());
         if(type.equals("PN")){
             txDongia.setText((int)(sp.getDongia()-sp.getDongia()*0.4)+"");
+        }else{
+            txDongia.setText(sp.getDongia()+"");
         }
         txNCC.setText(sp1.getTenNCC());
         txThuongHieu.setText(sp1.getTenThuongHieu());

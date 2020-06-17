@@ -1,4 +1,4 @@
-package GUI.HienThi;
+package GUI.Quanli;
 
 import BUS.KhachHangBUS;
 import DAO.KhachHangDAO;
@@ -12,6 +12,8 @@ import GUI.DangNhap;
 import GUI.Excel.DocExcel;
 import GUI.Excel.XuatExcel;
 import GUI.HienThi.HienThiKhachHang;
+import GUI.HienThi.HienThiKhachHang;
+import GUI.HienThi.ThemSuaKhachHang;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import javax.swing.JOptionPane;

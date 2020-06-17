@@ -7,7 +7,7 @@ package GUI;
 
 import GUI.Excel.XuatExcel;
 import GUI.HienThi.ChonNhaCungCap;
-import GUI.HienThi.QuanLiKhachHangForm;
+import GUI.Quanli.QuanLiKhachHangForm;
 import GUI.NavBar.*;
 import GUI.Quanli.*;
 import java.awt.BorderLayout;

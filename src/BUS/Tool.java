@@ -65,6 +65,28 @@ public class Tool {
         LocalDate localDate = LocalDate.parse(date, formatter);
         return Date.valueOf(localDate);
     }
+    public static void setPicture1(JLabel label, String filename) {
+        try {
+            BufferedImage image = ImageIO.read(new File(filename));
+            int x = label.getSize().width;
+            int y = label.getSize().height;
+            int ix = image.getWidth();
+            int iy = image.getHeight();
+            int dx = 0;
+            int dy = 0; 
+            if (x / y > ix / iy) {
+                dy = y;
+                dx = dy * ix / iy;
+            } else {
+                dx = x;
+                dy = dx * iy / ix;
+            }
+            ImageIcon icon = new ImageIcon(image.getScaledInstance(dx, dy, BufferedImage.SCALE_SMOOTH));
+            label.setIcon(icon);
+        } catch (IOException ex) {
+        }
+
+    }
     public static void setPicture(JLabel label, String filename) {
         try {
             BufferedImage image = ImageIO.read(new File("src/Image/"+filename));

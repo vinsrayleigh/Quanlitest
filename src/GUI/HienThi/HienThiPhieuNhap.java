@@ -172,8 +172,8 @@ public class HienThiPhieuNhap extends FormHienThi{
                 table.addRow(new String[]{
                     String.valueOf(stt),
                     hd.getMaPhieuNhap(),
-                    hd.getMaNCC(),
                     qlNhanVien.getNV(hd.getMaNhanVien()).getFullFame(),
+                    qlNCC.getNCC(hd.getMaNCC()).getTenNCC(),
                     Tool.getMonney((int) hd.getTongTien())+",000",
                     hd.getNgayLap().toString()
                     

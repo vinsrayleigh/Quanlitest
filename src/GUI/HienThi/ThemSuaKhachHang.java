@@ -28,6 +28,8 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import java.text.SimpleDateFormat;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
     public class ThemSuaKhachHang extends JFrame {
 //
@@ -72,7 +74,6 @@ import java.text.SimpleDateFormat;
         dPickerNgaySinh.setDateToToday();
         DateButton db = new DateButton(dPickerNgaySinh);
         String[] lbName = new String[]{"Mã khách hàng", "Họ khách hàng", "Tên khách hàng", "Ngày sinh", "Số điện thoại", "Loại Khách Hàng", "Tích Lũy"};
-        
         JComponent[] com = new JComponent[]{txMakh, txHokh, txTenkh, txNgaysinh, txSDT,txloaikh, txTichluy};
         for (int i = 0; i <= 6; i++) {
             JLabel lb = new JLabel(lbName[i]);
@@ -87,6 +88,7 @@ import java.text.SimpleDateFormat;
             }
             add(com[i]);
         }
+        txTichluy.setEditable(false);
         if (type.equals("Thêm")) {
             btnThem.setBounds(50, 400, 100, 30);
             add(btnThem);
@@ -133,6 +135,45 @@ import java.text.SimpleDateFormat;
         });
         dPickerNgaySinh.addDateChangeListener((dce) -> {
             txNgaysinh.setText(dPickerNgaySinh.getDateStringOrEmptyString());
+        });
+        txTenkh.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                if(txTenkh.getText().contains(" ")||txTenkh.getText().length()>40){
+                    txTenkh.setForeground(Color.red);
+                    btnThem.setEnabled(false);
+                    btnSua.setEnabled(false);
+                }else{
+                    txTenkh.setForeground(Color.black);
+                    btnThem.setEnabled(true);
+                    btnSua.setEnabled(true);
+                }
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                if(txTenkh.getText().contains(" ")||txTenkh.getText().length()>40){
+                    txTenkh.setForeground(Color.red);
+                    btnThem.setEnabled(false);
+                    btnSua.setEnabled(false);
+                }else{
+                    txTenkh.setForeground(Color.black);
+                    btnThem.setEnabled(true);
+                    btnSua.setEnabled(true);
+                }
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                if(txTenkh.getText().contains(" ")||txTenkh.getText().length()>40){
+                    txTenkh.setForeground(Color.red);
+                    btnThem.setEnabled(false);
+                    btnSua.setEnabled(false);
+                }else{
+                    txTenkh.setForeground(Color.black);
+                    btnThem.setEnabled(true);
+                    btnSua.setEnabled(true);
+                }            }
         });
     }
     
