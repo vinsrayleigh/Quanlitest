@@ -82,13 +82,16 @@ public class QuanLiKhuyenMaiForm extends JPanel{
         if (formHienThi.getTable().getTable().getSelectedRow()>=0) {
             KhuyenMaiDTO nv = new KhuyenMaiBUS().getKM(formHienThi.getSelectedRow(1));
             
-            int reply = JOptionPane.showConfirmDialog(formHienThi, "Bạn có muốn xóa nhân viên?????????");
+            int reply = JOptionPane.showConfirmDialog(formHienThi, "Bạn có muốn xóa khuyến mại?????????");
                 if (reply == JOptionPane.YES_OPTION) {
-                    KhuyenMaiDAO.DeleteKhuyenMai(nv);
-                    JOptionPane.showMessageDialog(formHienThi, "xóa nhân viên thành công");
+                    if(KhuyenMaiDAO.DeleteKhuyenMai(nv)){
+                        JOptionPane.showMessageDialog(formHienThi, "xóa khuyến mại thành công");
+                    }else{
+                        JOptionPane.showMessageDialog(formHienThi, "xóa khuyến mại không thành công");
+                    }
                     formHienThi.refresh();
             } else {
-                    JOptionPane.showMessageDialog(formHienThi, "xóa nhân viên không thành công");
+                    JOptionPane.showMessageDialog(formHienThi, "xóa khuyến mại không thành công");
                 }
             }
         }

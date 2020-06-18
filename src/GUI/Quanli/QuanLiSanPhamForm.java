@@ -90,17 +90,20 @@ public class QuanLiSanPhamForm extends JPanel{
 
     private void btnXoaMouseClicked() {
         SanPhamDTO sp = new SanPhamBUS().getSanPham(formHienThi.getSelectedRow(1));
-        int reply = JOptionPane.showConfirmDialog(formHienThi, "Bạn có muốn xóa nhân viên?????????");
+        int reply = JOptionPane.showConfirmDialog(formHienThi, "Bạn có muốn xóa sản phẩm?????????");
         if (sp != null) {
             if (reply == JOptionPane.YES_OPTION) {
-                SanPhamDAO.DeleteSanPham(sp);
-                JOptionPane.showMessageDialog(formHienThi, "xóa khách hàng thành công");
+                if(SanPhamDAO.DeleteSanPham(sp)){
+                JOptionPane.showMessageDialog(formHienThi, "xóa sản phẩm thành công");
+                }else{
+                    JOptionPane.showMessageDialog(formHienThi, "xóa sản phẩm không thành công");
+                }
                 formHienThi.refresh();
             } else {
-                JOptionPane.showMessageDialog(formHienThi, "xóa khách hàng không thành công");
+                JOptionPane.showMessageDialog(formHienThi, "xóa sản phẩm không thành công");
             }
         } else {
-            JOptionPane.showMessageDialog(this, "Chọn khách hàng để xóa");
+            JOptionPane.showMessageDialog(this, "Chọn sản phẩm để xóa");
         }
 
     }

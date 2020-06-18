@@ -89,36 +89,21 @@ public class QuanLiThuongHieu extends JPanel {
     private void btnXoaMouseClicked() {
         if (formHienThi.getTable().getTable().getSelectedRow()>=0) {
             ThuongHieuDTO th = new ThuongHieuBUS().getTH(formHienThi.getSelectedRow(1));
-//            if (nv.getTrangThai() == 1) {
-//                int reply = JOptionPane.showConfirmDialog(formHienThi, "Bạn có muốn ẩn nhân viên?????????");
-//                if (reply == JOptionPane.YES_OPTION) {
-//                    nv.setTrangThai(0);
-//                    NhanVienDAO.updateNhanVien(nv);
-//                    JOptionPane.showMessageDialog(formHienThi, "Ẩn nhân viên thành công");
-//                    formHienThi.refresh();
-//                } else {
-//                    JOptionPane.showMessageDialog(formHienThi, "Ẩn nhân viên không thành công");
-//                }
-//            } else {
-//                int reply = JOptionPane.showConfirmDialog(formHienThi, "Bạn có muốn xóa nhân viên?????????");
-//                if (reply == JOptionPane.YES_OPTION) {
-//                    NhanVienDAO.DeleteNhanVien(nv);
-//                    JOptionPane.showMessageDialog(formHienThi, "xóa nhân viên thành công");
-//                    formHienThi.refresh();
-//                } else {
-//                    JOptionPane.showMessageDialog(formHienThi, "xóa nhân viên không thành công");
-//                }
            int reply = JOptionPane.showConfirmDialog(formHienThi, "Bạn có muốn ẩn thương hiệu ?");
            if ( reply == JOptionPane.YES_OPTION) {
-               ThuongHieuDAO.DeleteThuongHieu(th);
-               JOptionPane.showMessageDialog(this, "Thương Hiệu đã được xóa");
+               if(ThuongHieuDAO.DeleteThuongHieu(th)){
+                   JOptionPane.showMessageDialog(this, "Thương Hiệu đã được xóa");
+               }else{
+                   JOptionPane.showMessageDialog(this,"Xóa thương hiệu không thành không");
+               }
+               
                formHienThi.refresh();
            }else{
                JOptionPane.showMessageDialog(this,"Xóa thương hiệu không thành không");
            }
             
         }else{
-            JOptionPane.showMessageDialog(formHienThi,"Bạn phải chọn 1 nhân viên để có thể xóa");
+            JOptionPane.showMessageDialog(formHienThi,"Bạn phải chọn 1 thương hiệu để có thể xóa");
         }
     }
 

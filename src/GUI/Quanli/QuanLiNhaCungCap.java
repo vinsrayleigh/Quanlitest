@@ -81,29 +81,12 @@ public class QuanLiNhaCungCap extends JPanel {
     private void btnXoaMouseClicked() {
         if (formHienThi.getTable().getTable().getSelectedRow()>=0) {
             NhaCungCapDTO ncc = new NhaCungCapBUS().getNCC(formHienThi.getSelectedRow(1));
-//            if (nv.getTrangThai() == 1) {
-//                int reply = JOptionPane.showConfirmDialog(formHienThi, "Bạn có muốn ẩn nhân viên?????????");
-//                if (reply == JOptionPane.YES_OPTION) {
-//                    nv.setTrangThai(0);
-//                    NhanVienDAO.updateNhanVien(nv);
-//                    JOptionPane.showMessageDialog(formHienThi, "Ẩn nhân viên thành công");
-//                    formHienThi.refresh();
-//                } else {
-//                    JOptionPane.showMessageDialog(formHienThi, "Ẩn nhân viên không thành công");
-//                }
-//            } else {
-//                int reply = JOptionPane.showConfirmDialog(formHienThi, "Bạn có muốn xóa nhân viên?????????");
-//                if (reply == JOptionPane.YES_OPTION) {
-//                    NhanVienDAO.DeleteNhanVien(nv);
-//                    JOptionPane.showMessageDialog(formHienThi, "xóa nhân viên thành công");
-//                    formHienThi.refresh();
-//                } else {
-//                    JOptionPane.showMessageDialog(formHienThi, "xóa nhân viên không thành công");
-//                }
            int reply = JOptionPane.showConfirmDialog(formHienThi, "Bạn có muốn xóa nhà cung cấp ?");
            if ( reply == JOptionPane.YES_OPTION) {
-               NhaCungCapDAO.DeleteNhaCungCap(ncc);
-               JOptionPane.showMessageDialog(this, "Nhà cung cấp đã được xóa");
+               if(NhaCungCapDAO.DeleteNhaCungCap(ncc)){
+                   JOptionPane.showMessageDialog(this, "Nhà cung cấp đã được xóa");
+               }else
+               JOptionPane.showMessageDialog(this,"Xóa nhà cung cấp không thành không");
                formHienThi.refresh();
            }else{
                JOptionPane.showMessageDialog(this,"Xóa nhà cung cấp không thành không");

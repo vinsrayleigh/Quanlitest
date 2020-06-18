@@ -108,8 +108,11 @@ public class QuanliNhanVienForm extends JPanel {
             } else {
                 int reply = JOptionPane.showConfirmDialog(formHienThi, "Bạn có muốn xóa nhân viên?????????");
                 if (reply == JOptionPane.YES_OPTION) {
-                    NhanVienDAO.DeleteNhanVien(nv);
-                    JOptionPane.showMessageDialog(formHienThi, "xóa nhân viên thành công");
+                    if(NhanVienDAO.DeleteNhanVien(nv)){;
+                        JOptionPane.showMessageDialog(formHienThi, "xóa nhân viên thành công");
+                    }else{
+                        JOptionPane.showMessageDialog(formHienThi, "xóa nhân viên không thành công");
+                    }
                     formHienThi.refresh();
                 } else {
                     JOptionPane.showMessageDialog(formHienThi, "xóa nhân viên không thành công");

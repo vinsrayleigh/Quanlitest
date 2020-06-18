@@ -94,36 +94,20 @@ public class QuanLiLoaiSP extends JPanel {
     private void btnXoaMouseClicked() {
         if (formHienThi.getTable().getTable().getSelectedRow()>=0) {
             LoaiSPDTO lsp = new LoaiSPBUS().getLoaiSPDTO(formHienThi.getSelectedRow(1));
-//            if (nv.getTrangThai() == 1) {
-//                int reply = JOptionPane.showConfirmDialog(formHienThi, "Bạn có muốn ẩn nhân viên?????????");
-//                if (reply == JOptionPane.YES_OPTION) {
-//                    nv.setTrangThai(0);
-//                    NhanVienDAO.updateNhanVien(nv);
-//                    JOptionPane.showMessageDialog(formHienThi, "Ẩn nhân viên thành công");
-//                    formHienThi.refresh();
-//                } else {
-//                    JOptionPane.showMessageDialog(formHienThi, "Ẩn nhân viên không thành công");
-//                }
-//            } else {
-//                int reply = JOptionPane.showConfirmDialog(formHienThi, "Bạn có muốn xóa nhân viên?????????");
-//                if (reply == JOptionPane.YES_OPTION) {
-//                    NhanVienDAO.DeleteNhanVien(nv);
-//                    JOptionPane.showMessageDialog(formHienThi, "xóa nhân viên thành công");
-//                    formHienThi.refresh();
-//                } else {
-//                    JOptionPane.showMessageDialog(formHienThi, "xóa nhân viên không thành công");
-//                }
            int reply = JOptionPane.showConfirmDialog(formHienThi, "Bạn có muốn ẩn loại sản phẩm ?");
            if ( reply == JOptionPane.YES_OPTION) {
-               LoaiSPDAO.DeleteMaSP(lsp);
+               if(LoaiSPDAO.DeleteMaSP(lsp))
                JOptionPane.showMessageDialog(this, "loại sản phẩm đã được xóa");
+               else{
+                   JOptionPane.showMessageDialog(this,"Xóa loại sản phẩm không thành không");
+               }
                formHienThi.refresh();
            }else{
                JOptionPane.showMessageDialog(this,"Xóa loại sản phẩm không thành không");
            }
             
         }else{
-            JOptionPane.showMessageDialog(formHienThi,"Bạn phải chọn 1 nhân viên để có thể xóa");
+            JOptionPane.showMessageDialog(formHienThi,"Bạn phải chọn 1 loại sản phẩm để có thể xóa");
         }
     }
 

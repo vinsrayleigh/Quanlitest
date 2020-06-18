@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 // them 2 form chuyen nghiep
 package GUI.Quanli;
 
@@ -31,6 +30,7 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.LayoutManager;
+import java.io.FileOutputStream;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
@@ -46,6 +46,31 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.event.UndoableEditListener;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Element;
+import javax.swing.text.Position;
+import javax.swing.text.Segment;
+import java.awt.event.ActionEvent;
+import java.io.FileNotFoundException;
+import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.Chunk;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.FontFactory;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.Phrase;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
+import java.awt.FileDialog;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.stream.Stream;
+import javax.swing.JFrame;
 
 /**
  *
@@ -53,6 +78,9 @@ import javax.swing.event.DocumentListener;
  */
 public class ThongKe extends JPanel {
 
+    public static String stTong;
+    public static String stBan;
+    public static String stNhap;
     HoaDonBUS qlHD = new HoaDonBUS();
     NhanVienBUS qlNV = new NhanVienBUS();
     KhachHangBUS qlKH = new KhachHangBUS();
@@ -62,22 +90,14 @@ public class ThongKe extends JPanel {
     CTPhieuNhapBUS qlCTPN = new CTPhieuNhapBUS();
     CTHDBUS qlCTHD = new CTHDBUS();
     JButton btnThongKetatca = new JButton("Thống kê tất cả");
-    JButton btnThongKeSanPham = new JButton("Sản phẩm");
-    JButton btnNhanVien = new JButton("Nhân viên");
-    JButton btnKhachHang = new JButton("Khách hàng");
-    JButton btnNhaCungCap = new JButton("Nhà cung cấp");
     thongKeTongQuat tkTQ = new thongKeTongQuat();
     thongKeSanPham tkSP = new thongKeSanPham();
+
     public ThongKe() {
         setLayout(new BorderLayout());
         JPanel plButton = new JPanel(new FlowLayout(FlowLayout.LEFT));
         plButton.add(btnThongKetatca);
-        plButton.add(btnThongKeSanPham);
-        plButton.add(btnNhanVien);
-        plButton.add(btnKhachHang);
-        plButton.add(btnNhaCungCap);
         btnThongKetatca.setIcon(new ImageIcon("src/Image/bar_chart_50px.png"));
-        btnThongKeSanPham.setIcon(new ImageIcon("src/Image/product_50px.png"));
         JPanel plCenter = new JPanel();
         add(plButton, BorderLayout.NORTH);
         add(plCenter, BorderLayout.CENTER);
@@ -89,30 +109,28 @@ public class ThongKe extends JPanel {
             revalidate();
             repaint();
         });
-        btnThongKeSanPham.addActionListener((e) -> {
-           plCenter.removeAll();
-           plCenter.add(tkSP);
-           revalidate();
-           repaint();
-        });
     }
-    public class thongKeSanPham extends JPanel{
+
+    public class thongKeSanPham extends JPanel {
+
         JComboBox<String> cbNam = new JComboBox<>();
         JComboBox<String> cbTypeSearch = new JComboBox<>();
         JComboBox<String> cbValue = new JComboBox<>();
+        MyTable tbBan = new MyTable();
+        MyTable tbNhap = new MyTable();
 
         public thongKeSanPham() {
             //menu.setPreferredSize(new Dimension(1920 - 300, 750));
-            setPreferredSize(new Dimension(1920-300, 800));
+            setPreferredSize(new Dimension(1920 - 300, 800));
             setBackground(Color.DARK_GRAY);
             setLayout(new BorderLayout());
             JPanel plHeader = new JPanel(new BorderLayout());
             JPanel plheadLeft = new JPanel();
             JPanel plheadvalue = new JPanel(new FlowLayout(FlowLayout.LEFT));
-            plHeader.add(plheadLeft,BorderLayout.WEST);
-            plHeader.add(plheadvalue,BorderLayout.CENTER);
-            for(int i= 2010;i<=LocalDate.now().getYear();i++){
-                cbNam.addItem(i+"");
+            plHeader.add(plheadLeft, BorderLayout.WEST);
+            plHeader.add(plheadvalue, BorderLayout.CENTER);
+            for (int i = 2010; i <= LocalDate.now().getYear(); i++) {
+                cbNam.addItem(i + "");
             }
             cbNam.setBorder(BorderFactory.createTitledBorder("Chọn năm"));
             cbTypeSearch.setBorder(BorderFactory.createTitledBorder("Thống kê theo"));
@@ -125,15 +143,39 @@ public class ThongKe extends JPanel {
             cbTypeSearch.addItem("Năm");
             cbTypeSearch.addItem("Quý");
             cbTypeSearch.addItem("Tháng");
+            JPanel work = new JPanel();
+            work.setLayout(new BorderLayout());
+            tbBan.setHeaders(new String[]{
+                "Mã sản phẩm",
+                "Tên sản phẩm",
+                "Số lượng"
+            });
+            tbNhap.setHeaders(new String[]{
+                "Mã sản phẩm",
+                "Tên sản phẩm",
+                "Số lượng"});
+            work.add(tbBan, BorderLayout.NORTH);
+            work.add(tbNhap, BorderLayout.SOUTH);
+            String dateb = (String) cbNam.getSelectedItem() + "-01-01";
+            String datee = (String) cbNam.getSelectedItem() + "-12-31";
+            cbNam.addItemListener((e) -> {
+                String dateb1 = (String) cbNam.getSelectedItem() + "-01-01";
+                String datee1 = (String) cbNam.getSelectedItem() + "-12-31";
+                setdatatoTable(dateb1, datee1);
+            });
+            setdatatoTable(dateb, datee);
             cbTypeSearch.addItemListener((e) -> {
                 String type = (String) cbTypeSearch.getSelectedItem();
                 plheadvalue.removeAll();
                 cbValue.removeAllItems();
-                switch(type){
-                    case "Năm":{
+                switch (type) {
+                    case "Năm": {
+                        String date1 = (String) cbNam.getSelectedItem() + "-01-01";
+                        String date2 = (String) cbNam.getSelectedItem() + "-12-31";
+                        setdatatoTable(date1, date2);
                         break;
                     }
-                    case "Quý":{
+                    case "Quý": {
                         cbValue.addItem("1");
                         cbValue.addItem("2");
                         cbValue.addItem("3");
@@ -142,7 +184,7 @@ public class ThongKe extends JPanel {
                         cbValue.setBorder(BorderFactory.createTitledBorder("Quý"));
                         break;
                     }
-                    case "Tháng":{
+                    case "Tháng": {
                         cbValue.addItem("1");
                         cbValue.addItem("2");
                         cbValue.addItem("3");
@@ -163,13 +205,132 @@ public class ThongKe extends JPanel {
                 revalidate();
                 repaint();
             });
-            JPanel work = new JPanel();
             work.setBackground(Color.DARK_GRAY);
-            this.add(plHeader,BorderLayout.NORTH);
-            this.add(work,BorderLayout.CENTER);
+            this.add(plHeader, BorderLayout.NORTH);
+            this.add(work, BorderLayout.CENTER);
         }
-        
+
+        public void setdatatoTable(String date1, String date2) {
+            tbBan.clear();
+            tbNhap.clear();
+            String sp1 = "";
+            String sp2 = "";
+            ArrayList<String> masp = new ArrayList<>();
+            int[] soluong = new int[99999];
+            ArrayList<String> maspNhap = new ArrayList<>();
+            int[] soluongNhap = new int[99999];
+            int dem1 = 0;
+            int dem2 = 0;
+            ArrayList<HoaDonDTO> list = qlHD.Search("", "Tất cả", Tool.getDate(date1).toLocalDate(), Tool.getDate(date2).toLocalDate(), 0, 0);
+            ArrayList<PhieuNhapDTO> list1 = qlPN.Search("", "Tất cả", Tool.getDate(date1).toLocalDate(), Tool.getDate(date2).toLocalDate(), 0, 0);
+            for (HoaDonDTO hd : list) {
+                ArrayList<CTHoaDonDTO> listCTHD = qlCTHD.Seacrh(hd.getMaHoaDon());
+                for (CTHoaDonDTO cthd : listCTHD) {
+                    if (masp.size() > 0) {
+                        if (sp1.contains(cthd.getMaSanPham())) {
+                            for (int i = 0; i < masp.size(); i++) {
+                                if (masp.get(i).equals(cthd.getMaSanPham())) {
+                                    soluong[i] += cthd.getSoLuong();
+                                    break;
+                                }
+                            }
+                        } else {
+                            sp1 += cthd.getMaSanPham();
+                            masp.add(cthd.getMaSanPham());
+                            soluong[dem1++] = 0;
+                        }
+                    } else {
+                        sp1 = cthd.getMaSanPham();
+                        masp.add(cthd.getMaSanPham());
+                        soluong[dem1++] = 0;
+                    }
+
+                }
+            }
+            for (PhieuNhapDTO pn : list1) {
+                ArrayList<CTPhieuNhapDTO> listCTPN = qlCTPN.Seacrh(pn.getMaPhieuNhap());
+                for (CTPhieuNhapDTO ctpn : listCTPN) {
+                    if (maspNhap.size() > 0) {
+                        if (sp2.contains(ctpn.getMaSanPham())) {
+                            for (int i = 0; i < maspNhap.size(); i++) {
+                                if (maspNhap.get(i).equals(ctpn.getMaSanPham())) {
+                                    soluongNhap[i] += ctpn.getSoLuong();
+                                }
+                            }
+                        } else {
+                            sp2 += ctpn.getMaSanPham();
+                            maspNhap.add(ctpn.getMaSanPham());
+                            soluong[maspNhap.indexOf(ctpn.getMaSanPham())] = 0;
+                        }
+                    } else {
+                        sp2 += ctpn.getMaSanPham();
+                        maspNhap.add(ctpn.getMaSanPham());
+                        soluong[maspNhap.indexOf(ctpn.getMaSanPham())] = 0;
+                    }
+                }
+            }
+            for (String k : masp) {
+                tbBan.addRow(new String[]{
+                    k,
+                    qlSP.getSanPham(k).getTenSanPham(),
+                    soluongNhap[masp.indexOf(k)] + ""
+                });
+            }
+            for (String k : maspNhap) {
+                tbNhap.addRow(new String[]{
+                    k,
+                    qlSP.getSanPham(k).getTenSanPham(),
+                    soluongNhap[maspNhap.indexOf(k)] + ""
+                });
+            }
+        }
+
+        public JPanel TongSo(String type, int sl) {
+            JPanel panel = new JPanel(null);
+            Font font = new Font("Segui", 0, 25);
+            Font font1 = new Font("Segui", 0, 30);
+            panel.setSize(350, 300);
+            panel.setPreferredSize(new Dimension(350, 300));
+            //panel.setBackground(Color.DARK_GRAY);
+            JLabel image = new JLabel();
+            JLabel title = new JLabel();
+            JLabel lbsl = new JLabel();
+            image.setBounds(30, 30, 100, 150);
+            title.setBounds(150, 50, 150, 50);
+            title.setFont(font);
+            lbsl.setBounds(200, 150, 100, 50);
+            lbsl.setFont(font1);
+            if (type.equals("Sản phẩm nhập")) {
+                Tool.setPicture(image, "product_100px.png");
+                title.setText("Sản phẩm nhập");
+                lbsl.setText(sl + "");
+            } else if (type.equals("Sản phẩm bán")) {
+                Tool.setPicture(image, "product_100px.png");
+                title.setText("Sản phẩm bán");
+                lbsl.setText(sl + "");
+            } else if (type.equals("Khách hàng")) {
+                Tool.setPicture(image, "account_100px.png");
+                title.setText("Khách hàng");
+                lbsl.setText(sl + "");
+            } else if (type.equals("Nhà cung cấp")) {
+                Tool.setPicture(image, "company_50px.png");
+                title.setText("Nhà cung cấp");
+                lbsl.setText(sl + "");
+            } else {
+                Tool.setPicture(image, "money_100px.png");
+                title.setText(type);
+                lbsl.setText(Tool.getMonney(sl) + ",000 vnđ");
+                lbsl.setBounds(10, 200, 300, 40);
+            }
+            panel.add(image);
+            panel.add(lbsl);
+            panel.add(title);
+            panel.setBorder(BorderFactory.createBevelBorder(1));
+            return panel;
+        }
+
     }
+
     public class thongKeTongQuat extends JPanel {
 
         RefreshButton btnRefresh = new RefreshButton();
@@ -180,9 +341,6 @@ public class ThongKe extends JPanel {
         JTextField txNhanVien = new JTextField(8);
         JTextField txSanPham = new JTextField(8);
         JTextField txNhaCungCap = new JTextField(8);
-        JButton btnNhanVien = new JButton("...");
-        JButton btnSanPham = new JButton("...");
-        JButton btnNhaCungCap = new JButton("...");
         workspace wp = new workspace();
         JPanel pltimKiemSanPham = new JPanel();
         JPanel pltimKiemNhanVien = new JPanel();
@@ -220,15 +378,15 @@ public class ThongKe extends JPanel {
             pltimKiemNhanVien.setBorder(BorderFactory.createTitledBorder("Nhân viên"));
             pltimKiemNhaCungCap.setBorder(BorderFactory.createTitledBorder("Nhà cung cấp"));
             pltimKiemSanPham.add(txSanPham);
-            pltimKiemSanPham.add(btnSanPham);
             pltimKiemNhanVien.add(txNhanVien);
-            pltimKiemNhanVien.add(btnNhanVien);
             pltimKiemNhaCungCap.add(txNhaCungCap);
-            pltimKiemNhaCungCap.add(btnNhaCungCap);
+            JButton xuatPDF = new JButton("Xuất PDF");
+            xuatPDF.setIcon(new ImageIcon("src/Image/pdf_50px.png"));
             plHeader.add(pltimKiemSanPham);
             plHeader.add(pltimKiemNhanVien);
             plHeader.add(pltimKiemNhaCungCap);
             plHeader.add(btnRefresh);
+            plHeader.add(xuatPDF);
             this.add(plHeader, BorderLayout.NORTH);
             this.add(wp, BorderLayout.CENTER);
             DocumentListenner(txSanPham);
@@ -239,8 +397,64 @@ public class ThongKe extends JPanel {
             btnRefresh.addActionListener((e) -> {
                 refresh();
             });
+            xuatPDF.addActionListener((ActionEvent e) -> {
+                try {
+                    xuatpdf();
+                } catch (FileNotFoundException ex) {
+                    Logger.getLogger(ThongKe.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (DocumentException ex) {
+                    Logger.getLogger(ThongKe.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            });
         }
 
+        public void xuatpdf() throws FileNotFoundException, DocumentException {
+            Document document = new Document();
+            FileDialog fd = new FileDialog(new JFrame(), "Xuất PDF", FileDialog.SAVE);
+            fd.setFile("untitla.pdf");
+            fd.setVisible(true);
+            String url = fd.getDirectory() + fd.getFile();
+
+            try {
+                // khởi tạo một PdfWriter truyền vào document và FileOutputStream
+                PdfWriter.getInstance(document, new FileOutputStream(url));
+                // mở file để thực hiện viết
+                document.open();
+                // thêm nội dung sử dụng add function
+                if (wp.menu.getSelectedIndex() == 0) {
+                    xuatTong(document);
+                    PrintPS a = new PrintPS(document);
+                }
+                if (wp.menu.getSelectedIndex() == 1) {
+                    XuatBan(document);
+                    PrintPS a = new PrintPS(document);
+                }
+                if (wp.menu.getSelectedIndex() == 2) {
+                    XuatNhap(document);
+                    PrintPS a = new PrintPS(document);
+                }
+                // đóng file
+                document.close();
+
+            } catch (DocumentException e) {
+                e.printStackTrace();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+
+        public void xuatTong(Document d) throws DocumentException {
+            Paragraph a = new Paragraph(stTong);
+            d.add(a);
+        }
+        public void XuatNhap(Document d) throws DocumentException{
+            Paragraph a = new Paragraph(stNhap);
+            d.add(a);
+        }
+        public void XuatBan(Document d) throws DocumentException{
+            Paragraph a = new Paragraph(stBan);
+            d.add(a);
+        }
         private void refresh() {
             txKhoangNgay1.setText("");
             txKhoangNgay2.setText("");
@@ -291,14 +505,18 @@ public class ThongKe extends JPanel {
                 txKhoangNgay2.setForeground(Color.red);
             }
             if (txKhoangNgay1.getText().equals("") && txKhoangNgay2.getText().equals("") && txNhaCungCap.getText().equals("") && txNhanVien.getText().equals("") && txSanPham.getText().equals("")) {
-                if (wp.menu.getSelectedComponent().equals(wp.banra)) wp.banra.setDatatoTable(qlCTHD.list);
-                if (wp.menu.getSelectedComponent().equals(wp.nhaphang)) wp.nhaphang.setDatatoTable(qlCTPN.list);
+                if (wp.menu.getSelectedComponent().equals(wp.banra)) {
+                    wp.banra.setDatatoTable(qlCTHD.list);
+                }
+                if (wp.menu.getSelectedComponent().equals(wp.nhaphang)) {
+                    wp.nhaphang.setDatatoTable(qlCTPN.list);
+                }
                 return;
             }
             if (wp.menu.getSelectedComponent().equals(wp.banra)) {
                 wp.banra.setDatatoTable(getCTHOADON(ngay1, ngay2, txSanPham.getText(), txNhanVien.getText(), txNhaCungCap.getText()));
             }
-            if(wp.menu.getSelectedComponent().equals(wp.nhaphang)) {
+            if (wp.menu.getSelectedComponent().equals(wp.nhaphang)) {
                 wp.nhaphang.setDatatoTable(getCTPhieuNhap(ngay1, ngay2, txSanPham.getText(), txNhanVien.getText(), txNhaCungCap.getText()));
             }
         }
@@ -310,21 +528,23 @@ public class ThongKe extends JPanel {
                 NhanVienDTO nv = qlNV.getNV(pn.getMaNhanVien());
                 NhaCungCapDTO kh = qlNCC.getNCC(pn.getMaNCC());
                 SanPhamDTO sp = qlSP.getSanPham(ctpn.getMaSanPham());
-                if((Tool.removeAccent(sp.getTenSanPham()).contains(Tool.removeAccent(SP))&&!SP.equals(""))
-                        ||(Tool.removeAccent(sp.getMaSanPham()).contains((Tool.removeAccent(SP)))&&!SP.equals(""))
-                        ||(Tool.removeAccent(kh.getTenNCC()).contains((Tool.removeAccent(KH)))&&!KH.equals(""))
-                        ||(Tool.removeAccent(kh.getMaNCC()).contains((Tool.removeAccent(KH)))&&!KH.equals(""))
-                        ||(Tool.removeAccent(nv.getFullFame()).contains(Tool.removeAccent(NV))&&!NV.equals(""))
-                        ||(Tool.removeAccent(nv.getMaNhanVien()).contains(Tool.removeAccent(NV))&&!NV.equals("")))
-                {
+                if ((Tool.removeAccent(sp.getTenSanPham()).contains(Tool.removeAccent(SP)) && !SP.equals(""))
+                        || (Tool.removeAccent(sp.getMaSanPham()).contains((Tool.removeAccent(SP))) && !SP.equals(""))
+                        || (Tool.removeAccent(kh.getTenNCC()).contains((Tool.removeAccent(KH))) && !KH.equals(""))
+                        || (Tool.removeAccent(kh.getMaNCC()).contains((Tool.removeAccent(KH))) && !KH.equals(""))
+                        || (Tool.removeAccent(nv.getFullFame()).contains(Tool.removeAccent(NV)) && !NV.equals(""))
+                        || (Tool.removeAccent(nv.getMaNhanVien()).contains(Tool.removeAccent(NV)) && !NV.equals(""))) {
                     result.add(ctpn);
                 }
-                if(date1!=null)
-                if(pn.getNgayLap().before(Date.valueOf(date1)))
-                    result.remove(ctpn);
-                if(date2!=null){
-                if(pn.getNgayLap().after(Date.valueOf(date2)))
-                    result.remove(ctpn);    
+                if (date1 != null) {
+                    if (pn.getNgayLap().before(Date.valueOf(date1))) {
+                        result.remove(ctpn);
+                    }
+                }
+                if (date2 != null) {
+                    if (pn.getNgayLap().after(Date.valueOf(date2))) {
+                        result.remove(ctpn);
+                    }
                 }
             }
             return result;
@@ -350,13 +570,13 @@ public class ThongKe extends JPanel {
                     }
                 }
                 if (!KH.equals("")) {
-                    if (!hd.getMaKhachHang().contains(KH)&&!Tool.removeAccent(kh.getFullName()).contains(Tool.removeAccent(KH))) {
+                    if (!hd.getMaKhachHang().contains(KH) && !Tool.removeAccent(kh.getFullName()).contains(Tool.removeAccent(KH))) {
                         System.out.println(KH);
                         check = false;
                     }
                 }
                 if (!NV.equals("")) {
-                    if (!hd.getMaNhanVien().contains(NV) && !NV.equals("")&&!Tool.removeAccent(nv.getFullFame()).contains(Tool.removeAccent(NV)) && !NV.equals("")) {
+                    if (!hd.getMaNhanVien().contains(NV) && !NV.equals("") && !Tool.removeAccent(nv.getFullFame()).contains(Tool.removeAccent(NV)) && !NV.equals("")) {
                         check = false;
                     }
                 }
@@ -386,15 +606,31 @@ public class ThongKe extends JPanel {
                 add(menu);
                 //Tong.setBackground(Color.darkGray);
                 Tong.add(TongSo("Sản phẩm", qlSP.list.size()));
+                stTong += "\n"
+                        + "Sản phẩm : " + qlSP.list.size();
                 Tong.add(TongSo("Nhân viên", qlNV.list.size()));
+                stTong += "\n"
+                        + "Nhân viên : " + qlNV.list.size();
                 Tong.add(TongSo("Khách hàng", qlKH.list.size()));
+                stTong += "\n"
+                        + "Khách hàng : " + qlKH.list.size();
                 Tong.add(TongSo("Nhà cung cấp", qlNCC.list.size()));
+                stTong += "\n"
+                        + "Nhà cung cấp : " + qlNCC.list.size();
                 Date now = Tool.getDate(LocalDate.now().toString());
                 int month = now.getMonth() + 1;
                 Tong.add(TongSo("Tháng thu", ThongKeDAO.getThuNhapThang(month + "", month + 1 + "", now.getYear() + 1900 + "")));
+                stTong += "\n"
+                        + "Tháng thu : " + ThongKeDAO.getThuNhapThang(month + "", month + 1 + "", now.getYear() + 1900 + "");
                 Tong.add(TongSo("Tháng chi", ThongKeDAO.getChiThang(month + "", month + 1 + "", now.getYear() + 1900 + "")));
+                stTong += "\n"
+                        + "Tháng chi : " + ThongKeDAO.getChiThang(month + "", month + 1 + "", now.getYear() + 1900 + "");
                 Tong.add(TongSo("Năm thu", ThongKeDAO.getThuNhapNam(now.getYear() + 1900 + "")));
+                stTong += "\n"
+                        + "Năm thu: " + ThongKeDAO.getThuNhapNam(now.getYear() + 1900 + "");
                 Tong.add(TongSo("Năm chi", ThongKeDAO.getChiNam((now.getYear() + 1900 + ""))));
+                stTong += "\n"
+                        + "Năm chi : " + ThongKeDAO.getChiNam((now.getYear() + 1900 + ""));
                 Tong.setPreferredSize(new Dimension(1620, 700));
 
                 menu.addTab("Tổng", new ImageIcon("src/Image/bar_chart_50px.png"), Tong);
@@ -438,6 +674,14 @@ public class ThongKe extends JPanel {
                     "Đơn giá",
                     "Thành tiền"
                 };
+                stNhap=String.format("%-5s%-8s%-25s%-25s%-30s%-10s%-10s%-15s", "STT",
+                    "Phiếu nhập",
+                    "Tên nhân viên",
+                    "Tên nhà cung cấp",
+                    "Tên sản phẩm",
+                    "Số lượng",
+                    "Đơn giá",
+                    "Thành tiền");
                 tb.setHeaders(header);
                 setDatatoTable(qlCTPN.list);
                 add(tb, BorderLayout.CENTER);
@@ -507,8 +751,17 @@ public class ThongKe extends JPanel {
                         sp.getTenSanPham(),
                         ct.getSoLuong() + "",
                         ct.getDongia() + "",
-                        ct.getDongia() * ct.getSoLuong() + "",});
+                        ct.getDongia() * ct.getSoLuong() + ""});
+                    stNhap+="\n"+String.format("%-5s%-8s%-25s%-25s%-30s%-10s%-10s%-15s",stt + "",
+                        ct.getMaPhieuNhap(),
+                        nv.getFullFame(),
+                        kh.getTenNCC(),
+                        sp.getTenSanPham(),
+                        ct.getSoLuong() + "",
+                        ct.getDongia() + "",
+                        ct.getDongia() * ct.getSoLuong() + "");
                     stt++;
+                    
                 }
                 lbHD.setText(demhoadon + " Phiếu nhập");
                 lbSP.setText(demsanpham + " Sản phẩm");
@@ -541,6 +794,12 @@ public class ThongKe extends JPanel {
                     "Đơn giá",
                     "Thành tiền"
                 };
+                stBan=String.format("%-5s%-10s%-30s%-10s%-30s$-40s","STT",
+                    "Hóa đơn",
+                    "Tên sản phẩm",
+                    "Số Lượng",
+                    "Đơn giá",
+                    "Thành tiền");
                 tb.setHeaders(header);
                 setDatatoTable(qlCTHD.list);
                 add(tb, BorderLayout.CENTER);
@@ -603,7 +862,7 @@ public class ThongKe extends JPanel {
                     }
                     Tong += ct.getThanhTien();
                     tb.addRow(new String[]{
-                        stt++ + "",
+                        stt + "",
                         ct.getMaHoaDon(),
                         nv.getFullFame(),
                         kh.getFullName(),
@@ -611,7 +870,15 @@ public class ThongKe extends JPanel {
                         ct.getSoLuong() + "",
                         ct.getDonGia() + "",
                         ct.getThanhTien() + "",});
+                stBan+="\n"+String.format("%-5s%-10s%-30s%-10s%-30s$-40s",stt,
+                    ct.getMaHoaDon(),
+                    sp.getTenSanPham(),
+                    ct.getSoLuong() + "",
+                    ct.getDonGia() + "",
+                    ct.getThanhTien() + "");
+                stt++;
                 }
+
                 lbHD.setText(demhoadon + " Hóa đơn");
                 lbSP.setText(demsanpham + " Sản phẩm");
                 lbKH.setText(demkhach + " Khách hàng");

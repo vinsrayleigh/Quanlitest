@@ -85,11 +85,14 @@ public class QuanLiKhachHangForm extends JPanel {
     private void btnXoaMouseClicked() {
         KhachHangDTO kh = new KhachHangBUS().getKH(formhienthi.getSelectedRow(1));
 
-        int reply = JOptionPane.showConfirmDialog(formhienthi, "Bạn có muốn xóa nhân viên?????????");
+        int reply = JOptionPane.showConfirmDialog(formhienthi, "Bạn có muốn xóa khách hàng?????????");
         if (kh != null) {
             if (reply == JOptionPane.YES_OPTION) {
-                KhachHangDAO.DeleteKhachHang(kh);
-                JOptionPane.showMessageDialog(formhienthi, "xóa khách hàng thành công");
+                if(KhachHangDAO.DeleteKhachHang(kh)){
+                    JOptionPane.showMessageDialog(formhienthi, "xóa khách hàng thành công");
+                }else{
+                    JOptionPane.showMessageDialog(formhienthi, "xóa khách hàng không thành công");
+                }
                 formhienthi.refresh();
             } else {
                 JOptionPane.showMessageDialog(formhienthi, "xóa khách hàng không thành công");
