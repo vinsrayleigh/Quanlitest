@@ -61,12 +61,15 @@ import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.FontFactory;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;
+import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import java.awt.FileDialog;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
@@ -77,7 +80,9 @@ import javax.swing.JFrame;
  * @author phuon
  */
 public class ThongKe extends JPanel {
-
+    public static File fontFile = new File("src/font/vuTimes.ttf");
+    BaseFont bf;
+    com.itextpdf.text.Font font;
     public static String stTong;
     public static String stBan;
     public static String stNhap;
@@ -93,7 +98,10 @@ public class ThongKe extends JPanel {
     thongKeTongQuat tkTQ = new thongKeTongQuat();
     thongKeSanPham tkSP = new thongKeSanPham();
 
-    public ThongKe() {
+    public ThongKe() throws DocumentException, IOException {
+        this.bf = BaseFont.createFont(fontFile.getAbsolutePath(), BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+        font = new com.itextpdf.text.Font(bf);
+        font.setSize(15);
         setLayout(new BorderLayout());
         JPanel plButton = new JPanel(new FlowLayout(FlowLayout.LEFT));
         plButton.add(btnThongKetatca);
@@ -444,15 +452,15 @@ public class ThongKe extends JPanel {
         }
 
         public void xuatTong(Document d) throws DocumentException {
-            Paragraph a = new Paragraph(stTong);
+            Paragraph a = new Paragraph(stTong,font);
             d.add(a);
         }
         public void XuatNhap(Document d) throws DocumentException{
-            Paragraph a = new Paragraph(stNhap);
+            Paragraph a = new Paragraph(stNhap,font);
             d.add(a);
         }
         public void XuatBan(Document d) throws DocumentException{
-            Paragraph a = new Paragraph(stBan);
+            Paragraph a = new Paragraph(stBan,font);
             d.add(a);
         }
         private void refresh() {

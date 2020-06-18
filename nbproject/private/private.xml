@@ -4,11 +4,19 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/Users/phuon/Documents/NetBeansProjects/Quanli/src/GUI/Quanli/QuanLiThuongHieu.java</file>
-            <file>file:/C:/Users/phuon/Documents/NetBeansProjects/Quanli/src/GUI/MyTable.java</file>
+            <file>file:/C:/Users/phuon/Documents/NetBeansProjects/Quanli/src/GUI/Quanli/QuanLiNhaCungCap.java</file>
+            <file>file:/C:/Users/phuon/Documents/NetBeansProjects/Quanli/src/BUS/PrintPS.java</file>
+            <file>file:/C:/Users/phuon/Documents/NetBeansProjects/Quanli/src/GUI/Quanli/ThongKe.java</file>
+            <file>file:/C:/Users/phuon/Documents/NetBeansProjects/Quanli/src/GUI/Quanli/QuanLiKhachHangForm.java</file>
+            <file>file:/C:/Users/phuon/Documents/NetBeansProjects/Quanli/src/GUI/Quanli/QuanliNhanVienForm.java</file>
             <file>file:/C:/Users/phuon/Documents/NetBeansProjects/Quanli/src/GUI/Quanli/QuanLiSanPhamForm.java</file>
             <file>file:/C:/Users/phuon/Documents/NetBeansProjects/Quanli/src/GUI/Excel/XuatExcel.java</file>
             <file>file:/C:/Users/phuon/Documents/NetBeansProjects/Quanli/src/GUI/Excel/MyJOptionPane.java</file>
-            <file>file:/C:/Users/phuon/Documents/NetBeansProjects/Quanli/src/GUI/Excel/DocExcel.java</file>
+            <file>file:/C:/Users/phuon/Documents/NetBeansProjects/Quanli/src/GUI/Main.java</file>
+            <file>file:/C:/Users/phuon/Documents/NetBeansProjects/Quanli/src/GUI/Quanli/QuanLiKhuyenMaiForm.java</file>
+            <file>file:/C:/Users/phuon/Documents/NetBeansProjects/Quanli/src/GUI/MyTable.java</file>
+            <file>file:/C:/Users/phuon/Documents/NetBeansProjects/Quanli/src/GUI/Quanli/QuanLiLoaiSP.java</file>
+            <file>file:/C:/Users/phuon/Documents/NetBeansProjects/Quanli/src/GUI/Quanli/QuanLiQuyen.java</file>
         </group>
     </open-files>
 </project-private>

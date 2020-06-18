@@ -10,6 +10,7 @@ import GUI.HienThi.ChonNhaCungCap;
 import GUI.Quanli.QuanLiKhachHangForm;
 import GUI.NavBar.*;
 import GUI.Quanli.*;
+import com.itextpdf.text.DocumentException;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -25,6 +26,9 @@ import java.awt.event.MouseMotionAdapter;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
@@ -93,13 +97,10 @@ public class Main extends JFrame implements MouseListener {
             "Quyền", "lock_50px.png", "xemQuyen", "qlQuyen",
             "seperate", "1", "", "",
             "Thống kê", "bar_chart_50px.png", "", "",
-            "Công cụ", "maintenance_50px.png", "", "",
-            "Cài đặt", "services_50px.png", "", ""
         };
         int menuW = 250;
         int menuH = 0;
         menu = new NavBarContainer(new Rectangle(0, 0, menuW, HEIGHT));
-        //menu.addItem(new NavBarTitle(new Rectangle(0, 0, 0, 55), "CHỨC NĂNG"));
         for (int i = 0; i < navItemInfo.length; i += 4) {
             if (navItemInfo[i].equals("seperate")) {
                 NavBarSeperator s = new NavBarSeperator(new Rectangle(0, 0, 0, Integer.parseInt(navItemInfo[i + 1])));
@@ -244,7 +245,7 @@ public class Main extends JFrame implements MouseListener {
         All.dispose();
     }
 
-    public void doAction(String nameAction) {
+    public void doAction(String nameAction) throws DocumentException, IOException {
         plContent.removeAll();
         switch (nameAction) {
             case "Nhân viên":
@@ -399,7 +400,13 @@ public class Main extends JFrame implements MouseListener {
 
             btn.setActive(true);
             currentTab = btn;
-            doAction(btn.text);
+            try {
+                doAction(btn.text);
+            } catch (DocumentException ex) {
+                Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
